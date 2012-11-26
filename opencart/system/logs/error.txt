@@ -1,0 +1,9 @@
+2012-11-26 4:22:16 - PHP Notice:  Undefined property: Config::$config_language in D:\localhost\opencart\admin\controller\catalog\category.php on line 221
+2012-11-26 4:22:52 - PHP Notice:  Undefined property: Config::$config_language in D:\localhost\opencart\admin\controller\catalog\category.php on line 221
+2012-11-26 5:06:58 - PHP Notice:  Undefined variable: default_language in D:\localhost\opencart\admin\view\template\catalog\category_form.tpl on line 229
+2012-11-26 5:10:11 - PHP Notice:  Undefined variable: default_language in D:\localhost\opencart\vqmod\vqcache\vq2-admin_view_template_catalog_category_form.tpl on line 226
+2012-11-26 5:10:38 - PHP Notice:  Undefined variable: default_language in D:\localhost\opencart\vqmod\vqcache\vq2-admin_view_template_catalog_category_form.tpl on line 226
+2012-11-26 5:11:07 - PHP Notice:  Undefined variable: default_language in D:\localhost\opencart\vqmod\vqcache\vq2-admin_view_template_catalog_category_form.tpl on line 226
+2012-11-26 8:03:17 - PHP Notice:  Error: Could not load language english! in D:\localhost\opencart\vqmod\vqcache\vq2-system_library_language.php on line 41
+2012-11-26 8:03:18 - PHP Notice:  Error: Could not load language english! in D:\localhost\opencart\vqmod\vqcache\vq2-system_library_language.php on line 41
+2012-11-26 8:03:18 - PHP Notice:  Error: Could not load language english! in D:\localhost\opencart\vqmod\vqcache\vq2-system_library_language.php on line 41
