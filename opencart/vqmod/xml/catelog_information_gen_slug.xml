@@ -1,0 +1,65 @@
+<modification>
+    <id>catelog_information_gen_slug</id>
+    <version>1.0</version>
+    <vqmver>1.0</vqmver>
+    <author>le hoang duc</author>
+
+    <file name="admin/controller/catalog/information.php">
+        <operation>
+            <search position="after"><![CDATA[$this->data['languages'] = $this->model_localisation_language->getLanguages();]]></search>
+            <add><![CDATA[$this->data['default_language'] = $this->config->get('config_language');]]></add>
+        </operation>
+    </file>
+
+    <file name="admin/view/template/catalog/information_form.tpl">
+        <operation>
+            <search position="replace"><![CDATA[<input type="text" name="information_description[<?php echo $language['language_id']; ?>][title]" size="100" value="<?php echo isset($information_description[$language['language_id']]) ? $information_description[$language['language_id']]['title'] : ''; ?>" />]]></search>
+            <add><![CDATA[<input type="text" id="information_description_<?php echo $language['language_id'];?>" name="information_description[<?php echo $language['language_id']; ?>][title]" size="100" value="<?php echo isset($information_description[$language['language_id']]) ? $information_description[$language['language_id']]['title'] : ''; ?>" />]]></add>
+        </operation>
+        <operation>
+            <search position="replace"><![CDATA[<input type="text" name="keyword" value="<?php echo $keyword; ?>" />]]></search>
+            <add><![CDATA[<input type="text" id="information_slug" name="keyword" value="<?php echo $keyword; ?>" />]]></add>
+        </operation>
+        <operation>
+            <search position="after"><![CDATA[$('#languages a').tabs();]]></search>
+            <add><![CDATA[$(function(){
+    var languages = eval('(<?php echo json_encode($languages);?>)'),
+        default_language;
+    jQuery.each(languages, function(index, value) {
+        if (value.code == '<?php echo $default_language; ?>') {
+            default_language = value;
+            return;
+        }
+    });
+
+    var infDesEl = $('#information_description_' + default_language.language_id);
+    var infSlugEl = $('#information_slug');
+
+    // Generate slug for information page base on default language
+    if (infSlugEl.val() == '') {
+        infSlugEl.val(generateSlug(infDesEl.val()));
+    }
+
+    infDesEl.change(function(){
+        infSlugEl.val(generateSlug($(this).val()));
+    });
+});
+
+function generateSlug(str)
+{
+    str = str.replace(/^\s+|\s+$/g, '');
+    var from = "ÁÀẠẢÃĂẮẰẶẲẴÂẤẦẬẨẪáàạảãăắằặẳẵâấầậẩẫóòọỏõÓÒỌỎÕôốồộổỗÔỐỒỘỔỖơớờợởỡƠỚỜỢỞỠéèẹẻẽÉÈẸẺẼêếềệểễÊẾỀỆỂỄúùụủũÚÙỤỦŨưứừựửữƯỨỪỰỬỮíìịỉĩÍÌỊỈĨýỳỵỷỹÝỲỴỶỸĐđÑñÇç·/_,:;";
+    var to   = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaooooooooooooooooooooooooooooooooooeeeeeeeeeeeeeeeeeeeeeeuuuuuuuuuuuuuuuuuuuuuuiiiiiiiiiiyyyyyyyyyyddnncc------";
+
+    for (var i = 0, l = from.length ; i < l; i++) {
+        str = str.replace(new RegExp(from[i], "g"), to[i]);
+    }
+    str = str.replace(/[^a-zA-Z0-9 -]/g, '').replace(/\s+/g, '-').toLowerCase();
+    return str;
+}
+]]></add>
+        </operation>
+    </file>
+
+
+</modification>

@@ -228,6 +228,7 @@ $(function(){
             return;
         }
     });
+
     var categoryNameEl = $('#category_name_' + default_language.language_id);
     var categorySlugEl = $('#category_slug');
 

@@ -1,0 +1,149 @@
+<modification>
+    <id>catalog_common_seo_url</id>
+    <version>1.0</version>
+    <vqmver>1.0</vqmver>
+    <author>le hoang duc</author>
+
+    <file name="admin/model/catalog/category.php">
+        <operation>
+            <search position="after"><![CDATA[$this->cache->delete('category');]]></search>
+            <add><![CDATA[$this->cache->delete('url_alias');]]></add>
+        </operation>
+    </file>
+    <file name="admin/model/catalog/information.php">
+        <operation>
+            <search position="after"><![CDATA[$this->cache->delete('information');]]></search>
+            <add><![CDATA[$this->cache->delete('information');]]></add>
+        </operation>
+    </file>
+    <file name="admin/model/catalog/manufacturer.php">
+        <operation>
+            <search position="after"><![CDATA[$this->cache->delete('manufacturer');]]></search>
+            <add><![CDATA[$this->cache->delete('manufacturer');]]></add>
+        </operation>
+    </file>
+    <file name="admin/model/catalog/product.php">
+        <operation>
+            <search position="after"><![CDATA[$this->cache->delete('product');]]></search>
+            <add><![CDATA[$this->cache->delete('product');]]></add>
+        </operation>
+    </file>
+    <file name="catalog/controller/common/seo_url.php">
+        <operation>
+            <search position="replace" offset="30"><![CDATA[$parts = explode('/', $this->request->get['_route_']);]]></search>
+            <add><![CDATA[
+            $parts = explode('/', $this->request->get['_route_']);
+            $urlAliasData = array();
+
+            if ($this->cache->get('url_alias')) {
+                $urlAliasData = $this->cache->get('url_alias');
+            } else {
+                $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "url_alias");
+                if ($query->num_rows) {
+                    $urlAliasData = array(
+                        'row'  => $query->row,
+                        'rows' => $query->rows,
+                        'num_rows' => $query->num_rows
+                    );
+                    $this->cache->set('url_alias', $urlAliasData);
+                }
+            }
+
+            foreach ($parts as $part) {
+				//$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "url_alias WHERE keyword = '" . $this->db->escape($part) . "'");
+				if ($urlAliasData) {
+                    $data = array_filter($urlAliasData['rows'], function($var) use ($part) {
+                        return $var['keyword'] ==  $this->db->escape($part);
+                    });
+                }
+
+                if ($data) {
+                    $data = array_shift($data);
+
+                    $url = explode('=', $data['query']);
+
+                    if ($url[0] == 'product_id') {
+                        $this->request->get['product_id'] = $url[1];
+                    }
+
+                    if ($url[0] == 'category_id') {
+                        if (!isset($this->request->get['path'])) {
+                            $this->request->get['path'] = $url[1];
+                        } else {
+                            $this->request->get['path'] .= '_' . $url[1];
+                        }
+                    }
+
+                    if ($url[0] == 'manufacturer_id') {
+                        $this->request->get['manufacturer_id'] = $url[1];
+                    }
+
+                    if ($url[0] == 'information_id') {
+                        $this->request->get['information_id'] = $url[1];
+                    }
+                } else {
+                    $this->request->get['route'] = 'error/not_found';
+                }
+			}]]></add>
+        </operation>
+
+        <operation>
+            <search position="replace" offset="25"><![CDATA[parse_str($url_data['query'], $data);]]]></search>
+            <add><![CDATA[
+                parse_str($url_data['query'], $data);
+
+                $urlAliasData = array();
+
+                if ($this->cache->get('url_alias')) {
+                    $urlAliasData = $this->cache->get('url_alias');
+                } else {
+                    $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "url_alias");
+                    if ($query->num_rows) {
+                        $urlAliasData = array(
+                            'row'  => $query->row,
+                            'rows' => $query->rows,
+                            'num_rows' => $query->num_rows
+                        );
+                        $this->cache->set('url_alias', $urlAliasData);
+                    }
+                }
+
+                 foreach ($data as $key => $value) {
+                    if (isset($data['route'])) {
+                        if (($data['route'] == 'product/product' && $key == 'product_id') || (($data['route'] == 'product/manufacturer/info' || $data['route'] == 'product/product') && $key == 'manufacturer_id') || ($data['route'] == 'information/information' && $key == 'information_id')) {
+                            if ($urlAliasData) {
+                                $dataUrl = array_filter($urlAliasData['rows'], function($var) use ($key, $value) {
+                                    return $var['query'] ==  $key . '=' . (int)$value;
+                                });
+                            }
+
+                            if ($dataUrl) {
+                                $dataUrl = array_shift($dataUrl);
+
+                                $url .= '/' . $dataUrl['keyword'];
+
+                                unset($data[$key]);
+                            }
+                        } elseif ($key == 'path') {
+                            $categories = explode('_', $value);
+
+                            foreach ($categories as $category) {
+                                $dataUrl = array_filter($urlAliasData['rows'], function($var) use ($category) {
+                                    return $var['query'] ==  'category_id=' . (int)$category;
+                                });
+
+                                if ($dataUrl) {
+                                    $dataUrl = array_shift($dataUrl);
+                                    $url .= '/' . $dataUrl['keyword'];
+                                }
+                            }
+
+                            unset($data[$key]);
+                        }
+                    }
+                }
+
+            ]]></add>
+        </operation>
+    </file>
+</modification>

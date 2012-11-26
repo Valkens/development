@@ -3,7 +3,7 @@
 define('VERSION', '1.5.4');
 
 // Configuration
-require_once(dirname(__FILE__) . '/config/admin.config.php');
+require_once(dirname(dirname(__FILE__)) . '/config/admin.config.php');
 
 //VirtualQMOD
 require_once('../vqmod/vqmod.php');

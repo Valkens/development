@@ -8,13 +8,10 @@ define('DB_DATABASE', 'opencart');
 define('DB_PREFIX', '');
 
 // HTTP
-define('HTTP_SERVER', 'http://site.local/opencart/');
-define('HTTP_IMAGE', 'http://site.local/opencart/image/');
-define('HTTP_ADMIN', 'http://site.local/opencart/admin/');
+define('HTTP_IMAGE', 'http://site.local/development/opencart/image/');
 
 // HTTPS
-define('HTTPS_SERVER', 'http://site.local/opencart/');
-define('HTTPS_IMAGE', 'http://site.local/opencart/image/');
+define('HTTPS_IMAGE', 'http://site.local/development/opencart/image/');
 
 // DIR
 define('DIR_ROOT', dirname(dirname(__FILE__)));
