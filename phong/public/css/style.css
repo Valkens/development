@@ -1,0 +1,9 @@
+input[type=text], input[type=password]{
+    padding: 2px 4px;
+    border: 1px solid #CCC;
+}
+.error{
+    padding: 2px;
+    margin-bottom: 5px;
+    color: red;
+}
