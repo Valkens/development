@@ -8,8 +8,9 @@ if (!isset($_SESSION['username'])) {
 include('../template/header.php');
 ?>
 
-<div id="content">
-    dsadsa
+<div id="main-content" class="pull-left">
+    <h3>Welcome to Dashboard.</h3>
+    <br class="clear" />
 </div>
 
 <?php include('../template/footer.php'); ?>

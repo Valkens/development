@@ -10,7 +10,7 @@ if (isset($_SESSION['username'])) {
 
 if (isset($_POST['submit'])) {
     if ($_POST['username'] == '' || $_POST['password'] == '') {
-        $error = 'Xin nhập đầy đủ thông tin';
+        $error = ' Please complete all of the required fields.';
     } else {
         $conn = dbConnect(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
         $stmt = $conn->prepare('SELECT * FROM users WHERE username = :username AND password=MD5(:password)');
@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
             header('location: ../dashboard');
             exit();
         } else {
-            $error = 'Thông tin đăng nhập không chính xác.';
+            $error = 'Your login was invalid.';
         };
     }
 }
@@ -56,8 +56,8 @@ if (isset($_POST['submit'])) {
     <script type="text/javascript">
         $(function(){
             $('form').submit(function(){
-                if ($('#username').val() == '' || $('#password') == '') {
-                    alert('Xin nhap day du thong tin');
+                if ($.trim($('#username').val()) == '' || $.trim($('#password').val()) == '') {
+                    alert('Please complete all of the required fields.');
                     return false;
                 }
             })
