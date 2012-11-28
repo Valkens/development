@@ -66,8 +66,9 @@ if (isset($_POST['submit'])) {
             }
 
             // Update images
-             $stmt = $conn->prepare('UPDATE deals SET background_image=:background_image,summary_image=:summary_image,image1=:image1,image2=:image2,image3=:image3,image4=:image4');
-             $stmt->execute($dataImage);
+            $stmt = $conn->prepare('UPDATE deals SET background_image=:background_image,summary_image=:summary_image,image1=:image1,image2=:image2,image3=:image3,image4=:image4 WHERE id=:id');
+            $dataImage['id'] = $conn->lastInsertId();
+            $stmt->execute($dataImage);
 
             header('location: ./');
         }

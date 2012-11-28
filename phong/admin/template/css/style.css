@@ -3,8 +3,9 @@
     height: 50px
 }
 .inner-wrap{
-    width: 776px;
+    width: 1000px;
     margin: 0 auto;
+    min-width: 776px;
 }
 .pull-right{
     float: right
@@ -83,7 +84,6 @@ a{
     line-height: 18px;
     padding: 3px 15px;
     text-transform: uppercase;
-    font-family: "Ubuntu",Helvetica,Arial,sans-serif;
 }
 #main-menu  li{
     border-bottom: 1px solid #DDD;
@@ -91,15 +91,17 @@ a{
     padding-bottom: 8px;
     padding-top: 8px;
 }
-#main-menu  li a{
+#main-menu li a{
     display: block;
     padding-left: 20px;
     text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
 }
 #main-content{
     margin-left: 15px;
     border: 1px solid rgba(0, 0, 0, 0.05);
-    width: 586px;
+    width: 810px;
     padding: 10px;
 }
 .list-box{
@@ -154,8 +156,7 @@ form .control-group label{
     width: 190px;
     display: block;
     margin-bottom: 5px;
-    font-size: 15px;
-    font-weight: normal;
+    font-size: 12px;
     line-height: 18px;
     color: #555555;
     font-weight: bold;
@@ -164,12 +165,11 @@ form .controls {
     margin-left: 210px;
 }
 form .controls input[type=text]{
-    width: 180px;
+    width: 240px;
 }
 form .form-actions {
     background-color: #F5F5F5;
     border-top: 1px solid #E5E5E5;
     margin-top: 18px;
-    padding: 17px 20px 18px;
-    padding-left: 160px;
+    padding: 17px 20px 18px 160px;
 }
