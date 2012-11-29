@@ -29,14 +29,17 @@ include('../template/header.php');
             <tbody>
                 <?php
                 $conn = dbConnect(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+                // Get all category
+                $stmt = $conn->prepare('SELECT * FROM categories');
+                $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                $stmt->execute();
+                $categories = $stmt->fetchAll();
+
                 $stmt = $conn->prepare('SELECT * FROM deals');
                 $stmt->execute();
                 while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $stmtCate = $conn->prepare('SELECT * FROM categories WHERE id=:category');
-                    $stmtCate->execute(array('category' => $row['id_category']));
-                    if ($category = $stmtCate->fetch(PDO::FETCH_ASSOC)) {
-                        $row['category'] = $category;
-                    }
+                    $row['category'] = current(array_filter($categories, create_function('$val', 'return $val["id"]==' . $row['id_category'] . ';')));
 
                     echo '<tr>';
                     echo "<td>{$row['id']}</td>";

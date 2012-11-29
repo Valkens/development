@@ -6,10 +6,10 @@ $conn = dbConnect(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
 // Get all categories
 $stmt = $conn->prepare('SELECT * FROM categories');
+$stmt->setFetchMode(PDO::FETCH_ASSOC);
 $stmt->execute();
-while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    $categories[] = $row;
-}
+
+$categories = $stmt->fetchAll();
 ?>
 <?php include 'front/template/header.php';?>
 <?php

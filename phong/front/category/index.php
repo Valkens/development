@@ -2,9 +2,7 @@
     <div id="main">
         <div>
             <?php
-            $stmt = $conn->prepare('SELECT * FROM categories WHERE id=:id');
-            $stmt->execute(array('id' => $_GET['cid']));
-            $cateInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+            $cateInfo = current(array_filter($categories, create_function('$val', 'return $val["id"]==' . $_GET['cid'] . ';')));
             ?>
             <h4><span>All deals of '<?php echo $cateInfo['name'];?>' category</span></h4>
             <div class="items">

@@ -75,12 +75,10 @@ if (isset($_POST['submit'])) {
     }
 } else {
     $stmt = $conn->prepare('SELECT * FROM categories');
+    $stmt->setFetchMode(PDO::FETCH_ASSOC);
     $stmt->execute();
 
-    $categories = array();
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $categories[] = $row;
-    }
+    $categories = $stmt->fetchAll();
 }
 ?>
 
