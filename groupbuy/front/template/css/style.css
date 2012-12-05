@@ -31,12 +31,14 @@ img {
     height: 100px;
     width: auto;
 }
-#logo a {
+#logo h3 {
     display: block;
     height: 53px;
     width: 386px;
     margin: 0 auto;
     padding: 23px 0;
+	font-size: 20px;
+	font-family: "Century Gothic"
 }
 /** Navigation **/
 #navigation {
@@ -98,6 +100,7 @@ img {
 /*------------------------------ CONTENTS ------------------------------*/
 #contents {
     margin-bottom: 10px;
+	min-height: 600px;
 }
 #contents h4 {
     background: url(../images/separator-horizontal.png) no-repeat center center;

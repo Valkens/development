@@ -14,7 +14,7 @@
     <div id="page">
         <div id="header">
             <div id="logo">
-                <a href="index.html"><img src="front/template/images/logo.png" alt="LOGO"></a>
+                <h3>Group buy site</h3>
             </div>
             <div id="navigation">
                 <ul id="primary">

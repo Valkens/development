@@ -177,7 +177,7 @@ if (isset($_POST['submit'])) {
             <div class="control-group">
                 <label>Description of conditions  (*)</label>
                 <div class="controls">
-                    <textarea id="conditions" name="conditions" cols="42" rows="7"><?php echo $deal['description'];?></textarea>
+                    <textarea id="conditions" name="conditions" cols="42" rows="7"><?php echo $deal['conditions'];?></textarea>
                 </div>
             </div>
             <div class="control-group">
