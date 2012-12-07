@@ -118,4 +118,6 @@
 'Twig_NodeVisitor_SafeAnalysis'=>'D:/localhost/development/myfw/library/Twig/NodeVisitor/SafeAnalysis.php',
 
 'Twig_NodeVisitor_Optimizer'=>'D:/localhost/development/myfw/library/Twig/NodeVisitor/Optimizer.php',
+
+'Core_Templum'=>'D:/localhost/development/myfw/library/Core/Templum.php',
 );
