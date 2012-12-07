@@ -2,36 +2,45 @@
 class Core_Loader
 {
     protected $_options;
+    protected $_cacheFile = 'loader.cache.php';
+    protected $_cacheIndex = array();
 
     public function __construct($options)
     {
         $this->_options = $options;
+
+        // Cache
+        $this->_cacheFile = APPLICATION_PATH . '/cache/System/' . $this->_cacheFile;
+
+        if (file_exists($this->_cacheFile)) {
+            $this->_cacheIndex = include $this->_cacheFile;
+        }
     }
 
     public function autoload($class)
     {
-        $portions = explode('_', $class);
-        $namespace = $portions[0];
-
-        if (in_array($namespace, $this->_options['libraries'])) {
-            $dir = LIBRARY_PATH;
+        if (isset($this->_cacheIndex[$class])) {
+            require $this->_cacheIndex[$class];
         } else {
-            $dir = APPLICATION_PATH . '/' . 'module';
-        }
+            $portions = explode('_', $class);
+            $namespace = $portions[0];
 
-        $file = str_replace('_', '/', $class);
+            if (in_array($namespace, $this->_options['libraries'])) {
+                $dir = LIBRARY_PATH;
+            } else {
+                $dir = APPLICATION_PATH . '/' . 'module';
+            }
 
-        include_once $dir . '/' . $file . '.php';
+            $file =  $dir . '/' . str_replace('_', '/', $class) . '.php';
 
-        if (!class_exists($class, false) && !interface_exists($class, false)) {
-            throw new Exception("File \"$file\" does not exist or class \"$class\" was not found in the file");
-        }
-    }
+            require_once $file;
 
-    protected function _securityCheck($filename)
-    {
-        if (preg_match('/[^a-z0-9\\/\\\\_.:-]/i', $filename)) {
-            throw new Exception('Security check: Illegal character in filename');
+            // Write cache
+            $content = file_get_contents($this->_cacheFile);
+            $content = str_replace(');', '', $content);
+
+            $putContent = "\r\n'{$class}'=>'{$file}',\r\n);";
+            file_put_contents($this->_cacheFile, $content . $putContent);
         }
     }
 }

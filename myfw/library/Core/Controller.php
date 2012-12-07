@@ -25,12 +25,12 @@ class Core_Controller
 
     public function execute($action)
     {
+
         $this->_view = Core_Resource_Manager::getResource('view');
 
         // Execute action
-        $action = lcfirst($action);
-        $this->_actionName = $actionName = $action . 'Action';
-        $this->$actionName();
+        $this->_actionName = $action = lcfirst($action);
+        $this->{$action . 'Action'}();
 
         if (!$this->_noRender) {
             $dir = APPLICATION_PATH . '/module/' . $this->_moduleName. '/View/' . $this->_controllerName;

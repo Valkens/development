@@ -88,9 +88,9 @@ class Core_Resource_Db
             $this->$adapter = new stdClass();
             $this->$adapter->connected = true;
 
-            if(isset($dbOptions['options']['charset']) && isset($dbOptions['options']['collate'])) {
-                $this->pdo[$adapter]->exec("SET NAMES '". $dbOptions['options']['charset']. "' COLLATE '". $dbOptions['options']['collate'] ."'");
-            } else if (isset($dbOptions['options']['charset']) ){
+            if(isset($dbOptions['charset']) && isset($dbOptions['collate'])) {
+                $this->pdo[$adapter]->exec("SET NAMES '". $dbOptions['charset']. "' COLLATE '". $dbOptions['collate'] ."'");
+            } else if (isset($dbOptions['charset']) ){
                 $this->pdo[$adapter]->exec("SET NAMES '". $dbOptions['charset']. "'");
             }
         } catch(PDOException $e){

@@ -8,24 +8,20 @@ return array(
                 'password' => 'root',
                 'dbname' => 'phong',
                 'persistent' => false,
-                'options' => array(
-                    'collate' => 'utf8_unicode_ci',
-                    'charset'=>'utf8'
-                )
+                'collate' => 'utf8_unicode_ci',
+                'charset'=>'utf8'
             ),
             'sqlite' => array(
                 'dbname' => APPLICATION_PATH . '/db/db'
             )
         ),
         'view' => array(
-            'Twig' => array(
-                'options' => array(
-                    'cache' => APPLICATION_PATH . '/cache/Twig',
-                    'auto_reload' => true
-                ),
-                'layoutParams' => array(
-                    'dir' => APPLICATION_PATH . '/module/Default/View/Layout'
-                )
+            'options' => array(
+                'cache' => APPLICATION_PATH . '/cache/Twig',
+                'auto_reload' => true
+            ),
+            'layoutParams' => array(
+                'dir' => APPLICATION_PATH . '/module/Default/View/Layout'
             )
         )
     ),

@@ -2,14 +2,12 @@
 class Core_Resource_View
 {
     protected $_options;
-    protected $_viewEngine = 'Twig';
     protected $_loader;
     protected $_environment;
 
     public function __construct()
     {
         $this->_options = Core_Resource_Manager::getOption('view');
-        $this->_options = $this->_options[$this->_viewEngine];
 
         // Setup Twig
         Twig_Autoloader::register();
