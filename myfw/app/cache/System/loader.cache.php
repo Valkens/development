@@ -120,4 +120,6 @@
 'Twig_NodeVisitor_Optimizer'=>'D:/localhost/development/myfw/library/Twig/NodeVisitor/Optimizer.php',
 
 'Core_Templum'=>'D:/localhost/development/myfw/library/Core/Templum.php',
+
+'Default_Controller_ErrorController'=>'D:/localhost/development/myfw/app/module/Default/Controller/ErrorController.php',
 );

@@ -74,12 +74,12 @@ class Core_Application
     {
         $controller->setRouter($this->_router);
 
-        ob_start();
+        //ob_start();
         $controller->execute($action);
-        $data = ob_get_contents();
-        ob_end_clean();
+        //$data = ob_get_contents();
+        //ob_end_clean();
 
-        echo $data;
+        //echo $data;
     }
 
     protected function _getRoutes()

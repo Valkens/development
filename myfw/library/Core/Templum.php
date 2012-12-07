@@ -1,34 +1,18 @@
 <?php
-define("TEMPLUM_VERSION", "0.4.0");
-
-/**
- * @brief Templum errors.
- * 
- * This exception is thrown by the Templum class when errors occur
- * during instantiation or when loading and parsing templates.
- */
-class TemplumError extends Exception {
+class Core_TemplumError extends Exception {
 
 	/**
 	 * @brief Create a new TemplumError instance
 	 * @param $message (string) The error message.
 	 * @param $code (int) The error code
 	 */
-	public function TemplumError($message, $code = 0) {
+	public function __construct($message, $code = 0) {
 		parent::__construct($message, $code);
 	}
 
 }
 
-/**
- * @brief TemplumTemplate errors.
- * 
- * This exception is thrown by the TemplumTemplate class when errors occur
- * during the execution of templates. PHP errors, warnings and notices that
- * occur during the template execution are captured by the TemplumTemplate class and
- * are thrown as TemplumTemplateError exceptions.
- */
-class TemplumTemplateError extends Exception {
+class Core_TemplumTemplateError extends Exception {
 	
 	protected $template = NULL; /**< The TemplumTemplate instance causing the error. */
 
@@ -38,7 +22,7 @@ class TemplumTemplateError extends Exception {
 	 * @param $code (int) The error code
 	 * @param $template (TemplumTemplate) The template containing the error.
 	 */
-	public function TemplumTemplateError($message, $code = 0, $template = NULL) {
+	public function __construct($message, $code = 0, $template = NULL) {
 		$this->template = $template;
 		parent::__construct($message, $code);
 	}
@@ -53,12 +37,6 @@ class TemplumTemplateError extends Exception {
 
 }
 
-/**
- * @brief Templum Templating Engine.
- * 
- * This is the main Templum class. It takes care of retrieval, caching and
- * compiling of (translated) templates.
- */
 class Core_Templum {
 	/**
 	 * @brief Create a new Templum instance.
@@ -69,15 +47,15 @@ class Core_Templum {
 	 */
 	public function __construct($templatePath, $varsUniversal = array(), $locale = NULL) {
 		if (!file_exists($templatePath)) {
-			throw new TemplumError("No such file or directory: $templatePath", 1);
+			throw new Core_TemplumError("No such file or directory: $templatePath", 1);
 		}
 		if (!is_dir($templatePath)) {
-			throw new TemplumError("Not a directory: $templatePath", 2);
+			throw new Core_TemplumError("Not a directory: $templatePath", 2);
 		}
 		$this->templatePath = rtrim(realpath($templatePath), '/');
 		$this->varsUniversal = $varsUniversal;
 		$this->locale = $locale;
-		$this->autoEscape = True;
+		$this->autoEscape = true;
 		$this->cache = array();
 	}
 
@@ -140,7 +118,7 @@ class Core_Templum {
 			// Check the cache for the non-translated template. 
 			$rpath = realpath($fpath);
 			if($rpath === False) {
-				throw new TemplumError("Template not found or not a file: $fpath", 3);
+				throw new Core_TemplumError("Template not found or not a file: $fpath", 3);
 			}
 			if (array_key_exists($rpath, $this->cache)) {
 				return($this->cache[$rpath]);
@@ -150,14 +128,14 @@ class Core_Templum {
 
 		// Check if the template exists. 
 		if (!is_file($fpath)) {
-			throw new TemplumError("Template not found or not a file: $fpath", 3);
+			throw new Core_TemplumError("Template not found or not a file: $fpath", 3);
 		}
 		if (!is_readable($fpath)) {
-			throw new TemplumError("Template not readable: $fpath", 4);
+			throw new Core_TemplumError("Template not readable: $fpath", 4);
 		}
 
 		// Load the base or translated template.
-		$template = new TemplumTemplate(
+		$template = new Core_TemplumTemplate(
 				$this,
 				$fpath,
 				$this->compile(file_get_contents($fpath), $autoEscape), 
@@ -178,13 +156,13 @@ class Core_Templum {
 	 * @param $autoEscape (boolean) Whether to auto escape {{ and }} output with htmlspecialchars()
 	 * @returns (TemplumTemplate) TemplumTemplate class instance.
 	 */
-	public static function templateFromString($contents, $autoEscape = Null) {
+	public function templateFromString($contents, $autoEscape = Null) {
 		if ($autoEscape === Null) {
 			$autoEscape = $this->autoEscape;
 		}
 
 		// Load the base or translated template.
-		$template = new TemplumTemplate(
+		$template = new Core_TemplumTemplate(
 				NULL,
 				"FROM_STRING",
 				$this->compile($contents, $autoEscape), 
@@ -233,7 +211,7 @@ class Core_Templum {
  * actual rendering of the template, as well as catching errors during
  * rendering. It also contains helper methods which can be used in templates.
  */
-class TemplumTemplate {
+class Core_TemplumTemplate {
 	/**
 	 * @brief Create a new TemplumTemplate instance. You'd normally get an instance from a Templum class instance.
 	 * @param $templum (Templum instance) The Templum class instance that generated this TemplumTemplate instance.
@@ -241,7 +219,7 @@ class TemplumTemplate {
 	 * @param $contents (string) The compiled contents of this template.
 	 * @param $varsGlobal (array) An array of key/value pairs which represent the global variables for this template and the templates it includes.
 	 */
-	public function TemplumTemplate($templum, $filename, $contents, $varsGlobal = array()) {
+	public function __construct($templum, $filename, $contents, $varsGlobal = array()) {
 		$this->templum = $templum;
 		$this->filename = $filename;
 		$this->contents = $contents;
@@ -312,7 +290,7 @@ class TemplumTemplate {
 		ob_end_clean();
 
 		// Throw the exception
-		throw new TemplumTemplateError("$string (file: {$this->filename}, line $line)", 1, $this);
+		throw new Core_TemplumTemplateError("$string (file: {$this->filename}, line $line)", 1, $this);
 	}
 
 	/**
@@ -322,7 +300,7 @@ class TemplumTemplate {
 	 */
 	public function inc($template, $varsLocal = array()) {
 		if (!isset($this->templum)) {
-			throw new TemplumTemplateError("Cannot include templates in a TemplumTemplate instance created from a string.", 2, $this);
+			throw new Core_TemplumTemplateError("Cannot include templates in a TemplumTemplate instance created from a string.", 2, $this);
 		}
 		$t = $this->templum->template($template, $varsLocal);
 		print($t->render());
@@ -336,5 +314,3 @@ class TemplumTemplate {
 		$this->inheritFrom = $this->templum->template($template);
 	}
 }
-
-?>
