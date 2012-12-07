@@ -1,8 +1,13 @@
 <?php
-class Default_Controller_IndexController
+class Default_Controller_IndexController extends Core_Controller
 {
-    public function __construct()
+    public function indexAction()
     {
-        echo __CLASS__;
+        // Db
+        $db = Core_Resource_Manager::getResource('db');
+
+        $user = new Default_Model_User;
+        $user->setDefaultAdapter('sqlite');
+        $this->_data['users'] = $user->find(array('limit' => 100));
     }
 }

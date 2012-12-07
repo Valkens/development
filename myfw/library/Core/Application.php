@@ -7,6 +7,11 @@ class Core_Application
 
     public function __construct($environment, $options)
     {
+        require_once LIBRARY_PATH . '/' . 'Core/Loader.php';
+
+        // Registry auto loader
+        spl_autoload_register(array(new Core_Loader($options), 'autoload'));
+
         $this->_environment = $environment;
         $this->_setOptions($options);
     }
@@ -14,8 +19,13 @@ class Core_Application
     protected function _setOptions($options)
     {
         $this->_options = $options;
-        if (!empty($options['phpSettings'])) {
-            $this->_setPhpSettings($options['phpSettings']);
+
+        foreach ($options as $key => $val) {
+            if ($key == 'phpSettings') {
+                $this->_setPhpSettings($val);
+            } elseif ($key == 'resources') {
+                $this->_registryResources($val);
+            }
         }
     }
 
@@ -26,20 +36,50 @@ class Core_Application
         }
     }
 
+    protected function _registryResources($resources)
+    {
+        $resourceManager = Core_Resource_Manager::getInstance();
+        foreach ($resources as $resource => $options) {
+            $resourceManager::setOption($resource, $options);
+        }
+    }
+
     public function run()
     {
-        require_once LIBRARY_PATH . '/' . 'Core/Loader.php';
-
-        // Registry auto loader
-        spl_autoload_register(array(new Core_Loader($this->_options), 'autoload'));
-
         // Set Router
         $subFolder = '/' . ltrim(str_replace($_SERVER['DOCUMENT_ROOT'], '', str_replace('\\','/', BASE_PATH)), '/');
         $this->_router = new Core_Router();
         $this->_router->setBasePath($subFolder);
         $this->_getRoutes();
 
-        print_r($this->_router->match());
+        $match = $this->_router->match();
+
+        if (empty($match)) {
+            $controllerClass = 'Default_Controller_ErrorController';
+            $match['target']['action'] = 'error404';
+        } else {
+            $controllerClass = $match['target']['module'] . '_Controller_' . $match['target']['controller'] . 'Controller';
+        }
+
+        try{
+            $controller = new $controllerClass($this->_options, isset($match['params']) ? $match['params'] : array());
+
+            $this->_dispatch($controller, $match['target']['action']);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    protected function _dispatch($controller, $action)
+    {
+        $controller->setRouter($this->_router);
+
+        ob_start();
+        $controller->execute($action);
+        $data = ob_get_contents();
+        ob_end_clean();
+
+        echo $data;
     }
 
     protected function _getRoutes()
