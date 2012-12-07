@@ -5,7 +5,6 @@ class Core_Controller
     protected $_router;
     protected $_moduleName;
     protected $_controllerName;
-    protected $_actionName;
     protected $_params;
     protected $_noRender;
     protected $_data = array();
@@ -25,12 +24,15 @@ class Core_Controller
 
     public function execute($action)
     {
-
         $this->_view = Core_Resource_Manager::getResource('view');
 
         // Execute action
-        $this->_actionName = $action = lcfirst($action);
-        $this->{$action . 'Action'}();
+        if(!method_exists($this, $action . 'Action')) {
+            throw new Exception(sprintf('The required method "%s" does not exist for %s', $action, get_class($this)));
+        }
+
+        $actionName = $action . 'Action';
+        $this->$actionName();
 
         if (!$this->_noRender) {
             $dir = APPLICATION_PATH . '/module/' . $this->_moduleName. '/View/' . $this->_controllerName;

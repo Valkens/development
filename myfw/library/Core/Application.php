@@ -32,6 +32,10 @@ class Core_Application
     protected function _setPhpSettings($settings)
     {
         foreach ($settings[$this->_environment] as $key => $value) {
+            if ($key == 'error_reporting') {
+                error_reporting($value);
+                continue;
+            }
             ini_set($key, $value);
         }
     }
@@ -73,13 +77,7 @@ class Core_Application
     protected function _dispatch($controller, $action)
     {
         $controller->setRouter($this->_router);
-
-        //ob_start();
         $controller->execute($action);
-        //$data = ob_get_contents();
-        //ob_end_clean();
-
-        //echo $data;
     }
 
     protected function _getRoutes()

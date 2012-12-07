@@ -4,13 +4,13 @@ return array(
         'name' => 'route_home',
         'method' => 'GET',
         'route'  => '/',
-        'target' => array('module' => 'Default', 'controller' => 'Index', 'action' => 'Index')
+        'target' => array('module' => 'Default', 'controller' => 'Index', 'action' => 'index')
     ),
     array(
         'name' => 'route_user',
         'method' => 'GET',
         'route'  => '/user/[i:id][/]?',
-        'target' => array('module' => 'Default', 'controller' => 'Index', 'action' => 'Index')
+        'target' => array('module' => 'Default', 'controller' => 'Index', 'action' => 'index')
     ),
     array(
         'name' => 'route_error_404',

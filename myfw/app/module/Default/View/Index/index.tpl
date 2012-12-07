@@ -1,5 +1,5 @@
-[[ $this->inherit('../Layout/default/layout') ]]
-[: block page :]List user[: endblock :]
+[[ $this->inherit('@_layout_/default/layout') ]]
+[: block page :]{{$pageTitle}}[: endblock :]
 [: block contents :]
     @foreach ($users as $user):
     <p>{{$user->name}}</p>

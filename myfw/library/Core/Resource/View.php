@@ -3,26 +3,23 @@ class Core_Resource_View
 {
     protected $_options;
     protected $_loader;
-    protected $_environment;
+    protected $_templateEngine;
 
     public function __construct()
     {
         $this->_options = Core_Resource_Manager::getOption('view');
+        $this->_templateEngine = new Core_TemplateEngine();
 
-        // Setup Twig
-        /*Twig_Autoloader::register();
-        $this->_loader = new Twig_Loader_Filesystem($this->_options['layoutParams']['dir']);
-        $this->_environment = new Twig_Environment($this->_loader, $this->_options['options']);*/
+        // Add layout path
+        $this->_templateEngine->addPath($this->_options['layoutParams']['dir']);
     }
 
     public function render($dir, $file, $data = array())
     {
-        $this->_environment = new Core_Templum($dir, $data);
+        $namespace = str_replace(array(APPLICATION_PATH, '/'), array('', '_'), $dir) . '_';
 
-        //$viewNs = 'view' . str_replace(array(APPLICATION_PATH, '/'), array('', '_'), $dir);
-        //$this->_loader->addPath($dir, $viewNs);
+        $this->_templateEngine->addPath($dir, $namespace);
 
-       // echo $this->_environment->render('@' . $viewNs . '/' . $file . '.twig', $data);
-        echo $this->_environment->template($file)->render();
+        echo $this->_templateEngine->template('@' . $namespace . '/' . $file, $data)->render();
     }
 }
