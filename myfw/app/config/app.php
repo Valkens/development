@@ -17,8 +17,7 @@ return array(
         ),
         'view' => array(
             'options' => array(
-                'cache' => APPLICATION_PATH . '/cache/Twig',
-                'auto_reload' => true
+                'minify' => 0
             ),
             'layoutParams' => array(
                 'dir' => APPLICATION_PATH . '/module/Default/View/Layout'

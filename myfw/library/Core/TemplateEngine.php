@@ -2,13 +2,16 @@
 class Core_TemplateEngine
 {
     protected $_paths;
-    public $_varsUniversal = array();
+    public $varsUniversal = array();
+    public $options = array();
+    public $registryFilters = array();
+    public $autoEscape = true;
+    public $cache = array();
 
-    public function __construct($locale = NULL)
+    public function __construct($locale = NULL, $options = array())
     {
         $this->locale = $locale;
-        $this->autoEscape = true;
-        $this->cache = array();
+        $this->options = $options;
     }
 
     public function addPath($path, $namespace = '_layout_')
@@ -26,7 +29,7 @@ class Core_TemplateEngine
      * @param $varValue (mixed) The value of the variable.
      */
     public function setVar($varName, $varValue) {
-        $this->_varsUniversal[$varName] = $varValue;
+        $this->varsUniversal[$varName] = $varValue;
     }
 
     /**
@@ -104,16 +107,15 @@ class Core_TemplateEngine
         }
 
         // Load the base or translated template.
-        $view =
         $template = new Core_Template(
             $this,
             $fpath,
             $this->compile(file_get_contents($fpath), $autoEscape),
-            array_merge($this->_varsUniversal, $varsGlobal)
+            array_merge($this->varsUniversal, $varsGlobal)
         );
         $this->cache[$fpath] = $template;
 
-        return($template);
+        return $template;
     }
 
     /**
@@ -148,7 +150,8 @@ class Core_TemplateEngine
      * @param $autoEscape (boolean) Whether to auto escape {{ and }} output with htmlspecialchars()
      * @note This method is used by the Template class itself, and shouldn't be called directly yourself. Use templateFromString() instead.
      */
-    private function compile($contents, $autoEscape = True) {
+    private function compile($contents, $autoEscape = true)
+    {
         // Parse custom short-hand tags to PHP code.
         $contents = preg_replace(
             array(
@@ -171,6 +174,12 @@ class Core_TemplateEngine
             ),
             $contents
         );
-        return($contents);
+
+        return $contents;
+    }
+
+    public function registryFilter($type, $params)
+    {
+        $this->registryFilters[$type] = array($params);
     }
 }

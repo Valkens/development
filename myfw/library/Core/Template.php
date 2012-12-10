@@ -1,15 +1,16 @@
 <?php
-/**
- * @brief Template class
- *
- * This is the Template class. It represents a template and handles the
- * actual rendering of the template, as well as catching errors during
- * rendering. It also contains helper methods which can be used in templates.
- */
-class Core_Template {
+class Core_Template
+{
+    public $engine;
+    public $filename;
+    public $contents;
+    public $varsGlobal;
+    public $inheritFrom;
+    public $inheritBlocks = array();
+
     /**
      * @brief Create a new Template instance. You'd normally get an instance from a Template class instance.
-     * @param $engine (Template instance) The Templum class instance that generated this Template instance.
+     * @param $engine (TemplateEngine instance) The TemplateEngine class instance that generated this Template instance.
      * @param $filename (string) The filename of this template.
      * @param $contents (string) The compiled contents of this template.
      * @param $varsGlobal (array) An array of key/value pairs which represent the global variables for this template and the templates it includes.
@@ -19,8 +20,6 @@ class Core_Template {
         $this->filename = $filename;
         $this->contents = $contents;
         $this->varsGlobal = $varsGlobal;
-        $this->inheritFrom = NULL;
-        $this->inheritBlocks = array();
     }
 
     /**
@@ -56,6 +55,13 @@ class Core_Template {
         // Stop output buffering and return the contents of the buffer
         // (rendered template).
         $result = ob_get_contents();
+
+        foreach ($this->engine->registryFilters as $key => $val) {
+            if ($key == 'output') {
+                $result = call_user_func($val[0], $result, $val[1]);
+            }
+        }
+
         ob_end_clean();
 
         if ($this->inheritFrom !== NULL) {
@@ -63,7 +69,7 @@ class Core_Template {
             $result = $this->inheritFrom->render();
         }
 
-        return($result);
+        return $result;
     }
 
     /**
@@ -72,7 +78,7 @@ class Core_Template {
      * @param $string (string) Error message
      * @param $file (string) Filename of the file in which the erorr occurred.
      * @param $line (int) Linenumber of the line on which the error occurred.
-     * @note Do not call this yourself. It is used internally by Templum but must be public.
+     * @note Do not call this yourself. It is used internally by TemplateEngine but must be public.
      */
     public function errorHandler($nr, $string, $file, $line) {
         // We can restore the old error handler, otherwise this error handler
@@ -94,11 +100,11 @@ class Core_Template {
      * @param $varsLocal (array) An array of key/value pairs which represent the local variables for this template.
      */
     public function inc($template, $varsLocal = array()) {
-        if (!isset($this->templum)) {
-            throw new Exception("Cannot include templates in a TemplumTemplate instance created from a string.");
+        if (!isset($this->engine)) {
+            throw new Exception("Cannot include templates in a Template instance created from a string.");
         }
-        $t = $this->templum->template($template, $varsLocal);
-        print($t->render());
+        $t = $this->engine->template($template, $varsLocal);
+        print ($t->render());
     }
 
     /**
@@ -107,5 +113,25 @@ class Core_Template {
      */
     public function inherit($template) {
         $this->inheritFrom = $this->engine->template($template);
+    }
+
+    /**
+     * @brief Add javascript file
+     * @param $file
+     */
+    public function addScript($files)
+    {
+        $fileCache = Core_Helper_View::cccJs($files, $this->engine->options);
+        echo "<script type='text/javascript' src='$fileCache'></script>";
+    }
+
+    /**
+     * @brief Add javascript file
+     * @param $file
+     */
+    public function addCss($files)
+    {
+        $fileCache = Core_Helper_View::cccCss($files, $this->engine->options);
+        echo "<link rel='stylesheet' type='text/css' href='$fileCache'></script>";
     }
 }
