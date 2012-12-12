@@ -14,6 +14,7 @@ define('LIBRARY_PATH', BASE_PATH . '/library');
 // Define application environment
 define('APPLICATION_ENV', 'development');
 
+set_include_path(LIBRARY_PATH);
 
 /** Core_Application */
 require_once BASE_PATH . '/library/Core/Application.php';

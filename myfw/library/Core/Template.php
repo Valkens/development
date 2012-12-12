@@ -122,7 +122,7 @@ class Core_Template
     public function addScript($files)
     {
         $fileCache = Core_Helper_View::cccJs($files, $this->engine->options);
-        echo "<script type='text/javascript' src='$fileCache'></script>";
+        echo "<script type=\"text/javascript\" src=\"$fileCache\"></script>\n";
     }
 
     /**
@@ -132,6 +132,6 @@ class Core_Template
     public function addCss($files)
     {
         $fileCache = Core_Helper_View::cccCss($files, $this->engine->options);
-        echo "<link rel='stylesheet' type='text/css' href='$fileCache'></script>";
+        echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$fileCache\" />\n";
     }
 }

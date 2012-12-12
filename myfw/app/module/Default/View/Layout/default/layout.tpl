@@ -7,5 +7,6 @@
     [[ $this->addCss(array('public/css/reset.css', 'public/css/style.css')) ]]
 </head>
 <body>
+[: block content :][: endblock :]
 </body>
 </html>

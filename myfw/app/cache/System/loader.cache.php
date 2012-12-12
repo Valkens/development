@@ -20,4 +20,24 @@
 'Core_Template'=>'D:/localhost/development/myfw/library/Core/Template.php',
 
 'Core_Helper_View'=>'D:/localhost/development/myfw/library/Core/Helper/View.php',
+
+'Zend_Http_Client'=>'D:/localhost/development/myfw/library/Zend/Http/Client.php',
+
+'Zend_Dom_Query'=>'D:/localhost/development/myfw/library/Zend/Dom/Query.php',
+
+'Zend_Uri'=>'D:/localhost/development/myfw/library/Zend/Uri.php',
+
+'Zend_Uri_Http'=>'D:/localhost/development/myfw/library/Zend/Uri/Http.php',
+
+'Zend_Validate_Interface'=>'D:/localhost/development/myfw/library/Zend/Validate/Interface.php',
+
+'Zend_Validate_Abstract'=>'D:/localhost/development/myfw/library/Zend/Validate/Abstract.php',
+
+'Zend_Validate_Hostname'=>'D:/localhost/development/myfw/library/Zend/Validate/Hostname.php',
+
+'Zend_Validate_Ip'=>'D:/localhost/development/myfw/library/Zend/Validate/Ip.php',
+
+'Zend_Loader'=>'D:/localhost/development/myfw/library/Zend/Loader.php',
+
+'Zend_Http_Response'=>'D:/localhost/development/myfw/library/Zend/Http/Response.php',
 );
