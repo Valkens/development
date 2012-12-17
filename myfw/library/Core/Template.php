@@ -121,8 +121,14 @@ class Core_Template
      */
     public function addScript($files)
     {
-        $fileCache = Core_Helper_View::cccJs($files, $this->engine->options);
-        echo "<script type=\"text/javascript\" src=\"$fileCache\"></script>\n";
+        if ($this->engine->options['combineJs']) {
+            $fileCache = Core_Helper_View::cccJs($files, $this->engine->options);
+            echo "<script type=\"text/javascript\" src=\"$fileCache\"></script>\n";
+        } else {
+            foreach ($files as $file) {
+                echo "<script type=\"text/javascript\" src=\"$file\"></script>\n";
+            }
+        }
     }
 
     /**
@@ -131,7 +137,13 @@ class Core_Template
      */
     public function addCss($files)
     {
-        $fileCache = Core_Helper_View::cccCss($files, $this->engine->options);
-        echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$fileCache\" />\n";
+        if ($this->engine->options['combineCss']) {
+            $fileCache = Core_Helper_View::cccCss($files, $this->engine->options);
+            echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$fileCache\" />\n";
+        } else {
+            foreach ($files as $file) {
+                echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$file\" />\n";
+            }
+        }
     }
 }

@@ -38,7 +38,6 @@ img {
     margin: 0 auto;
     padding: 23px 0;
 	font-size: 20px;
-	font-family: "Century Gothic"
 }
 /** Navigation **/
 #navigation {
@@ -62,12 +61,10 @@ img {
     text-align: center;
 }
 #navigation a {
-    font-family: 'HammersmithOneRegular';
     color: #527b99;
     font-size: 15px;
     text-decoration: none;
     text-shadow: 1px 1px #e5f0f2;
-    text-transform: uppercase;
 }
 #navigation a:hover, #primary li.selected a, #navigation #primary li.highlight a:hover {
     background: url(../images/bg-menu-selected.gif) no-repeat center top;
@@ -121,9 +118,6 @@ img {
     text-align: center;
 }
 /** MAIN **/
-#main, #main div {
-    margin-bottom: 10px;
-}
 .items {
     display: inline-block;
     list-style: none;
@@ -157,7 +151,6 @@ img {
 }
 .items .item a {
     color: #003bb3;
-    font-family: 'HammersmithOneRegular';
     font-size: 14px;
     line-height: 24px;
     text-align: left;
@@ -216,7 +209,6 @@ img {
     color: #616b84;
     display: block;
     font-size: 13px;
-    font-family: 'Trebuchet MS';
     text-decoration: none;
 }
 #footer .navigation li a:hover {
@@ -266,4 +258,29 @@ img {
 #connect li a:hover {
     filter:alpha(opacity=80);
     opacity:0.8;
+}
+#login-form fieldset{
+    padding: 10px;
+    border: 1px solid #ccc;
+    width: 400px;
+}
+#login-form fieldset legend{
+    padding: 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+#login-form table td{
+    padding: 5px;
+}
+#login-form table td input[type=text], #login-form table td input[type=password]{
+    width: 200px;
+}
+
+/*------------------------------ questions ------------------------------*/
+#questions-list .question{
+    border-bottom: 1px dashed #CCC;
+    padding: 15px 5px;
+}
+#questions-list .question .fullname{
+    font-weight: bold;
 }

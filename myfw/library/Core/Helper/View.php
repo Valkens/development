@@ -72,11 +72,11 @@ class Core_Helper_View
         return BASE_URL . '/public/css/cache/' . $compressed_css_filename . '.css';
     }
 
-    public static function minifyHtml($html)
+    public static function minifyHtml($html, $params)
     {
         require_once BASE_PATH . '/library/Min/lib/Minify/HTML.php';
 
-        return call_user_func(array('Minify_HTML', 'minify'), $html);
+        return call_user_func(array('Minify_HTML', 'minify'), $html, $params);
     }
 
     public static function minifyJs($js)

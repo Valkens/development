@@ -21,7 +21,7 @@ class Core_Resource_View
 
         // Registry filter
         if ($this->_options['options']['minify']) {
-            $this->_templateEngine->registryFilter('output', array('Minify_HTML', 'minify') , array('xhtml', 'cssMinifier' => array('Core_Helper_View', 'minifyCss'), 'jsMinifier' => array('Core_Helper_View', 'minifyJs')));
+            $this->_templateEngine->registryFilter('output', array('Core_Helper_View', 'minifyHtml'), array('xhtml', 'cssMinifier' => array('Core_Helper_View', 'minifyCss'), 'jsMinifier' => array('Core_Helper_View', 'minifyJs')));
         }
 
         echo $this->_templateEngine->template('@' . $namespace . '/' . $file, $data)->render();

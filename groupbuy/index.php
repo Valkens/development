@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 include 'libs/config.php';
 include 'libs/db.php';
 
@@ -14,8 +16,10 @@ $categories = $stmt->fetchAll();
 <?php include 'front/template/header.php';?>
 <?php
 $module = (isset($_GET['m']) && $_GET['m'] != '') ? $_GET['m'] : 'home';
+$action = (isset($_GET['a']) && $_GET['a'] != '') ? $_GET['a'] : 'index';
+
 if (file_exists('front/' . $module)) {
-    include 'front/' . $module . '/index.php';
+    include 'front/' . $module . '/' . $action . '.php';
 } else {
     include 'front/error/404.php';
 }

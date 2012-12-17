@@ -178,8 +178,8 @@ class Core_TemplateEngine
         return $contents;
     }
 
-    public function registryFilter($type, $params)
+    public function registryFilter($type, $callback, $params)
     {
-        $this->registryFilters[$type] = array($params);
+        $this->registryFilters[$type] = array($callback, $params);
     }
 }

@@ -36,7 +36,14 @@
                         <a href="#">Cart</a>
                     </li>
                     <li>
-                        <a href="#">Login</a> | <a href="#">Signup</a>
+                        <?php
+                            if (isset($_SESSION['customer'])) {
+                                echo '<a href="?m=user&a=profile">' . htmlspecialchars($_SESSION['customer']['fullname']) . '</a> | ';
+                                echo "<a href='?m=user&a=logout'>Logout</a>";
+                            } else {
+                                echo '<a href="?m=user&a=login">Login</a> | <a href="?m=user&a=signup">Signup</a>';
+                            }
+                        ?>
                     </li>
                 </ul>
             </div>

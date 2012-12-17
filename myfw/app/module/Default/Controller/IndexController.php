@@ -5,7 +5,7 @@ class Default_Controller_IndexController extends Core_Controller
     {
         $this->_data['pageTitle'] = 'Home page';
 
-        $uri = 'http://vnexpress.net';
+        /*$uri = 'http://vnexpress.net';
 
         $client = new Zend_Http_Client($uri, array(
             'maxredirects' => 2,
@@ -22,7 +22,7 @@ class Default_Controller_IndexController extends Core_Controller
 
 
         $this->_data['contentType'] =  $response->getBody();
-        $this->_previewHtml($uri, $response);
+        $this->_previewHtml($uri, $response);*/
     }
 
     protected function _previewHtml($uri, Zend_Http_Response $response)

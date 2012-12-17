@@ -31,5 +31,6 @@
                 <li><a href="../dashboard/">Dashboard</a></li>
                 <li><a href="../category/">Category</a></li>
                 <li><a href="../deal/">Deal</a></li>
+                <li><a href="../customer/">Customer</a></li>
             </ul>
         </div>

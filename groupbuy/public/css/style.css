@@ -13,6 +13,11 @@ input[type=text], input[type=password],textarea, select{
     margin-bottom: 5px;
     color: red;
 }
+.success{
+    padding: 2px;
+    margin-bottom: 5px;
+    color: #4F8A10;
+}
 .clear{
     clear: both
 }
