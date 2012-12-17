@@ -33,9 +33,6 @@
                 </ul>
                 <ul id="secondary">
                     <li>
-                        <a href="#">Cart</a>
-                    </li>
-                    <li>
                         <?php
                             if (isset($_SESSION['customer'])) {
                                 echo '<a href="?m=user&a=profile">' . htmlspecialchars($_SESSION['customer']['fullname']) . '</a> | ';

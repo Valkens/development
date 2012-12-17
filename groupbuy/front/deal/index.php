@@ -10,7 +10,7 @@
         }
     }
 ?>
-
+<link rel="stylesheet" href="./public/js/slider/bjqs.css" />
 <div id="contents">
     <div id="main">
         <div>
@@ -23,27 +23,37 @@
             <div id="deal">
                 <?php
                     echo "<img src='./{$deal['summary_image']}' width='230' height='160'>";
+                    if (strtotime($deal['expired_time']) > time()) {
+                        echo '<a href="./?m=deal&a=cart&did='.$_GET['did'].'" style="display:block;margin-bottom:10px"';
+                        echo (!isset($_SESSION['customer'])) ? ' onclick="alert(\'Please login\');return false;"' : '';
+                        echo '><img src="./public/images/buy_ico.png">';
+                        echo '</a>';
+                    }
                     echo '<h3>Conditions: </h3>';
                     echo "<p class='condition'>{$deal['conditions']}</p>";
                 ?>
                 <h3>Detailed images: </h3>
                 <div class="list-image">
-                    <?php
+                    <ul class="bjqs">
+                        <?php
                         for ($i = 1; $i <= 4; $i++) {
                             $img = $deal['image' . $i];
                             if ($img != '') {
-                                echo "<img src='$img' />";
+                                echo "<li><img src='$img' /></li>";
                             }
                         }
-                    ?>
+                        ?>
+                    </ul>
                 </div>
+                <br class="clear" />
             </div>
+            <br class="clear" />
         </div>
         <br class="clear" />
         <hr />
         <form id="question-form" action="" method="post">
             <label style="float:left;margin-right:10px">Question: </label>
-            <textarea name="question_content" cols="35" rows="6"></textarea>
+            <textarea name="question_content" cols="45" rows="6"></textarea>
             <br />
             <input type="submit" name="submit" value="Post" />
         </form>
@@ -68,15 +78,24 @@
         <br class="clear" />
     </div>
 </div>
+<script type="text/javascript" src="./public/js/slider/js/bjqs-1.3.min.js"></script>
 <script type="text/javascript">
-    $('#question-form').submit(function(){
+    $(function(){
+        $('#question-form').submit(function(){
         <?php if (!isset($_SESSION['customer'])) { ?>
             alert('Please login');
             return false;
-        <?php } ?>
-        if ($.trim($('#question-form textarea[name=question_content]').val()) == '') {
-            alert('Please enter question content');
-            return false;
-        }
+            <?php } ?>
+            if ($.trim($('#question-form textarea[name=question_content]').val()) == '') {
+                alert('Please enter question content');
+                return false;
+            }
+        });
+
+        $('.list-image').bjqs({
+            height      : 320,
+            width       : 620,
+            responsive  : true
+        });
     });
 </script>

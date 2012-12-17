@@ -72,7 +72,7 @@ if (isset($_POST['submit'])) {
 
             <div class="form-actions">
                 <input type="submit" name="submit" value="Update" />
-                | <a href="../customer">Cancel</a>
+                | <a href="./">Cancel</a>
             </div>
         </form>
     </div>

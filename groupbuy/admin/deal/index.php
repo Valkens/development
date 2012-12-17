@@ -36,7 +36,7 @@ include('../template/header.php');
                 $stmt->execute();
                 $categories = $stmt->fetchAll();
 
-                $stmt = $conn->prepare('SELECT * FROM deals');
+                $stmt = $conn->prepare('SELECT * FROM deals ORDER BY id DESC');
                 $stmt->execute();
                 while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $row['category'] = current(array_filter($categories, create_function('$val', 'return $val["id"]==' . $row['id_category'] . ';')));

@@ -32,5 +32,7 @@
                 <li><a href="../category/">Category</a></li>
                 <li><a href="../deal/">Deal</a></li>
                 <li><a href="../customer/">Customer</a></li>
+                <li><a href="../question/">Question</a></li>
+                <li><a href="../transaction/">Transaction</a></li>
             </ul>
         </div>

@@ -18,7 +18,7 @@ img {
 #navigation, #footer {
     background: url(../images/bg-strips.png) repeat-x;
 }
-#navigation #secondary li:first-child a, #connect li a {
+#connect li a {
     background: url(../images/icons.png) no-repeat;
 }
 /*------------------------------ HEADER ------------------------------*/
@@ -83,13 +83,13 @@ img {
 }
 #navigation ul#secondary {
     *width: 254px;/** Needed for IE7 **/
+    float: right;
 }
 #navigation #secondary li:first-child {
     margin-right: 10px;
 }
 #navigation ul#secondary li:first-child a {
     background-position: right 0;
-    padding-right: 48px;
 }
 #navigation ul#secondary li:first-child a:hover {
     padding-top: 0;
@@ -171,6 +171,32 @@ img {
 #deal .list-image img{
     display: block;
     margin-bottom: 5px;
+}
+ul.bjqs-controls.v-centered li a{
+    display:block;
+    padding:10px;
+    background:#fff;
+    color:#000;
+    text-decoration: none;
+}
+ul.bjqs-controls.v-centered li a:hover{
+    background:#000;
+    color:#fff;
+}
+ol.bjqs-markers li a{
+    padding:5px 10px;
+    background:#000;
+    color:#fff;
+    margin:5px;
+    text-decoration: none;
+}
+ol.bjqs-markers li.active-marker a,
+ol.bjqs-markers li a:hover{
+    background: #999;
+}
+
+p.bjqs-caption{
+    background: rgba(255,255,255,0.5);
 }
 /*------------------------------ FOOTER ------------------------------*/
 #footer {
@@ -283,4 +309,27 @@ img {
 }
 #questions-list .question .fullname{
     font-weight: bold;
+}
+/*------------------------------ cart ------------------------------*/
+#cart-form p{
+    padding: 5px;
+}
+#cart-form input[type=text]{
+    width: 200px;
+}
+#cart-form p label{
+    width: 130px;
+    text-align: left;
+    float: left;
+    font-weight: bold;
+}
+#cart-form fieldset{
+    clear: both;
+    float: left;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    padding: 5px;
+}
+#cart-form fieldset legend{
+    padding: 5px;
 }

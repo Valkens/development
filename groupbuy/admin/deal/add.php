@@ -82,6 +82,11 @@ if (isset($_POST['submit'])) {
 }
 ?>
 
+<link rel="stylesheet" media="all" type="text/css" href="../../public/js/jquery-ui/css/ui-lightness/jquery-ui-1.9.2.custom.min.css" />
+<link rel="stylesheet" media="all" type="text/css" href="../../public/js/jquery-timepicker/jquery-ui-timepicker-addon.css" />
+<style>
+    .ui-datepicker {font-size:12px;}
+</style>
 <div id="main-content" class="pull-left">
     <div class="list-box">
         <h3 class="header">Add new deal</h3>
@@ -216,8 +221,6 @@ if (isset($_POST['submit'])) {
     <br class="clear" />
 </div>
 
-<link rel="stylesheet" media="all" type="text/css" href="../../public/js/jquery-ui/css/ui-lightness/jquery-ui-1.9.2.custom.min.css" />
-<link rel="stylesheet" media="all" type="text/css" href="../../public/js/jquery-timepicker/jquery-ui-timepicker-addon.css" />
 <script type="text/javascript" src="../../public/js/jquery-ui/js/jquery-ui-1.9.2.custom.min.js"></script>
 <script type="text/javascript" src="../../public/js/jquery-timepicker/jquery-ui-timepicker-addon.js"></script>
 <script type="text/javascript" src="../../public/js/jquery-timepicker/jquery-ui-sliderAccess.js"></script>

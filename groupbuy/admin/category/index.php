@@ -12,7 +12,7 @@ include('../template/header.php');
 
 <div id="main-content" class="pull-left">
     <div class="list-box">
-        <h3 class="header">Deal list <a href="./add.php">Add new</a></h3>
+        <h3 class="header">Category list <a href="./add.php">Add new</a></h3>
         <table class="data-table">
             <thead>
                 <tr>

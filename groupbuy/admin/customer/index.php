@@ -27,7 +27,7 @@ include('../template/header.php');
             $conn = dbConnect(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
             // Get all category
-            $stmt = $conn->prepare('SELECT * FROM customers');
+            $stmt = $conn->prepare('SELECT * FROM customers ORDER BY id DESC');
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $stmt->execute();
 
