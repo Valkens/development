@@ -1,5 +1,5 @@
 /*
-SQLyog Ultimate v9.51 
+SQLyog Enterprise - MySQL GUI v8.12 
 MySQL - 5.5.27 : Database - s3222629
 *********************************************************************
 */
@@ -8,10 +8,9 @@ MySQL - 5.5.27 : Database - s3222629
 
 /*!40101 SET SQL_MODE=''*/;
 
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`s3222629` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
 USE `s3222629`;
@@ -40,11 +39,11 @@ CREATE TABLE `customers` (
   `password` char(32) NOT NULL,
   `fullname` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `customers` */
 
-insert  into `customers`(`id`,`email`,`password`,`fullname`) values (1,'lehoangduc.vt@gmail.com','1dc70d29697300dca662e859e7b56d06','le hoang duc');
+insert  into `customers`(`id`,`email`,`password`,`fullname`) values (1,'legiaphong@gmail.com','1dc70d29697300dca662e859e7b56d06','le gia phong');
 
 /*Table structure for table `deals` */
 
@@ -74,7 +73,7 @@ CREATE TABLE `deals` (
 
 /*Data for the table `deals` */
 
-insert  into `deals`(`id`,`name`,`description`,`original_price`,`group_buy_price`,`saving_percent`,`buyers`,`maximum_buyers_allowed`,`expired_time`,`status`,`conditions`,`background_image`,`summary_image`,`image1`,`image2`,`image3`,`image4`,`id_category`) values (2,'Cheap Ipad deal','Apple\'s iPads are, without doubt, the world\'s most popular tablets. Like all Apple products, though, they don\'t come cheap, so think long and hard before parting with your cash.','399','299',30,59,99,'2012-11-30 00:00:00',1,'10-30/11/2012','public/images/upload/deals/2/bg_50b8b8456fcf95.14561612.jpg','public/images/upload/deals/2/sm_50b8b8456ff5b9.14514477.jpg','public/images/upload/deals/2/im1_50b8b845701338.74359908.jpg','public/images/upload/deals/2/im2_50b8b845702e33.98404883.jpg','public/images/upload/deals/2/im3_50b8b8457049a2.09620994.jpg','public/images/upload/deals/2/im4_50b8b845706437.26384046.jpg',2),(3,'Saigon Deals','Delicious, authentic-tasting Vietnamese food. You can have it with very low price and delicious taste. Great for a meal with friends or family. ','30','20',30,10,50,'2012-11-30 00:00:00',1,'10-30/11/2012','public/images/upload/deals/3/bg_50b8b4b5a421c1.50959105.jpg','public/images/upload/deals/3/sm_50b8b4b5a44b34.13909106.jpg','public/images/upload/deals/3/im1_50b8b4b5a46d72.18655041.jpg','public/images/upload/deals/3/im2_50b8b4b5a48f22.82049935.jpg','public/images/upload/deals/3/im3_50b8b4b5a4b041.78106538.jpg','public/images/upload/deals/3/im4_50b8b4b5a4d189.73634518.jpg',3);
+insert  into `deals`(`id`,`name`,`description`,`original_price`,`group_buy_price`,`saving_percent`,`buyers`,`maximum_buyers_allowed`,`expired_time`,`status`,`conditions`,`background_image`,`summary_image`,`image1`,`image2`,`image3`,`image4`,`id_category`) values (2,'Cheap Ipad deal','Apple\'s iPads are, without doubt, the world\'s most popular tablets. Like all Apple products, though, they don\'t come cheap, so think long and hard before parting with your cash.','399','299',30,59,99,'2012-12-30 00:00:00',1,'10-30/11/2012','public/images/upload/deals/2/bg_50b8b8456fcf95.14561612.jpg','public/images/upload/deals/2/sm_50b8b8456ff5b9.14514477.jpg','public/images/upload/deals/2/im1_50b8b845701338.74359908.jpg','public/images/upload/deals/2/im2_50b8b845702e33.98404883.jpg','public/images/upload/deals/2/im3_50b8b8457049a2.09620994.jpg','public/images/upload/deals/2/im4_50b8b845706437.26384046.jpg',2),(3,'Saigon Deals','Delicious, authentic-tasting Vietnamese food. You can have it with very low price and delicious taste. Great for a meal with friends or family. ','30','20',30,10,50,'2013-01-01 00:00:00',1,'10-30/11/2012','public/images/upload/deals/3/bg_50b8b4b5a421c1.50959105.jpg','public/images/upload/deals/3/sm_50b8b4b5a44b34.13909106.jpg','public/images/upload/deals/3/im1_50b8b4b5a46d72.18655041.jpg','public/images/upload/deals/3/im2_50b8b4b5a48f22.82049935.jpg','public/images/upload/deals/3/im3_50b8b4b5a4b041.78106538.jpg','public/images/upload/deals/3/im4_50b8b4b5a4d189.73634518.jpg',3);
 
 /*Table structure for table `questions` */
 
@@ -87,11 +86,33 @@ CREATE TABLE `questions` (
   `answer` text,
   `id_deal` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `questions` */
 
-insert  into `questions`(`id`,`id_customer`,`content`,`answer`,`id_deal`) values (1,1,'Bạn nên dừng lại ở việc thích, chứ đừng ở mức yêu\r\nVì giai đoạn này, hooc môn sinh dục của bạn đang phát triển, nên các bạn có nhu cầu tìm hiểu nhau, thích yêu lẫn lộn.\r\n','Hay qua la hay. Chinh xac lam',2),(2,1,'inksys là một thương hiệu nổi tiếng cho các sản phẩm về mạng của Cisco nhưng hiện tại, họ đang tìm kiếm đối tác để bán đi mảng kinh doanh này, Bloomberg tiết lộ. Nguyên nhân được nguồn tin dẫn lời một số người thân cận cho biết Cisco đang muốn dần từ bỏ mảng kinh doanh thiết bị gia dụng',NULL,2);
+insert  into `questions`(`id`,`id_customer`,`content`,`answer`,`id_deal`) values (1,1,'Bạn nên dừng lại ở việc thích, chứ đừng ở mức yêu\r\nVì giai đoạn này, hooc môn sinh dục của bạn đang phát triển, nên các bạn có nhu cầu tìm hiểu nhau, thích yêu lẫn lộn.','Hay qua la hay luon !!!',2);
+
+/*Table structure for table `transactions` */
+
+DROP TABLE IF EXISTS `transactions`;
+
+CREATE TABLE `transactions` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_customer` int(11) unsigned NOT NULL,
+  `id_deal` int(11) unsigned NOT NULL,
+  `quantity` tinyint(3) unsigned NOT NULL,
+  `total_charge` double unsigned NOT NULL,
+  `card_holder` varchar(255) NOT NULL,
+  `card_number` varchar(30) NOT NULL,
+  `expired_date` varchar(5) NOT NULL,
+  `secured_code` char(4) NOT NULL,
+  `timestamp` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Data for the table `transactions` */
+
+insert  into `transactions`(`id`,`id_customer`,`id_deal`,`quantity`,`total_charge`,`card_holder`,`card_number`,`expired_date`,`secured_code`,`timestamp`) values (1,1,2,5,1495,'le hoang duc','0123','03/16','0987','2012-12-18 00:06:07');
 
 /*Table structure for table `users` */
 
@@ -110,5 +131,3 @@ insert  into `users`(`id`,`username`,`password`) values (1,'admin','5fe7d8e5e16f
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
