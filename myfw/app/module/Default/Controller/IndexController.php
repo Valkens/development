@@ -4,9 +4,11 @@ class Default_Controller_IndexController extends Core_Controller
     public function indexAction()
     {
         $this->_data['pageTitle'] = 'Home page';
+    }
 
-        /*$uri = 'http://vnexpress.net';
-
+    public function getsiteAction()
+    {
+        $uri = str_replace('%2F', '/', urldecode($this->_params['url']));
         $client = new Zend_Http_Client($uri, array(
             'maxredirects' => 2,
             'timeout'      => 10,
@@ -22,12 +24,7 @@ class Default_Controller_IndexController extends Core_Controller
 
 
         $this->_data['contentType'] =  $response->getBody();
-        $this->_previewHtml($uri, $response);*/
-    }
-
-    public function getsiteAction()
-    {
-        die(urldecode($this->_params['url']));
+        $this->_previewHtml($uri, $response);
     }
 
     protected function _previewHtml($uri, Zend_Http_Response $response)

@@ -4,7 +4,8 @@ $(function() {
     $('textarea').keypress(function (e) { // Listen to keyboard press event by user
         if (e.keyCode == 32 || e.charCode == 32) { // if user press spacebar
             var content = $(this).val(); // Get all the data in the textarea
-            var url = content.match(/https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_\.]*(\?\S+)?)?)?/);
+            //var url = content.match(/https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_\.]*(\?\S+)?)?)?/);
+            var url = content.match(/(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi);
 
             // regular expression that will allow us to extract url from the textarea
             if (url.length > 0 && $('#ajax_flag').val() == 0) { // If there's atleast one url entered in the textarea
