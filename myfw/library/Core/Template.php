@@ -126,7 +126,7 @@ class Core_Template
             echo "<script type=\"text/javascript\" src=\"$fileCache\"></script>\n";
         } else {
             foreach ($files as $file) {
-                echo "<script type=\"text/javascript\" src=\"$file\"></script>\n";
+                echo "<script type=\"text/javascript\" src=\"" . BASE_URL . "/$file\"></script>\n";
             }
         }
     }
@@ -142,7 +142,7 @@ class Core_Template
             echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$fileCache\" />\n";
         } else {
             foreach ($files as $file) {
-                echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$file\" />\n";
+                echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"" . BASE_URL . "/$file\" />\n";
             }
         }
     }

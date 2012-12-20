@@ -6,6 +6,9 @@ class Core_Helper_View
         $js_files_date = 0;
         $compressed_js_filename = '';
 
+        // Check app config modify
+        $files[] = 'app/config/app.php';
+
         foreach ($files as $file) {
             $filePath = BASE_PATH . '/' . $file;
             $js_files_date = max(filemtime($filePath), $js_files_date);
@@ -21,6 +24,8 @@ class Core_Helper_View
         if ($js_files_date > $compressed_js_file_date) {
             $content = '';
             foreach ($files as $file) {
+                if (pathinfo($file, PATHINFO_EXTENSION) != 'js') continue;
+
                 $filePath = BASE_PATH . '/' . $file;
 
                 if ($options['minify']) {
@@ -30,8 +35,7 @@ class Core_Helper_View
                 }
             }
 
-            file_put_contents($compressed_js_path, $content);
-            chmod($compressed_js_path, 0777);
+            file_put_contents($compressed_js_path, $content . "\r\n");
         }
 
         return BASE_URL . '/public/js/cache/' . $compressed_js_filename . '.js';
@@ -41,6 +45,9 @@ class Core_Helper_View
     {
         $css_files_date = 0;
         $compressed_css_filename = '';
+
+        // Check app config modify
+        $files[] = 'app/config/app.php';
 
         foreach ($files as $file) {
             $filePath = BASE_PATH . '/' . $file;
@@ -57,6 +64,8 @@ class Core_Helper_View
         if ($css_files_date > $compressed_css_file_date) {
             $content = '';
             foreach ($files as $file) {
+                if (pathinfo($file, PATHINFO_EXTENSION) != 'css') continue;
+
                 $filePath = BASE_PATH . '/' . $file;
                 if ($options['minify']) {
                     $content .= self::minifyCss(file_get_contents($filePath));
@@ -65,8 +74,7 @@ class Core_Helper_View
                 }
             }
 
-            file_put_contents($compressed_css_path, $content);
-            chmod($compressed_css_path, 0777);
+            file_put_contents($compressed_css_path, $content . "\r\n");
         }
 
         return BASE_URL . '/public/css/cache/' . $compressed_css_filename . '.css';

@@ -12,6 +12,14 @@ class Core_Resource_View
 
         // Add layout path
         $this->_templateEngine->addPath($this->_options['layoutParams']['dir']);
+
+        // Delete all cache file
+        if (!$this->_options['options']['combineCss']) {
+            Core_Helper_File::deleteAllFile(BASE_PATH . '/public/css/cache', 'css');
+        }
+        if (!$this->_options['options']['combineJs']) {
+            Core_Helper_File::deleteAllFile(BASE_PATH . '/public/css/cache', 'js');
+        }
     }
 
     public function render($dir, $file, $data = array())

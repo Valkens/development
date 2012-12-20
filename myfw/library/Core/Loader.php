@@ -2,7 +2,8 @@
 class Core_Loader
 {
     protected $_options;
-    protected $_cacheFile = 'loader.cache.php';
+    protected $_cacheFileName = 'loader.php';
+    protected $_cacheFile;
     protected $_cacheIndex = array();
 
     public function __construct($options)
@@ -10,10 +11,12 @@ class Core_Loader
         $this->_options = $options;
 
         // Cache
-        $this->_cacheFile = APPLICATION_PATH . '/cache/System/' . $this->_cacheFile;
+        $this->_cacheFile = APPLICATION_PATH . '/cache/system/' . $this->_cacheFileName;
 
         if (file_exists($this->_cacheFile)) {
-            $this->_cacheIndex = include $this->_cacheFile;
+            $this->_cacheIndex = include_once $this->_cacheFile;
+        } else {
+            file_put_contents($this->_cacheFile, '<?php return array();');
         }
     }
 
@@ -40,7 +43,7 @@ class Core_Loader
                 $content = file_get_contents($this->_cacheFile);
                 $content = str_replace(');', '', $content);
 
-                $putContent = "\r\n'{$class}'=>'{$file}',\r\n);";
+                $putContent = "\r\n'{$class}'=>'{$file}',);";
                 file_put_contents($this->_cacheFile, $content . $putContent);
             }
         }

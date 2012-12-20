@@ -28,9 +28,9 @@ return array(
     ),
     'phpSettings' => array(
         'production' => array(
-            'display_startup_errors' => 0,
-            'display_errors' => 0,
-            'error_reporting' => 0
+            'display_startup_errors' => 1,
+            'display_errors' => 1,
+            'error_reporting' => 1
         ),
         'development' => array(
             'display_startup_errors' => 1,
@@ -43,7 +43,6 @@ return array(
     ),
     'libraries' => array(
         'Core',
-        'Zend',
-        'Twig'
+        'Zend'
     )
 );

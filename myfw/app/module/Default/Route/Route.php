@@ -7,10 +7,10 @@ return array(
         'target' => array('module' => 'Default', 'controller' => 'Index', 'action' => 'index')
     ),
     array(
-        'name' => 'route_user',
+        'name' => 'route_get_site',
         'method' => 'GET',
-        'route'  => '/user/[i:id][/]?',
-        'target' => array('module' => 'Default', 'controller' => 'Index', 'action' => 'index')
+        'route'  => '/getsite/[:url](/)?',
+        'target' => array('module' => 'Default', 'controller' => 'Index', 'action' => 'getsite'),
     ),
     array(
         'name' => 'route_error_404',

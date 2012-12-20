@@ -25,6 +25,11 @@ class Default_Controller_IndexController extends Core_Controller
         $this->_previewHtml($uri, $response);*/
     }
 
+    public function getsiteAction()
+    {
+        die(urldecode($this->_params['url']));
+    }
+
     protected function _previewHtml($uri, Zend_Http_Response $response)
     {
         $body = $response->getBody();

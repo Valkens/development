@@ -3,10 +3,13 @@
 <head>
     <title>[: block page :]Index[: endblock :]</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    [[ $this->addScript(array('public/js/jquery/jquery.js', 'public/js/main.js')) ]]
-    [[ $this->addCss(array('public/css/reset.css', 'public/css/style.css')) ]]
+    [[ $this->addCss(array('public/css/reset.css', 'public/css/style.css', 'public/css/post.css')) ]]
 </head>
 <body>
 [: block content :][: endblock :]
+[[ $this->addScript(array('public/js/jquery/jquery.js',
+                    'public/js/jquery/jquery.elastic/jquery.elastic.source.js',
+                    'public/js/main.js'))
+]]
 </body>
 </html>

@@ -122,8 +122,7 @@ class Core_Helper_File
 	 */
 	public static function isEmptyDir($dirPath)
 	{
-		if (($files = @scandir($dirPath)) && (count($files) > 2) )
-		{
+		if (($files = @scandir($dirPath)) && (count($files) > 2)) {
 			return FALSE;
 		}
 		return TRUE;
@@ -177,4 +176,21 @@ class Core_Helper_File
 		 
 		 return $date;
 	 }
+
+    /**
+     * Delete all file
+     * @param string $dirPath Path of directory
+     * @param string $ext File extension
+     */
+    public static function deleteAllFile($dirPath, $ext = '')
+    {
+        if (!self::isEmptyDir($dirPath)) {
+            $ext  = $ext ? $ext : '*';
+            $files = glob($dirPath . '/*.' . $ext);
+
+            foreach ($files as $key => $file) {
+                @unlink($file);
+            }
+        }
+    }
 }
