@@ -1,2 +1,2 @@
-[[ $this->inherit('@_layout_/error') ]]
+[[ $this->inherit('@_theme_/error') ]]
 [: block page :]{{$pageTitle}}[: endblock :]
