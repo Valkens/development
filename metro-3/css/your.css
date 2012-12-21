@@ -1,0 +1,3 @@
+/* if you change css, it's recommend to not delete the line in the files, but overwrite it here.
+For example, if somewhere is a line: .redButton{ background-color:#C33; }, you can overwrite it here to .redButton{ background-color:#999; } and leave the other line
+this is easier for upgrading ¨*/
