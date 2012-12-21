@@ -23,3 +23,6 @@ li{
 .lfloat{
     float: left;
 }
+.alpha60 {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6);
+}

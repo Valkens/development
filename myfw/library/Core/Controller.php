@@ -20,12 +20,12 @@ class Core_Controller
         $classPortion = explode('_', get_class($this));
         $this->_moduleName = $classPortion[0];
         $this->_controllerName = str_replace('Controller', '', $classPortion[2]);
+
+        $this->_view = Core_Resource_Manager::getResource('view');
     }
 
     public function execute($action)
     {
-        $this->_view = Core_Resource_Manager::getResource('view');
-
         // Execute action
         if(!method_exists($this, $action . 'Action')) {
             throw new Exception(sprintf('The required method "%s" does not exist for %s', $action, get_class($this)));
@@ -35,7 +35,8 @@ class Core_Controller
         $this->$actionName();
 
         if (!$this->_noRender) {
-            $dir = APPLICATION_PATH . '/module/' . $this->_moduleName. '/View/' . $this->_controllerName;
+            $dir = $this->_view->viewPath . '/module/' . strtolower($this->_moduleName) . '/' . strtolower($this->_controllerName);
+
             if (!$this->_fileRender) {
                 $this->_fileRender = $action;
             }

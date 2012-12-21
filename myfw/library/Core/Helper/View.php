@@ -7,11 +7,10 @@ class Core_Helper_View
         $compressed_js_filename = '';
 
         // Check app config modify
-        $files[] = 'app/config/app.php';
+        $files[] = BASE_PATH . '/app/config/app.php';
 
         foreach ($files as $file) {
-            $filePath = BASE_PATH . '/' . $file;
-            $js_files_date = max(filemtime($filePath), $js_files_date);
+            $js_files_date = max(filemtime($file), $js_files_date);
             $compressed_js_filename .= $file;
         };
 
@@ -26,12 +25,10 @@ class Core_Helper_View
             foreach ($files as $file) {
                 if (pathinfo($file, PATHINFO_EXTENSION) != 'js') continue;
 
-                $filePath = BASE_PATH . '/' . $file;
-
                 if ($options['minify']) {
-                    $content .= self::minifyJs(file_get_contents($filePath));
+                    $content .= self::minifyJs(file_get_contents($file));
                 } else {
-                    $content .= file_get_contents($filePath);
+                    $content .= file_get_contents($file);
                 }
             }
 
@@ -47,11 +44,10 @@ class Core_Helper_View
         $compressed_css_filename = '';
 
         // Check app config modify
-        $files[] = 'app/config/app.php';
+        $files[] = BASE_PATH . '/app/config/app.php';
 
         foreach ($files as $file) {
-            $filePath = BASE_PATH . '/' . $file;
-            $css_files_date = max(filemtime($filePath), $css_files_date);
+            $css_files_date = max(filemtime($file), $css_files_date);
             $compressed_css_filename .= $file;
         };
 
@@ -66,11 +62,10 @@ class Core_Helper_View
             foreach ($files as $file) {
                 if (pathinfo($file, PATHINFO_EXTENSION) != 'css') continue;
 
-                $filePath = BASE_PATH . '/' . $file;
                 if ($options['minify']) {
-                    $content .= self::minifyCss(file_get_contents($filePath));
+                    $content .= self::minifyCss(file_get_contents($file));
                 } else {
-                    $content .= file_get_contents($filePath);
+                    $content .= file_get_contents($file);
                 }
             }
 

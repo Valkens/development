@@ -122,11 +122,14 @@ class Core_Template
     public function addScript($files)
     {
         if ($this->engine->options['combineJs']) {
+            $files = array_map(array($this, 'getAbsolutePath'), $files);
             $fileCache = Core_Helper_View::cccJs($files, $this->engine->options);
+
             echo "<script type=\"text/javascript\" src=\"$fileCache\"></script>\n";
         } else {
+            $files = array_map(array($this, 'getAbsoluteUrl'), $files);
             foreach ($files as $file) {
-                echo "<script type=\"text/javascript\" src=\"" . BASE_URL . "/$file\"></script>\n";
+                echo "<script type=\"text/javascript\" src=\"$file\"></script>\n";
             }
         }
     }
@@ -138,12 +141,45 @@ class Core_Template
     public function addCss($files)
     {
         if ($this->engine->options['combineCss']) {
+            $files = array_map(array($this, 'getAbsolutePath'), $files);
             $fileCache = Core_Helper_View::cccCss($files, $this->engine->options);
+
             echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$fileCache\" />\n";
         } else {
+            $files = array_map(array($this, 'getAbsoluteUrl'), $files);
             foreach ($files as $file) {
-                echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"" . BASE_URL . "/$file\" />\n";
+                echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$file\" />\n";
             }
         }
+    }
+
+    /**
+     * @brief Get absolute url
+     * @param $file
+     */
+    public function getAbsoluteUrl($file)
+    {
+        if (strpos($file, '/', 0) == 0) {
+            $file = BASE_URL . $file;
+        } else {
+            $file = BASE_URL . '/app/theme/' . $this->engine->getTheme() . '/' . $file;
+        }
+
+        return $file;
+    }
+
+    /**
+     * @brief Get absolute path
+     * @param $file
+     */
+    public function getAbsolutePath($file)
+    {
+        if (strpos($file, '/', 0) == 0) {
+            $file = BASE_PATH . $file;
+        } else {
+            $file = BASE_PATH . '/app/theme/' . $this->engine->getTheme() . '/' . $file;
+        }
+
+        return $file;
     }
 }

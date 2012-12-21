@@ -7,14 +7,27 @@ class Core_TemplateEngine
     public $registryFilters = array();
     public $autoEscape = true;
     public $cache = array();
+    public $_theme;
 
     public function __construct($locale = NULL, $options = array())
     {
         $this->locale = $locale;
         $this->options = $options;
+
+        $this->setTheme($options['theme']);
     }
 
-    public function addPath($path, $namespace = '_layout_')
+    public function setTheme($theme)
+    {
+        $this->_theme = $theme;
+    }
+
+    public function getTheme()
+    {
+        return $this->_theme;
+    }
+
+    public function addPath($path, $namespace = '_theme_')
     {
         if (!is_dir($path)) {
             throw new Exception("Not a directory: $path");

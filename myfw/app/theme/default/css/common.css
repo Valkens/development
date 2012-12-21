@@ -1,0 +1,219 @@
+#wrapper {
+    width: 100%;
+    overflow: hidden;
+    background: #3E9FE6;
+}
+.wrapper {
+    margin: 0 auto;
+    width: 1000px;
+}
+
+/* Header */
+#header {
+    background-color: #323232;
+    border-bottom: 1px solid #EF5C3C;
+    height: 36px;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    z-index: 9998;
+    color: #FFF;
+}
+#header nav > ul li {
+    float: left;
+}
+#header nav > ul li a {
+    border-right: 1px solid #555;
+    border-top: 2px solid #353535;
+    display: inline-block;
+    float: left;
+    font: bold 11px/33px 'lucida grande',tahoma,verdana,arial,sans-serif !important;
+    height: 33px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    text-decoration: none;
+    width: 115px;
+    color: #FFF;
+}
+#header nav > ul li a.active {
+    border-top: 2px solid #E36333
+}
+#content-wrapper {
+    background: #FFF;
+    padding: 10px;
+    min-height: 800px;
+    width: 980px!important;
+}
+
+/* Content */
+#content {
+    float: left;
+    width: 676px;
+    margin-right: 24px;
+}
+#slidebar {
+    float: left;
+    width: 270px;
+}
+
+/* Live tile */
+.tile {
+    float: left;
+    margin-bottom: 8px;
+    margin-right: 8px;
+    position: relative;
+    cursor: pointer;
+}
+.tile-large {
+    height: 398px;
+    overflow: hidden;
+    width: 330px;
+}
+.tile-medium {
+    height: 195px;
+    width: 330px;
+    overflow: hidden;
+}
+
+.tile-meta {
+    bottom: 0;
+    padding: 15px 23px;
+    position: absolute;
+}
+.tile-meta a {
+    color: #FFF;
+    text-decoration: none;
+    font-size: 13px;
+}
+.tile-comment {
+    background: url("http://cdn.wpcentral.com/sites/wpcentral.com/themes/wpcentral/images/common/bubble-b.png") no-repeat scroll 50% 0 #95BE00;
+    min-width: 64px;
+    padding: 38px 0 10px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    color: #FFF;
+    display: inline-block;
+    font-family: Calibri,"Gill Sans","Gill Sans MT",sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    height: 14px;
+    margin: 0 0 10px;
+    text-align: center;
+    text-decoration: none;
+}
+/* Content block */
+.content-block-wrapper {
+    margin-top: 15px;
+}
+.content-block-wrapper > .block {
+    margin: 30px 8px 10px 0;
+}
+.content-block-wrapper > .block > .block-header{
+    position: relative;
+    background: #242424;
+    height: 28px;
+}
+.content-block-wrapper > .block > .block-header a {
+    display: block;
+    text-indent: 25px;
+    color: #FFF;
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-family: Arial,Helvetica,sans-serif;
+    line-height: 28px;
+}
+.content-block-wrapper > .block > .block-header > .drop {
+    background: url("http://cdn.wpcentral.com/sites/wpcentral.com/modules/spe_content/images/filterbar-drop2.png") no-repeat scroll 30px bottom transparent;
+    bottom: -9px;
+    height: 9px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 5;
+    display: block;
+}
+
+.content-block-wrapper > .block > article {
+    margin: 20px 0 10px 10px;
+    display: block;
+    overflow: hidden;
+}
+.content-block-wrapper > .block > article > header > a {
+    text-decoration: none;
+    display: block;
+    margin-bottom: 8px;
+}
+.content-block-wrapper > .block > article > header h3 {
+    color: #0056A2;
+    font-size: 16px;
+    font-family: 'Segoe UI',Segoe,Tahoma,Geneva,sans-serif;
+    font-weight: normal;
+}
+.content-block-wrapper > .block > article > a > img {
+    float: left;
+    padding: 2px;
+    border: 1px solid #CCC;
+}
+.content-block-wrapper > .block > article > .description {
+    word-wrap: break-word;
+    line-height: 24px;
+    margin-left: 180px;
+}
+.content-block-wrapper > .block > .block-more li {
+    list-style-image: url("http://kenh143.vcmedia.vn/skin/red-dot-list.gif");
+    list-style-type: square;
+    margin-left: 30px;
+}
+.content-block-wrapper > .block > .block-more li a{
+    display: block;
+    color: #7A7A7A;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 20px;
+    text-decoration: none;
+}
+
+/* Footer */
+#footer {
+    background-color: #222222;
+    border-top: 1px solid #EF5C3C;
+    background-image: url("../img/footer-bg.png");
+    height: 102px;
+    width: 100%;
+    padding: 15px 0;
+}
+#footer > .center {
+    margin: auto;
+    width: 914px;
+}
+#footer .info {
+    text-align: right;
+    margin: 16px 30px 0 0;
+}
+#footer .info > .readers {
+    color: #DC6333;
+    font-size: 14px;
+    font-weight: bold;
+    vertical-align: baseline;
+}
+#footer .readers > .count {
+    font-size: 24px;
+    vertical-align: baseline;
+}
+#footer .info blockquote, #footer .info blockquote > a {
+    color: #B1B1B1;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 18px;
+    margin-top: 3px;
+    text-decoration: none;
+}
+#footer .info blockquote em {
+    color: #FFF;
+    font-style: normal;
+}

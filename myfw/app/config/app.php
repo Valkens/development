@@ -16,14 +16,10 @@ return array(
             )
         ),
         'view' => array(
-            'options' => array(
-                'minify' => 0,
-                'combineJs' => 0,
-                'combineCss' => 0
-            ),
-            'layoutParams' => array(
-                'dir' => APPLICATION_PATH . '/module/Default/View/Layout'
-            )
+            'minify' => 0,
+            'combineJs' => 0,
+            'combineCss' => 0,
+            'theme' => 'default'
         )
     ),
     'phpSettings' => array(
