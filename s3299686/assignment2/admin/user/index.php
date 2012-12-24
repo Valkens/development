@@ -1,44 +1,40 @@
 <?php
 session_start();
 if (!isset($_SESSION['username'])) {
-    header('location: ../user/login.php');
+    header('location: ../login.php');
     exit();
 }
 
-include('../../libs/config.php');
-include('../../libs/db.php');
-include('../template/header.php');
+include('../../pdo.php');
+include('../header.php');
 ?>
 
 <div id="main-content" class="pull-left">
     <div class="list-box">
-        <h3 class="header">Customer list</h3>
+        <h3 class="header">User list</h3>
         <table class="data-table">
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Fullname</th>
+                <th>Username</th>
                 <th>Email</th>
                 <th>Action</th>
             </tr>
             </thead>
             <tbody>
             <?php
-            $conn = dbConnect(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
-
-            // Get all customer
-            $stmt = $conn->prepare('SELECT * FROM customers ORDER BY id DESC');
+            $stmt = $pdo->prepare('SELECT * FROM users ORDER BY userid DESC');
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $stmt->execute();
 
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 echo '<tr>';
-                echo "<td>{$row['id']}</td>";
-                echo "<td>{$row['fullname']}</td>";
+                echo "<td>{$row['userid']}</td>";
+                echo "<td>{$row['username']}</td>";
                 echo "<td>{$row['email']}</td>";
                 echo '<td>';
-                echo "<a href='./edit.php?id={$row['id']}'>Edit</a><br />";
-                echo "<a href='./delete.php?id={$row['id']}' class='action-delete'>Delete</a>";
+                echo "<a href='./edit.php?id={$row['userid']}'>Edit</a><br />";
+                echo "<a href='./delete.php?id={$row['userid']}' class='action-delete'>Delete</a>";
                 echo '</td>';
                 echo '</tr>';
             }
@@ -61,4 +57,4 @@ include('../template/header.php');
 
     });
 </script>
-<?php include('../template/footer.php'); ?>
+<?php include('../footer.php'); ?>
