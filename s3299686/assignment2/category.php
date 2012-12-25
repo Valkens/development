@@ -60,7 +60,7 @@ $category = $result->fetch();
         </div>
         <div id="game">
             <?php
-            $sql = "SELECT * FROM deal WHERE categoryid=$id";
+            $sql = "SELECT * FROM deal WHERE categoryid=$id AND status=1";
             $result = $pdo->query($sql);
             $list_deal = $result->fetchAll();
 

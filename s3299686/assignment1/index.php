@@ -128,7 +128,7 @@ $(function() {
             <br class="clearfix" />
             <div id="game">
                 <?php
-                $sql = "SELECT * FROM deal";
+                $sql = "SELECT * FROM deal WHERE status=1";
                 $result = $pdo->query($sql);
                 $list_deal = $result->fetchAll();
 
