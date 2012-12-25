@@ -119,7 +119,7 @@ $deal = $result->fetch();
                             <div id="questions-list">
                                 <?php
                                 if (isset($_POST['submit'])) {
-                                    if ($_POST['question_content']) {
+                                    if (trim($_POST['question_content'])) {
                                         $stmt = $pdo->prepare('INSERT INTO comment (userid,dealid,content) VALUES(:userid,:dealid,:content)');
                                         $stmt->execute(array(
                                             'userid' => $_SESSION['userid'],

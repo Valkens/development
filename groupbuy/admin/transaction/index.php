@@ -65,7 +65,8 @@ include('../template/header.php');
                     echo "<td>{$row['quantity']}</td>";
                     echo "<td>{$row['total_charge']}$</td>";
                     echo '<td>';
-                    echo "<a href='./view.php?id={$row['t_id']}'>View</a><br />";
+                    echo "<a href='./view.php?id={$row['t_id']}'>View</a> | ";
+                    echo "<a href='./delete.php?id={$row['t_id']}'>Delete</a><br />";
                     echo '</td>';
                     echo '</tr>';
                 }
