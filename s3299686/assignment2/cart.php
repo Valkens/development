@@ -5,6 +5,56 @@ $id = (int) $_GET['id'];
 $sql = "SELECT * FROM deal where dealid=$id";
 $result = $pdo->query($sql);
 $deal = $result->fetch();
+
+if (isset($_POST['checkout']) || isset($_POST['update'])) {
+
+    $_SESSION['cart'][$id] = array(
+        'quantity' => (int) $_POST['quantity'],
+        'card_holder' => $_POST['card_holder'],
+        'card_number' => $_POST['card_number'],
+        'expired_date' => $_POST['expired_date'],
+        'secured_code' => $_POST['secured_code'],
+        'total_charge' => (int) $_POST['quantity'] * $deal['price']
+    );
+
+    if (isset($_POST['checkout'])) {
+        $stmt = $pdo->prepare('INSERT INTO purchase(userid,dealid,quantity,totalcharge,creholder,cardnumber,
+                                                         expiredate,securedcode,createtime)
+                                               VALUES(:userid,:dealid,:quantity,:totalcharge,:creholder,
+                                                      :cardnumber,:expiredate,:securedcode,NOW())');
+        $cart = $_SESSION['cart'][$id];
+
+        $stmt->execute(array(
+            'userid' => $_SESSION['userid'],
+            'dealid' => $id,
+            'quantity' => $cart['quantity'],
+            'totalcharge' => $cart['total_charge'],
+            'creholder' => $cart['card_holder'],
+            'cardnumber' => $cart['card_number'],
+            'expiredate' => $cart['expired_date'],
+            'securedcode' => $cart['secured_code']
+        ));
+
+        if ($stmt->rowCount()) {
+            $_SESSION['cart'] = null;
+            header('location: ./checkout-success.php');
+            exit();
+        }
+    }
+} else {
+    if (!isset($_SESSION['cart'][$id])) {
+        $_SESSION['cart'][$id] = array(
+            'quantity' => 1,
+            'card_holder' => '',
+            'card_number' => '',
+            'expired_date' => '',
+            'secured_code' => '',
+            'total_charge' => 0
+        );
+    }
+}
+
+$cart = $_SESSION['cart'][$id];
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -12,6 +62,7 @@ $deal = $result->fetch();
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><?php echo $deal['dealname'];?></title>
     <link rel="stylesheet" href="./css/style3.css" type="text/css" />
+    <script src="js/jquery-1.2.6.pack.js" type="text/javascript"></script>
     <style type="text/css">
         table td{
             font-size: 14px;
@@ -62,102 +113,67 @@ $deal = $result->fetch();
                 ?>
             </ul>
             <div id="texta">
+                <form id="frmcart" action="" method="post">
                 <table>
                     <tr>
                         <th>Deal name</th>
                         <td><?php echo $deal['dealname'];?></td>
                     </tr>
                     <tr>
-                        <th>Deal description</th>
-                        <td><?php echo $deal['description'];?></td>
-                    </tr>
-                    <tr>
-                        <th>Original price</th>
-                        <td><?php echo $deal['olprice'];?></td>
-                    </tr>
-
-                    <tr>
-                        <th>Deal price</th>
-                        <td><?php echo $deal['price'];?></td>
-                    </tr>
-
-                    <tr>
-                        <th>Saving</th>
-                        <td><?php echo $deal['saving'];?></td>
-                    </tr>
-
-                    <tr>
-                        <th>Number of current buyer</th>
-                        <td><?php echo $deal['currentbuyer'];?></td>
-                    </tr>
-
-
-                    <tr>
-                        <th>Expire time</th>
-                        <td><?php echo $deal['exptime'];?></td>
-                    </tr>
-
-                    <tr>
-                        <th>Status</th>
-                        <td><?php echo ($deal['status'] == 1) ? 'Active' : 'Sold out';?></td>
-                    </tr>
-
-                    <tr>
-                        <th>Condition</th>
-                        <td><?php echo $deal['conditiondescript'];?></td>
-                    </tr>
-
-                    <tr>
-                        <td>Questions</td>
+                        <th>Quantity</th>
                         <td>
-                            <form id="question-form" action="" method="post">
-                                <label style="float:left;margin-right:10px">Question: </label>
-                                <textarea name="question_content" cols="45" rows="6"></textarea>
-                                <br />
-                                <input type="submit" name="submit" value="Post" />
-                            </form>
-                            <div id="questions-list">
-                                <?php
-                                if (isset($_POST['submit'])) {
-                                    if ($_POST['question_content']) {
-                                        $stmt = $pdo->prepare('INSERT INTO comment (userid,dealid,content) VALUES(:userid,:dealid,:content)');
-                                        $stmt->execute(array(
-                                            'userid' => $_SESSION['userid'],
-                                            'dealid' => (int) $_GET['id'],
-                                            'content' => $_POST['question_content']
-                                        ));
-                                    }
-                                }
-
-                                $stmt = $pdo->prepare('SELECT * FROM comment JOIN users ON comment.userid=users.userid WHERE dealid=:id');
-                                $stmt->execute(array('id' => $_GET['id']));
-
-                                while ($row = $stmt->fetch()) {
-                                    echo '<div class="question">';
-                                    echo '<span class="username">' . htmlspecialchars($_SESSION['username']) . ' : </span>';
-                                    echo htmlspecialchars($row['content']);
-                                    if ($row['answer']) {
-                                        echo '<div class="answer"><span style="text-decoration:underline">Answer</span> : ';
-                                        echo htmlspecialchars($row['answer']);
-                                        echo '</div>';
-                                    }
-                                    echo '</div>';
-                                }
-                                ?>
-                            </div>
+                            <select id="quantity" name="quantity">
+                            <?php for ($i = 1;$i <= 10;$i++) {
+                                $selected = ($cart['quantity'] == $i) ? ' selected="selected"' : '';
+                                echo "<option value='{$i}'$selected>{$i}</option>";
+                            }
+                            ?>
+                        </select>
                         </td>
                     </tr>
+
+                    <tr>
+                        <th>Total charge</th>
+                        <td id="total_charge"></td>
+                    </tr>
+
+                    <tr>
+                        <th>Credit card holder (*)</th>
+                        <td>  <input type="text" maxlength="60" id="card_holder" name="card_holder" value="<?php echo $cart['card_holder'];?>" /></td>
+                    </tr>
+
+                    <tr>
+                        <th>Card number (*)</th>
+                        <td><input type="text" maxlength="30" id="card_number" name="card_number" value="<?php echo $cart['card_number'];?>" /></td>
+                    </tr>
+
+                    <tr>
+                        <th>Expired date (*)</th>
+                        <td><input type="text" maxlength="5" id="expired_date" name="expired_date" value="<?php echo $cart['expired_date'];?>" /></td>
+                    </tr>
+
+
+                    <tr>
+                        <th>Secured code (*)</th>
+                        <td><input type="text" maxlength="4" id="secured_code" name="secured_code" value="<?php echo $cart['secured_code'];?>" /></td>
+                    </tr>
+
+                    <tr>
+                        <th>&nbsp;</th>
+                        <td>
+                            <input type="submit" name="update" value="Update" />
+                            <input type="submit" name="checkout" value="Checkout" />
+                        </td>
+                    </tr>
+                </table>
+                </form>
             </div>
         </div>
-        <div id="add">
-            <a href="./cart.php?id=<?php echo $_GET['id'];?>" onclick="<?php echo (!isset($_SESSION['username'])) ? 'alert(\'Please login\');return false' : '';?>"><img src="pics/buy.png"/></a>
-        </div>
+
         <div id="game">
             <div id="game1">
                 <img src="<?php echo $deal['img'];?>" width= 350px height="350">
             </div>
-
-
         </div>
         <div id="t1">
             <p><?php echo $deal['dealname'];?></p>
@@ -210,5 +226,25 @@ $deal = $result->fetch();
 
     </div>
 
+    <script type="text/javascript">
+        $(function(){
+            var deal_price = <?php echo $deal['price'];?>;
+            $('#total_charge').html((deal_price * $('#quantity').val()) + '$');
+            $('#quantity').change(function(){
+                $('#total_charge').html((deal_price * $('#quantity').val()) + '$');
+            });
 
+            // Form submit
+            $('#frmcart').submit(function(){
+                if ($.trim($('#card_holder').val()) == ''
+                        || $.trim($('#card_number').val()) == ''
+                        || $.trim($('#expired_date').val()) == ''
+                        || $.trim($('#secured_code').val()) == ''
+                        ) {
+                    alert('Please complete all of the required fields');
+                    return false;
+                }
+            });
+        });
+    </script>
 </html>

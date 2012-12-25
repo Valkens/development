@@ -180,9 +180,6 @@ if (isset($_POST['submit'])) {
 <style>
     .ui-datepicker {font-size:12px;}
 </style>
-<style>
-    .ui-datepicker {font-size:12px;}
-</style>
 
 <script type="text/javascript">
     $(function(){

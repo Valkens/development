@@ -31,5 +31,6 @@
                 <li><a href="../category">Category</a></li>
                 <li><a href="../user">User</a></li>
                 <li><a href="../comment">Comment</a></li>
+                <li><a href="../purchase">Purchase</a></li>
             </ul>
         </div>
