@@ -24,7 +24,7 @@ include('../header.php');
                 <tr>
                     <td>
                         <?php
-                        $sql = 'SELECT * FROM deal where dealid=(SELECT id FROM purchase GROUP BY dealid ORDER BY COUNT(*) DESC LIMIT 1)';
+                        $sql = 'SELECT * FROM deal where dealid=(SELECT dealid FROM purchase GROUP BY dealid ORDER BY COUNT(*) DESC LIMIT 1)';
                         $query = $pdo->query($sql);
                         if ($row = $query->fetch()) {
                             echo "<a href='../deal/edit.php?id={$row['dealid']}'>{$row['dealname']}</a>";
@@ -33,7 +33,7 @@ include('../header.php');
                     </td>
                     <td>
                         <?php
-                        $sql = 'SELECT * FROM deal where dealid=(SELECT id FROM purchase GROUP BY dealid ORDER BY SUM(totalcharge) DESC LIMIT 1)';
+                        $sql = 'SELECT * FROM deal where dealid=(SELECT dealid FROM purchase GROUP BY dealid ORDER BY SUM(totalcharge) DESC LIMIT 1)';
                         $query = $pdo->query($sql);
                         if ($row = $query->fetch()) {
                             echo "<a href='../deal/edit.php?id={$row['dealid']}'>{$row['dealname']}</a>";

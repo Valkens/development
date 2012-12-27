@@ -21,6 +21,8 @@ include('../header.php');
                     <th>Image</th>
                     <th>Original Price</th>
                     <th>Group buy price</th>
+                    <th>Number of purchases</th>
+                    <th>Total value</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -47,6 +49,17 @@ include('../header.php');
                     echo '<td><image src="../../' . (($row['image']) ? $row['image'] : '') . '" width="80" height="80" /></td>';
                     echo "<td>{$row['original_price']}$</td>";
                     echo "<td>{$row['group_buy_price']}$</td>";
+
+                    $sql = "SELECT COUNT(id) as count_purchases FROM purchases WHERE id_deal={$row['id']}";
+                    $stmt2 = $db->query($sql);
+                    $result = $stmt2->fetch();
+                    echo ($result['count_purchases']) ? "<td>{$result['count_purchases']}</td>" : '<td></td>';
+
+                    $sql = "SELECT SUM(total_charge) as total_charge FROM purchases WHERE id_deal={$row['id']}";
+                    $stmt2 = $db->query($sql);
+                    $result = $stmt2->fetch();
+                    echo ($result['total_charge']) ? "<td>{$result['total_charge']}$</td>" : '<td></td>';
+
                     echo '<td>' . (($row['status']==0) ? '<font color="red">Inactive</font>' : '<font color="green">[Active]</font>') . '</td>';
                     echo '<td>';
                     echo "<a href='./edit.php?id={$row['id']}'>Edit</a><br />";

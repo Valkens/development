@@ -16,7 +16,7 @@ class Core_Helper_View
 
         $compressed_js_filename = md5($compressed_js_filename);
 
-        $compressed_js_path = BASE_PATH . '/public/js/cache/' . $compressed_js_filename . '.js';
+        $compressed_js_path = BASE_PATH . '/public/cache/' . $compressed_js_filename . '.js';
         $compressed_js_file_date = file_exists($compressed_js_path) ? filemtime($compressed_js_path) : 0;
 
         // aggregate and compress js files content, write new caches files
@@ -35,7 +35,7 @@ class Core_Helper_View
             file_put_contents($compressed_js_path, $content . "\r\n");
         }
 
-        return BASE_URL . '/public/js/cache/' . $compressed_js_filename . '.js';
+        return BASE_URL . '/public/cache/' . $compressed_js_filename . '.js';
     }
 
     public static function cccCss($files, $options)
@@ -53,7 +53,7 @@ class Core_Helper_View
 
         $compressed_css_filename = md5($compressed_css_filename);
 
-        $compressed_css_path = BASE_PATH . '/public/css/cache/' . $compressed_css_filename . '.css';
+        $compressed_css_path = BASE_PATH . '/public/cache/' . $compressed_css_filename . '.css';
         $compressed_css_file_date = file_exists($compressed_css_path) ? filemtime($compressed_css_path) : 0;
 
         // aggregate and compress css files content, write new caches files
@@ -72,7 +72,7 @@ class Core_Helper_View
             file_put_contents($compressed_css_path, $content . "\r\n");
         }
 
-        return BASE_URL . '/public/css/cache/' . $compressed_css_filename . '.css';
+        return BASE_URL . '/public/cache/' . $compressed_css_filename . '.css';
     }
 
     public static function minifyHtml($html, $params)

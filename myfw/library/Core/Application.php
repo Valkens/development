@@ -42,9 +42,8 @@ class Core_Application
 
     protected function _registryResources($resources)
     {
-        $resourceManager = Core_Resource_Manager::getInstance();
         foreach ($resources as $resource => $options) {
-            $resourceManager::setOption($resource, $options);
+            Core_Resource_Manager::setOption($resource, $options);
         }
     }
 

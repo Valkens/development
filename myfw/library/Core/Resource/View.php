@@ -17,10 +17,10 @@ class Core_Resource_View
 
         // Delete all cache file
         if (!$this->_options['combineCss']) {
-            Core_Helper_File::deleteAllFile(BASE_PATH . '/public/css/cache', 'css');
+            Core_Helper_File::deleteAllFile(BASE_PATH . '/public/cache', 'css');
         }
         if (!$this->_options['combineJs']) {
-            Core_Helper_File::deleteAllFile(BASE_PATH . '/public/js/cache', 'js');
+            Core_Helper_File::deleteAllFile(BASE_PATH . '/public/cache', 'js');
         }
     }
 
