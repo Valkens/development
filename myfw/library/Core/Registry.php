@@ -40,7 +40,7 @@ class Core_Registry extends ArrayObject
     /**
      * getter method, basically same as offsetGet().
      *
-     * This method can be called from an object of type Zend_Registry, or it
+     * This method can be called from an object of type Core_Registry, or it
      * can be called statically.  In the latter case, it uses the default
      * static instance stored in the class.
      *
@@ -62,7 +62,7 @@ class Core_Registry extends ArrayObject
     /**
      * setter method, basically same as offsetSet().
      *
-     * This method can be called from an object of type Zend_Registry, or it
+     * This method can be called from an object of type Core_Registry, or it
      * can be called statically.  In the latter case, it uses the default
      * static instance stored in the class.
      *
