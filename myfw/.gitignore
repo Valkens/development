@@ -1,3 +1,3 @@
-/app/cache/*
-/public/js/cache/*
-/public/css/cache/*
+/app/cache/system/*
+/app/log/system/*
+/public/cache/*
