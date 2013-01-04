@@ -1,0 +1,250 @@
+{
+  "type": "module",
+  "name": "book",
+  "version": "1.0.0",
+  "revision": null,
+  "path": "application\/modules\/Book",
+  "repository": null,
+  "date": "Thu, 08 Nov 2012 02:15:05 +0000",
+  "title": "Books",
+  "description": "Book store management",
+  "thumb": null,
+  "developer": null,
+  "authors": [
+    "duc"
+  ],
+  "changeLog": null,
+  "meta": {
+    "date": "Thu, 08 Nov 2012 02:15:05 +0000",
+    "title": "Books",
+    "description": "Book store management",
+    "developer": null,
+    "authors": [
+      "duclh"
+    ],
+    "changeLog": null
+  },
+  "actions": [
+    "install",
+    "upgrade",
+    "refresh",
+    "enable",
+    "disable"
+  ],
+  "callback": {
+    "path": null,
+    "class": "Engine_Package_Installer_Module",
+    "priority": 100
+  },
+  "dependencies": null,
+  "tests": [
+    
+  ],
+  "permissions": [
+    
+  ],
+  "structure": {
+    "application\/modules\/Book": {
+      "type": "directory",
+      "path": "application\/modules\/Book",
+      "structure": [
+        {
+          "path": "Bootstrap.php",
+          "dir": false,
+          "file": true,
+          "perms": "0666",
+          "size": 83,
+          "sha1": "14bef897e0df70e8ca82981457da4d7c74e18c0f"
+        },
+        {
+          "path": "controllers",
+          "dir": true,
+          "file": false,
+          "perms": "0777",
+          "size": 0,
+          "sha1": null
+        },
+        {
+          "path": "controllers\/IndexController.php",
+          "dir": false,
+          "file": true,
+          "perms": "0666",
+          "size": 165,
+          "sha1": "232c7be6922c05be489b55928fba00fbf47efd49"
+        },
+        {
+          "path": "externals",
+          "dir": true,
+          "file": false,
+          "perms": "0777",
+          "size": 0,
+          "sha1": null
+        },
+        {
+          "path": "externals\/.htaccess",
+          "dir": false,
+          "file": true,
+          "perms": "0666",
+          "size": 147,
+          "sha1": "9f1638a8edbe1c5d28789e017fb35b2f2465f01e"
+        },
+        {
+          "path": "externals\/images",
+          "dir": true,
+          "file": false,
+          "perms": "0777",
+          "size": 0,
+          "sha1": null
+        },
+        {
+          "path": "externals\/images\/.htempty",
+          "dir": false,
+          "file": true,
+          "perms": "0666",
+          "size": 0,
+          "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+        },
+        {
+          "path": "externals\/scripts",
+          "dir": true,
+          "file": false,
+          "perms": "0777",
+          "size": 0,
+          "sha1": null
+        },
+        {
+          "path": "externals\/scripts\/.htempty",
+          "dir": false,
+          "file": true,
+          "perms": "0666",
+          "size": 0,
+          "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+        },
+        {
+          "path": "externals\/styles",
+          "dir": true,
+          "file": false,
+          "perms": "0777",
+          "size": 0,
+          "sha1": null
+        },
+        {
+          "path": "externals\/styles\/main.css",
+          "dir": false,
+          "file": true,
+          "perms": "0666",
+          "size": 0,
+          "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+        },
+        {
+          "path": "Form",
+          "dir": true,
+          "file": false,
+          "perms": "0777",
+          "size": 0,
+          "sha1": null
+        },
+        {
+          "path": "Form\/.htempty",
+          "dir": false,
+          "file": true,
+          "perms": "0666",
+          "size": 0,
+          "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+        },
+        {
+          "path": "Model",
+          "dir": true,
+          "file": false,
+          "perms": "0777",
+          "size": 0,
+          "sha1": null
+        },
+        {
+          "path": "Model\/DbTable",
+          "dir": true,
+          "file": false,
+          "perms": "0777",
+          "size": 0,
+          "sha1": null
+        },
+        {
+          "path": "Model\/DbTable\/.htempty",
+          "dir": false,
+          "file": true,
+          "perms": "0666",
+          "size": 0,
+          "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+        },
+        {
+          "path": "settings",
+          "dir": true,
+          "file": false,
+          "perms": "0777",
+          "size": 0,
+          "sha1": null
+        },
+        {
+          "path": "settings\/manifest.php",
+          "dir": false,
+          "file": true,
+          "perms": "0666",
+          "size": 663,
+          "sha1": "15d425a15610e7c4ab20ed5789ef6e7847ed148e"
+        },
+        {
+          "path": "settings\/my.sql",
+          "dir": false,
+          "file": true,
+          "perms": "0666",
+          "size": 178,
+          "sha1": "c83af0ee9b2ef29f45eacd0261cbb750a4c17f41"
+        },
+        {
+          "path": "views",
+          "dir": true,
+          "file": false,
+          "perms": "0777",
+          "size": 0,
+          "sha1": null
+        },
+        {
+          "path": "views\/scripts",
+          "dir": true,
+          "file": false,
+          "perms": "0777",
+          "size": 0,
+          "sha1": null
+        },
+        {
+          "path": "views\/scripts\/index",
+          "dir": true,
+          "file": false,
+          "perms": "0777",
+          "size": 0,
+          "sha1": null
+        },
+        {
+          "path": "views\/scripts\/index\/index.tpl",
+          "dir": false,
+          "file": true,
+          "perms": "0666",
+          "size": 77,
+          "sha1": "564b1af3dd9f3a8bdd18887d505958c7836cedee"
+        }
+      ]
+    },
+    "application\/languages\/en\/book.csv": {
+      "type": "file",
+      "path": "application\/languages\/en\/book.csv",
+      "structure": {
+        "path": "book.csv",
+        "dir": false,
+        "file": true,
+        "perms": "0666",
+        "size": 0,
+        "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+      }
+    }
+  }
+}
