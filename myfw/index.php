@@ -1,6 +1,6 @@
 <?php
 // Define base url
-define('BASE_URL', 'http://site.local/development/myfw');
+define('BASE_URL', 'http://web.local');
 
 // Define base path
 define('BASE_PATH', str_replace('\\', '/', realpath(dirname(__FILE__))));

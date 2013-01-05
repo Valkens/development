@@ -16,6 +16,7 @@ class Core_Loader
         if (file_exists($this->_cacheFile)) {
             $this->_cacheIndex = include_once $this->_cacheFile;
         } else {
+            chmod(APPLICATION_PATH . '/cache/system', 0777);
             file_put_contents($this->_cacheFile, '<?php return array();');
         }
     }

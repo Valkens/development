@@ -52,7 +52,9 @@ class Core_Application
         // Set Router
         $subFolder = '/' . ltrim(str_replace($_SERVER['DOCUMENT_ROOT'], '', str_replace('\\','/', BASE_PATH)), '/');
         $this->_router = new Core_Router();
-        $this->_router->setBasePath($subFolder);
+
+        $basePath = ($subFolder == '/') ? '' : $subFolder;
+        $this->_router->setBasePath($basePath);
         $this->_getRoutes();
 
         $match = $this->_router->match();
