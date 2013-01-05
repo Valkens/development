@@ -1,2 +1,6 @@
 /.idea/*
+<<<<<<< HEAD
+/socialengine/application/libraries/*
+=======
 /socialengine/application/libraries/*.*
+>>>>>>> 99d95b1f7c61e923b32a5ce2ffe9b51cb1a547ed
