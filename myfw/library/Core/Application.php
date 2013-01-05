@@ -51,8 +51,10 @@ class Core_Application
     {
         // Set Router
         $subFolder = '/' . ltrim(str_replace($_SERVER['DOCUMENT_ROOT'], '', str_replace('\\','/', BASE_PATH)), '/');
+        $basePath = ($subFolder == '/') ? '' : $subFolder;
+
         $this->_router = new Core_Router();
-        $this->_router->setBasePath($subFolder);
+        $this->_router->setBasePath($basePath);
         $this->_getRoutes();
 
         $match = $this->_router->match();
@@ -69,7 +71,7 @@ class Core_Application
 
             $this->_dispatch($controller, $match['target']['action']);
         } catch (Exception $e) {
-            die($e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
 

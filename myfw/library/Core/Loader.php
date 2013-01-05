@@ -13,9 +13,12 @@ class Core_Loader
         // Cache
         $this->_cacheFile = APPLICATION_PATH . '/cache/system/' . $this->_cacheFileName;
 
-        if (file_exists($this->_cacheFile)) {
+        if (file_exists($this->_cacheFile) && trim(file_get_contents($this->_cacheFile))) {
             $this->_cacheIndex = include_once $this->_cacheFile;
         } else {
+            if (!is_writable($this->_cacheFile)) {
+                throw new Exception("{$this->_cacheFile} is not writable");
+            }
             file_put_contents($this->_cacheFile, '<?php return array();');
         }
     }
@@ -23,7 +26,7 @@ class Core_Loader
     public function autoload($class)
     {
         if (isset($this->_cacheIndex[$class])) {
-            require $this->_cacheIndex[$class];
+            require_once $this->_cacheIndex[$class];
         } else {
             if (!class_exists($class)) { // Multiple class in one file
                 $portions = explode('_', $class);
@@ -43,7 +46,11 @@ class Core_Loader
                 $content = file_get_contents($this->_cacheFile);
                 $content = str_replace(');', '', $content);
 
-                $putContent = "\r\n'{$class}'=>'{$file}',);";
+                $putContent = "'{$class}'=>'{$file}',);";
+
+                if (!is_writable($this->_cacheFile)) {
+                    throw new Exception("{$this->_cacheFile} is not writable");
+                }
                 file_put_contents($this->_cacheFile, $content . $putContent);
             }
         }
