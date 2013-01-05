@@ -1,6 +1,6 @@
 <?php
 // Define base url
-define('BASE_URL', 'http://web.local');
+define('BASE_URL', 'http://github.local/development/myfw');
 
 // Define base path
 define('BASE_PATH', str_replace('\\', '/', realpath(dirname(__FILE__))));
