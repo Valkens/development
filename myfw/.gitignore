@@ -1,4 +1,4 @@
 /app/cache/system/*
 /app/log/system/*
 /public/cache/*
-/library/Zend/*
+/library/Zend/
