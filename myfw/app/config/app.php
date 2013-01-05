@@ -24,14 +24,16 @@ return array(
     ),
     'phpSettings' => array(
         'production' => array(
-            'display_startup_errors' => 1,
-            'display_errors' => 1,
-            'error_reporting' => 1
+            'display_startup_errors' => 0,
+            'display_errors' => 0,
+            'error_reporting' => 0,
+            'error_log' => APPLICATION_PATH . '/log/system/error'
         ),
         'development' => array(
             'display_startup_errors' => 1,
             'display_errors' => 1,
-            'error_reporting' => E_ALL
+            'error_reporting' => E_ALL,
+            'error_log' => APPLICATION_PATH . '/log/system/error'
         )
     ),
     'modules' => array(
