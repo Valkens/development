@@ -2,6 +2,9 @@
 // Define base url
 define('BASE_URL', 'http://github.local/development/myfw');
 
+// Admin url suffix
+define('ADMIN_URL_SUFFIX', 'admin');
+
 // Define base path
 define('BASE_PATH', str_replace('\\', '/', realpath(dirname(__FILE__))));
 

@@ -1,0 +1,227 @@
+/* Common */
+.clear {
+clear: both;
+display: block
+}
+#header {
+background: #3993BA;
+min-height: 40px;
+width: 100%
+}
+#header .inner {
+margin: 0 20px
+}
+#header .logo {
+    color: #FFF;
+    font: 100 18px/40px 'PT Sans',sans-serif;
+    text-decoration: none;
+    width: 200px;
+    display:block;
+    float: left
+}
+#wrapper {
+width: 1000px;
+min-height: 550px;
+overflow: hidden;
+margin: 0 auto;
+background: #FFF;
+border-left: 1px solid #CDCDCD;
+border-right: 1px solid #CDCDCD;
+border-bottom: 1px solid #CDCDCD;
+border-bottom-right-radius: 4px;
+-moz-border-radius-bottomright: 4px;
+border-bottom-left-radius: 4px;
+-moz-border-radius-bottomleft: 4px
+}
+#pageTitle {
+padding: 10px;
+color: #5BA5CB;
+border-bottom: 4px solid #CCC
+}
+#page {
+float: left;
+margin-left: 14px;
+width: 785px
+}
+
+/* Side menu */
+#wrapper #sideMenu {
+float: left;
+width: 200px;
+margin-top: 45px;
+border-right: 1px solid #F5F5F5;
+background:none repeat scroll 0 0 #E7EFEF
+}
+#wrapper #sideMenu ul li a {
+border-bottom: 1px  dashed #CCC;
+color: #596677;
+display: block;
+padding: 3px 5px 3px 10px;
+color: #333
+}
+
+/* Top navigation */
+#header .inner .nav .caret {
+opacity: 0.6;
+filter: alpha(opacity = 60);
+border-bottom-color: #FFF;
+border-top-color: #FFF;
+border-left: 4px solid transparent;
+border-right: 4px solid transparent;
+border-top: 4px solid #FFF;
+content: "";
+display: inline-block;
+height: 0;
+vertical-align: top;
+width: 0;
+margin-left: 2px;
+margin-top: 8px
+}
+#header .inner .nav  {
+float: left;
+left: 0;
+margin: 0 10px 0 0;
+position: relative;
+height: 40px
+}
+#header .inner .nav  > li {
+display: block;
+float: left;
+line-height: 18px
+}
+#header .inner .nav > li > a {
+color: #C1DCE7;
+font-weight: bold;
+display: block;
+float: none;
+line-height: 19px;
+padding: 9px 10px 11px;
+text-decoration: none;
+text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25)
+}
+#header .inner .nav > li:hover > a{
+color: #FFF
+}
+#header .inner .nav > li:hover .caret {
+opacity: 1;
+filter: alpha(opacity = 100)
+}
+#header .inner .nav > li.dropdown:hover > ul {
+display: block
+}
+#header .inner .nav li ul {
+display: none;
+background: #FFF;
+width: 180px;
+z-index:999;
+position:absolute;
+border: 1px solid #B1CFFC;
+border-top: none;
+top: 39px
+}
+#header .inner .nav ul li > ul li{
+display:block;
+padding:0;
+margin:0;
+position:relative
+} 
+#header .inner .nav li ul > li a {
+padding: 5px 14px 5px 24px;
+color: #3993BA;
+display: block;
+line-height: 22px;
+height: 22px;
+white-space: nowrap;
+outline:none;
+position:relative;
+margin:0;
+border-bottom: 1px dashed #CCC
+}
+#header .inner .nav li ul > li:last-child > a {
+border-bottom: none
+}
+#header .inner .nav li ul > li > a:hover {
+text-decoration: underline
+}
+
+#header .inner .userNav {
+margin-right: 10px;
+float: right;
+display: block
+}
+#header .inner .userNav li ul {
+width: 120px;
+right: -30px
+}
+
+/* Breadcrumbs */
+#breadcrumbs {
+background: url("../img/backgrounds/breadcrumbs.png") repeat-x scroll 0 0 transparent;
+border-bottom: 1px solid #C3C3C3;
+border-top: 1px solid #C3C3C3;
+box-shadow: 0 1px 0 #FFF, 0 1px 0 #FFF inset;
+font-size: 11px;
+height: 28px;
+padding-left: 18px;
+position: relative
+}
+#breadcrumbs > li:first-child {
+background: url("../img/icons/breadsHome.png") no-repeat scroll 12px 10px transparent
+}
+#breadcrumbs li {
+float: left
+}
+#breadcrumbs > li:first-child > a {
+padding-left: 28px
+}
+#breadcrumbs li a {
+background: url("../img/icons/breadsArrow.png") no-repeat scroll 100% 10px transparent;
+color: #666;
+display: block;
+height: 22px;
+line-height: 23px;
+padding: 3px 20px 3px 14px;
+text-decoration: none
+}
+
+/* Login Page */
+#loginWrapper {
+left: 50%;
+top: 50%;
+margin: -124px 0 0 -120px;
+text-align: center;
+width: 240px;
+position: absolute
+}
+#loginForm  .loginPic {
+display: block;
+overflow: hidden;
+position: relative;
+text-align: center;
+margin-bottom: 5px
+}
+#loginForm .loginUsername,
+#loginForm .loginPassword{
+color: #333;
+display: inline-block;
+font-size: 12px;
+margin-top: 10px;
+padding: 7px 27px 7px 9px;
+width: 198px
+}
+.loginControl {
+margin-top: 15px
+}
+#loginForm  .loginControl .memory {
+float: left;
+margin-top: 5px
+}
+#loginForm  .loginControl input[type="submit"] {
+float: right
+}
+
+/* Manage page */
+.addLink {
+float: right;
+font-size: 12px
+}

@@ -8,6 +8,9 @@ body{
 li{
     list-style: none;
 }
+a{
+    text-decoration: none;
+}
 .clearfix:after {
     clear: both;
     content: ".";
@@ -26,3 +29,26 @@ li{
 .alpha60 {
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6);
 }
+
+/* Typography
+================================================== */
+/* Headings */
+h1 { font-size: 24px}
+h2 { font-size: 22px}
+h3 { font-size: 20px}
+h4 { font-size: 18px}
+h5 { font-size: 16px}
+
+/* Text colors */
+.red { color: #A64949}
+.green { color: #4D7F12}
+.grey { color: #aaa}
+
+/* Placeholder color */
+::-webkit-input-placeholder { color: #b3b3b3}
+:-moz-placeholder { color: #b3b3b3}
+
+/* Text alignment */
+.textL { text-align: left!important; }
+.textC { text-align: center; }
+.textR { text-align: right; }

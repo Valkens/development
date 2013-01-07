@@ -6,7 +6,7 @@ return array(
                 'host' => 'localhost',
                 'username' => 'root',
                 'password' => 'root',
-                'dbname' => 'phong',
+                'dbname' => 'dev_blog',
                 'persistent' => false,
                 'collate' => 'utf8_unicode_ci',
                 'charset'=>'utf8'
@@ -37,10 +37,12 @@ return array(
         )
     ),
     'modules' => array(
-        'Default'
+        'Default',
+        'Category'
     ),
     'libraries' => array(
         'Core',
-        'Zend'
+        'Zend',
+        'Min'
     )
 );

@@ -99,11 +99,11 @@ class Core_Template
      * @param $template (string) The template to include.
      * @param $varsLocal (array) An array of key/value pairs which represent the local variables for this template.
      */
-    public function inc($template, $varsLocal = array()) {
+    public function inc($template) {
         if (!isset($this->engine)) {
             throw new Exception("Cannot include templates in a Template instance created from a string.");
         }
-        $t = $this->engine->template($template, $varsLocal);
+        $t = $this->engine->template($template);
         print ($t->render());
     }
 

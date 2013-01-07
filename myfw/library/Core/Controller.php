@@ -31,17 +31,23 @@ class Core_Controller
             throw new Exception(sprintf('The required method "%s" does not exist for %s', $action, get_class($this)));
         }
 
+        // Call init method first
+        if (method_exists($this, 'init')) {
+            $this->init();
+        }
+
         $actionName = $action . 'Action';
         $this->$actionName();
 
         if (!$this->_noRender) {
-            $dir = $this->_view->viewPath . '/module/' . strtolower($this->_moduleName) . '/' . strtolower($this->_controllerName);
+            $dir = 'module/' . strtolower($this->_moduleName) . '/' . strtolower($this->_controllerName);
 
             if (!$this->_fileRender) {
-                $this->_fileRender = $action;
+                $this->_view->render($dir, $action, $this->_data);
+            } else {
+                $lastSlashPos = strrpos($this->_fileRender, '/');
+                $this->_view->render(substr($this->_fileRender, 0,  $lastSlashPos), substr($this->_fileRender, $lastSlashPos), $this->_data);
             }
-
-            $this->_view->render($dir, $this->_fileRender, $this->_data);
         }
     }
 

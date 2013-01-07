@@ -4,16 +4,14 @@ class Core_Resource_View
     protected $_options;
     protected $_loader;
     protected $_templateEngine;
-    public $viewPath;
 
     public function __construct()
     {
         $this->_options = Core_Resource_Manager::getOption('view');
-        $this->_templateEngine = new Core_TemplateEngine(null, $this->_options);
+        $this->_templateEngine = new Core_TemplateEngine(NULL, $this->_options);
 
         // Add layout path
-        $this->viewPath = APPLICATION_PATH . '/theme/' . $this->_options['theme'];
-        $this->_templateEngine->addPath($this->viewPath);
+        $this->_theme = $this->_options['theme'];
 
         // Delete all cache file
         if (!$this->_options['combineCss']) {
@@ -29,10 +27,19 @@ class Core_Resource_View
         $this->_templateEngine->setTheme($theme);
     }
 
+    public function getTheme()
+    {
+        return $this->_templateEngine->getTheme();
+    }
+
     public function render($dir, $file, $data = array())
     {
-        $namespace = str_replace(array(APPLICATION_PATH, '/'), array('', '_'), $dir) . '_';
-        $this->_templateEngine->addPath($dir, $namespace);
+        $path = APPLICATION_PATH . '/theme';
+        // Theme
+        $this->_templateEngine->addPath($path . '/' . $this->_templateEngine->getTheme());
+
+        $namespace = '_' . str_replace(array(APPLICATION_PATH, '/'), array('', '_'), $dir) . '_';
+        $this->_templateEngine->addPath($path. '/' . $this->_templateEngine->getTheme() . '/'  . $dir, $namespace);
 
         // Registry filter
         if ($this->_options['minify']) {
@@ -41,6 +48,7 @@ class Core_Resource_View
                                                     array('xhtml', 'cssMinifier' => array('Core_Helper_View', 'minifyCss'), 'jsMinifier' => array('Core_Helper_View', 'minifyJs')));
         }
 
-        echo $this->_templateEngine->template('@' . $namespace . '/' . $file, $data)->render();
+        $this->_templateEngine->setVar($data);
+        echo $this->_templateEngine->template('@' . $namespace . '/' . $file)->render();
     }
 }

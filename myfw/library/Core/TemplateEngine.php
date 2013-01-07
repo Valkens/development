@@ -38,11 +38,10 @@ class Core_TemplateEngine
 
     /**
      * @brief Set a universal variable which will available in each template created with this Template instance.
-     * @param $varName (string) The name of the variable. This will become available in the template as $VARNAME.
      * @param $varValue (mixed) The value of the variable.
      */
-    public function setVar($varName, $varValue) {
-        $this->varsUniversal[$varName] = $varValue;
+    public function setVar($varValue) {
+        $this->varsUniversal = $varValue;
     }
 
     /**
@@ -64,11 +63,10 @@ class Core_TemplateEngine
 
     /**
      * @param $path (string) Template path, without the .tpl extension, relative to the templatePath.
-     * @param $varsGlobal (array) Array of key/value pairs that will be exported to the returned template and all templates included by that template.
      * @param $autoEscape (boolean) Whether to auto escape {{ and }} output with htmlspecialchars()
      * @throw Exception if the template couldn't be read.
      */
-    public function template($file, $varsGlobal = array(), $autoEscape = NULL)
+    public function template($file, $autoEscape = NULL)
     {
         $namespace = substr(substr($file, 1), 0, strpos($file, '/') - 1);
 
@@ -124,8 +122,9 @@ class Core_TemplateEngine
             $this,
             $fpath,
             $this->compile(file_get_contents($fpath), $autoEscape),
-            array_merge($this->varsUniversal, $varsGlobal)
+            $this->varsUniversal
         );
+
         $this->cache[$fpath] = $template;
 
         return $template;
