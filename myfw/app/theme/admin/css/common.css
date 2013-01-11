@@ -1,7 +1,25 @@
-.html { height: 100%;  }
-body { min-height: 100%; font-size: 12px; font-family: Arial, Helvetica, sans-serif; line-height: 20px;background: none repeat scroll 0 0 #F4F4F4}
 /* Commons
 ================================================== */
+body {
+    font-size: 12px;
+    min-height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 20px;
+    background: none repeat scroll 0 0 #F4F4F4
+}
+a{
+text-decoration: none
+}
+.clear {
+    clear: both;
+    display: block
+}
+.fleft{
+    float: left
+}
+.fright{
+    float: right
+}
 .thisRow { background: #f3f3e8!important; }
 .required {color: red}
 
@@ -48,18 +66,36 @@ textarea {
 }
 .formRow { border-bottom: 1px solid #ddd; border-top: 1px solid #fff; padding: 12px 10px}
 .formRow:first-child { border-top: none; }
-.formRow input[type=text], .rowFilter input[type=text], .formRow input[type=password], .formRow textarea { width: 100%; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; font-size: 12px; color: #333; padding: 4px 7px; border: 1px solid #d7d7d7; display: inline-block; background: #fdfdfd; height: 24px; }
+.formRow input[type=text], .rowFilter input[type=text], .formRow input[type=password], .formRow textarea {
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    font-size: 13px;
+    color: #333;
+    padding: 5px 7px;
+    border: 1px solid #d7d7d7;
+    display: inline-block;
+    background: #fdfdfd;
+}
 textarea { height: auto; }
 .formRow  [class*="grid"] > label { float: left; display: block; padding-top: 1px; }
 .formRow label > span { margin-top: -2px; padding: 0; }
 .formRow label > img { float: left; margin: 5px 10px 0 0; }
 .formRow select, .rowFilter select {
     border: 1px solid #D7D7D7;
-    padding: 2px;
+    padding: 3px;
     width: 100px;
+}
+.formRow .stError{
+    padding-top: 5px;
 }
 .rowFilter {
     background: #E7EFEF
+}
+.rowSubmit {
+    background: #F1F1F1
 }
 
 .selector, .radio, .checker, .uploader, .selector *, .radio *, .checker *, .uploader * {
@@ -96,8 +132,8 @@ div.checker span {
 
 /* Buttons
 ================================================== */
-.buttonS, .buttonM, .buttonL, .buttonH, [class*="tablectrl"] {  font-size: 11px; color: #fff; font-weight: bold; text-shadow: 0 -1px #6f6f6f; display: inline-block; line-height: 14px; border-radius: 2px; -webkit-border-radius: 2px; -moz-border-radius: 2px; }
-.buttonS span, .buttonM span, .buttonL span, .buttonH span { text-shadow: 0 1px 0 #6f6f6f; margin-left: 10px; }
+.buttonS, .buttonM, .buttonL, .buttonH, [class*="tablectrl"] {  fonft-size: 11px; color: #fff; font-weight: bold; display: inline-block; line-height: 14px; border-radius: 2px; -webkit-border-radius: 2px; -moz-border-radius: 2px; }
+.buttonS span, .buttonM span, .buttonL span, .buttonH span { margin-left: 10px; }
 .buttonS { padding: 4px 10px; }
 .buttonM { padding: 7px 15px; }
 .buttonL { padding: 8px 18px; }
@@ -256,7 +292,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
     background: none repeat scroll 0 0 #3993BA;
     padding: 2px 10px
 }
-.widget > .whead h6 {
+.widget > .whead h2 {
     float: left;
     display: block;
     font-weight: bold;

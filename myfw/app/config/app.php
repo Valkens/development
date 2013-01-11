@@ -8,8 +8,7 @@ return array(
                 'password' => 'root',
                 'dbname' => 'dev_blog',
                 'persistent' => false,
-                'collate' => 'utf8_unicode_ci',
-                'charset'=>'utf8'
+                'charset' => 'utf8'
             ),
             'sqlite' => array(
                 'dbname' => APPLICATION_PATH . '/db/db'
@@ -37,6 +36,7 @@ return array(
         )
     ),
     'modules' => array(
+
         'Default',
         'Category'
     ),

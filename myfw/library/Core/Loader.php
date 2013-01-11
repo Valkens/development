@@ -16,9 +16,6 @@ class Core_Loader
         if (file_exists($this->_cacheFile) && trim(file_get_contents($this->_cacheFile))) {
             $this->_cacheIndex = include_once $this->_cacheFile;
         } else {
-            if (!is_writable($this->_cacheFile)) {
-                throw new Exception("{$this->_cacheFile} is not writable");
-            }
             file_put_contents($this->_cacheFile, '<?php return array();');
         }
     }

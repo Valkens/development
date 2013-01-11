@@ -1,3 +1,4 @@
 /app/cache/system/*
+/app/cache/template/*
 /app/log/system/*
 /public/cache/*

@@ -64,12 +64,15 @@ class Core_TemplateEngine
     /**
      * @param $path (string) Template path, without the .tpl extension, relative to the templatePath.
      * @param $autoEscape (boolean) Whether to auto escape {{ and }} output with htmlspecialchars()
-     * @throw Exception if the template couldn't be read.
+     * @throw Exception if the template is not exists
      */
     public function template($file, $autoEscape = NULL)
     {
-        $namespace = substr(substr($file, 1), 0, strpos($file, '/') - 1);
+        if ($autoEscape === NULL) {
+            $autoEscape = $this->autoEscape;
+        }
 
+        $namespace = substr(substr($file, 1), 0, strpos($file, '/') - 1);
         $file = str_replace('@' . $namespace . '/', '', $file);
 
         if (!isset($this->_paths[$namespace])) {
@@ -77,55 +80,33 @@ class Core_TemplateEngine
         }
 
         $fpath = $this->_paths[$namespace] . '/' . trim($file, '/') . '.tpl';
-        if ($autoEscape === NULL) {
-            $autoEscape = $this->autoEscape;
-        }
-
-        // Check for translated version of this template.
-        if (!empty($this->locale)) {
-            // Check if the translated template exists in the cache. If it
-            // does, returned the cached result. Otherwise check the disk for
-            // the translated template.
-            $fpathTrans = realpath($fpath.'.'.$this->locale);
-            if ($fpathTrans !== False) {
-                if (array_key_exists($fpathTrans, $this->cache)) {
-                    return($this->cache[$fpathTrans]);
-                } else {
-                    if (file_exists($fpathTrans)) {
-                        $fpath = $fpathTrans;
-                    }
-                }
-            }
-            // Check the non-translated version of this template
-        } else {
-            // Check the cache for the non-translated template.
-            $rpath = realpath($fpath);
-            if($rpath === False) {
-                throw new Exception("Template not found or not a file: $fpath");
-            }
-            if (array_key_exists($rpath, $this->cache)) {
-                return($this->cache[$rpath]);
-            }
-            $fpath = $rpath;
-        }
 
         // Check if the template exists.
         if (!is_file($fpath)) {
             throw new Exception("Template not found or not a file: $fpath");
         }
-        if (!is_readable($fpath)) {
-            throw new Exception("Template not readable: $fpath");
+
+        // Cache template
+        $cachePath = APPLICATION_PATH . '/cache/template';
+        $cacheFile = $cachePath . '/' . md5($fpath);
+
+        if (!file_exists($cacheFile)
+            || (filemtime($fpath) > filemtime($cacheFile))
+        ) {
+            $content = $this->compile(file_get_contents($fpath), $autoEscape);
+            file_put_contents($cacheFile, $content);
+            touch($cacheFile, filemtime($fpath));
+        } else {
+            $content = file_get_contents($cacheFile);
         }
 
         // Load the base or translated template.
         $template = new Core_Template(
             $this,
             $fpath,
-            $this->compile(file_get_contents($fpath), $autoEscape),
+            $content,
             $this->varsUniversal
         );
-
-        $this->cache[$fpath] = $template;
 
         return $template;
     }

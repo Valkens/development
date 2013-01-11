@@ -1,5 +1,5 @@
 <?php
-class Core_AdminController extends Core_Controller
+class Base_Controller_AdminController extends Core_Controller
 {
     public function init()
     {

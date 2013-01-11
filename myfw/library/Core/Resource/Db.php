@@ -69,28 +69,28 @@ class Core_Resource_Db
     {
         $this->adapter = $adapter;
 
-        if (isset($this->pdo->$adapter) && $this->pdo->$adapter->connected) {
+        if (isset($this->$adapter) && $this->$adapter->connected) {
             return;
         }
 
-        $dbOptions = $options[$adapter];
-        
+        $this->_dbOptions = $dbOptions = $options[$adapter];
+
         try{
             if ($this->adapter == 'sqlite') {
                 $this->pdo[$adapter] = new PDO("sqlite:{$dbOptions['dbname']}");
             } else {
-                $this->pdo[$adapter] = new PDO("mysql:host={$dbOptions['host']};
-                dbname={$dbOptions['dbname']}", $dbOptions['username'], $dbOptions['password'],array(PDO::ATTR_PERSISTENT => $dbOptions['persistent']));
+                $this->pdo[$adapter] = new PDO("mysql:host={$dbOptions['host']};dbname={$dbOptions['dbname']}",
+                                                $dbOptions['username'], $dbOptions['password'],
+                                                array(
+                                                    PDO::ATTR_PERSISTENT => $dbOptions['persistent'],
+                                                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                                                ));
             }
-
-            $this->pdo[$adapter]->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             $this->$adapter = new stdClass();
             $this->$adapter->connected = true;
 
-            if(isset($dbOptions['charset']) && isset($dbOptions['collate'])) {
-                $this->pdo[$adapter]->exec("SET NAMES '". $dbOptions['charset']. "' COLLATE '". $dbOptions['collate'] ."'");
-            } else if (isset($dbOptions['charset']) ){
+            if (isset($dbOptions['charset']) ){
                 $this->pdo[$adapter]->exec("SET NAMES '". $dbOptions['charset']. "'");
             }
         } catch(PDOException $e){
@@ -104,7 +104,7 @@ class Core_Resource_Db
     public function disconnect(){
         $this->pdo[$this->adapter] = null;
         $adapter = $this->adapter;
-        $this->adapter->connected = false;
+        $this->$adapter->connected = false;
     }
     
     /**
@@ -1834,7 +1834,7 @@ class Core_Resource_Db
                     $values[] = $v;
                     $valuestr .= '?,';
                 }
-                if($this->dbconfig[4]=='mysql'){
+                if($this->adapter == 'mysql'){
                     $fieldstr .= '`'.$o .'`,';
                 }else{
                     $fieldstr .= $o .',';
@@ -1887,7 +1887,7 @@ class Core_Resource_Db
                     $values[] = $v;
                     $valuestr .= '?,';
                 }
-                if($this->dbconfig[4]=='mysql'){
+                if($this->adapter == 'mysql'){
                     $fieldstr .= '`'.$o .'`,';
                 }else{
                     $fieldstr .= $o .',';

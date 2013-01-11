@@ -15,7 +15,7 @@ class Core_Controller
     {
         $this->_options = $options;
 
-        $this->_params = $params;
+        $this->_params = ($this->isPost()) ? array_merge($params, $_POST) : $params;
 
         $classPortion = explode('_', get_class($this));
         $this->_moduleName = $classPortion[0];
@@ -115,6 +115,10 @@ class Core_Controller
 
     public function isAjax(){
         return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
+    }
+
+    public function isPost() {
+        return ($_SERVER['REQUEST_METHOD'] === 'POST');
     }
 
     public function setRouter($router)

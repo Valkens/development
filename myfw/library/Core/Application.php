@@ -92,8 +92,6 @@ class Core_Application
                 foreach ($routes  as $route) {
                     $this->_router->map($route['method'], $route['route'], $route['target'], $route['name']);
                 }
-            } else {
-                throw new Exception("Route config file of '{$module}'is not found.");
             }
         }
     }

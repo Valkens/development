@@ -3,11 +3,10 @@
 
 [: block content :]
 <div id="wrapper">
-    <h5 id="pageTitle">
-        Quản lý sản phẩm
-        <a href="#" class="buttonS bDefault addLink">Xoa</a>
-        <a href="#" class="buttonS bDefault addLink mr5">Them</a>
-    </h5>
+    <h3 id="pageTitle">
+        List category
+        <a href="{{$adminUrl}}/category/add" class="buttonS bDefault addLink mr5">Add</a>
+    </h3>
     <div class="widget">
         <table width="100%" cellspacing="0" cellpadding="0" class="tDefault checkAll check dTable">
             <thead>

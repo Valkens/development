@@ -1,8 +1,3 @@
-/* Common */
-.clear {
-clear: both;
-display: block
-}
 #header {
 background: #3993BA;
 min-height: 40px;
@@ -36,7 +31,9 @@ border-bottom-left-radius: 4px;
 #pageTitle {
 padding: 10px;
 color: #5BA5CB;
-border-bottom: 4px solid #CCC
+border-bottom: 4px solid #CCC;
+font-size: 13px;
+    font-weight: bo;
 }
 #page {
 float: left;
