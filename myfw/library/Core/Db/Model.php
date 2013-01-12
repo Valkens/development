@@ -43,10 +43,20 @@ class Core_Db_Model
      * @param string $class Class name of the Model
      * @param bool $caseSensitive Determine whether the DB field names should be case sensitive.
      */
-    protected function setupModel( $class=__CLASS__, $caseSensitive=false )
+    public function setupModel( $class=__CLASS__, $caseSensitive=false )
     {
         self::$className = $class;
         self::$caseSensitive = $caseSensitive;
+    }
+
+    /**
+     * Get table name
+     *
+     * @return string Return table name
+     */
+    public function getTableName()
+    {
+        return $this->_table;
     }
 
     /**
@@ -135,7 +145,7 @@ class Core_Db_Model
      * @return mixed A list of model object(s) or associateve array of the queried result
      */
     public function relate($rmodel, $opt=null){
-        return$this->db()->relate($this, $rmodel, $opt);
+        return $this->db()->relate($this, $rmodel, $opt);
     }
 
     /**
@@ -152,7 +162,7 @@ class Core_Db_Model
      * @return mixed A list of model objects of the queried result
      */
 	public function relateMany($rmodel, $opt=null){
-        return$this->db()->relateMany($this, $rmodel, $opt);
+        return $this->db()->relateMany($this, $rmodel, $opt);
     }
 
     /**
@@ -169,7 +179,7 @@ class Core_Db_Model
      * @return mixed A list of model objects of the queried result
      */
 	public function relateExpand($rmodel, $opt=null){
-        return$this->db()->relateExpand($this, $rmodel, $opt);
+        return $this->db()->relateExpand($this, $rmodel, $opt);
     }
 
     /**
@@ -177,7 +187,7 @@ class Core_Db_Model
      * @return int The inserted record's Id
      */
     public function insert(){
-        return$this->db()->insert($this);
+        return $this->db()->insert($this);
     }
 
     /**
@@ -186,7 +196,7 @@ class Core_Db_Model
      * @return int The inserted record's Id
      */
     public function insertAttributes($data){
-        return$this->db()->insertAttributes($this, $data);
+        return $this->db()->insertAttributes($this, $data);
     }
     
     /**
@@ -203,7 +213,7 @@ class Core_Db_Model
      * @return int The inserted record's Id
      */
     public function relatedInsert($rmodels){
-        return$this->db()->relatedInsert($this, $rmodels);
+        return $this->db()->relatedInsert($this, $rmodels);
     }
 
     /**
@@ -212,7 +222,7 @@ class Core_Db_Model
      * @return int Number of rows affected
      */
     public function update($opt=NULL){
-        return$this->db()->update($this, $opt);
+        return $this->db()->update($this, $opt);
     }
 
     /**
@@ -221,7 +231,7 @@ class Core_Db_Model
      * @return int Number of rows affected
      */
     public function update_attributes($data, $opt=NULL){
-        return$this->db()->update_attributes($this, $data, $opt);
+        return $this->db()->update_attributes($this, $data, $opt);
     }
 
     /**
@@ -230,7 +240,7 @@ class Core_Db_Model
      * @param array $opt Assoc array of options to update the main model. Supported: <i>where, limit, field, param</i>
      */
     public function relatedUpdate($rmodels, $opt=NULL){
-        return$this->db()->relatedUpdate($this, $rmodels, $opt);
+        return $this->db()->relatedUpdate($this, $rmodels, $opt);
     }
 
     /**
@@ -238,14 +248,14 @@ class Core_Db_Model
      * @return int
      */
     public function lastInsertId(){
-        return$this->db()->lastInsertId();
+        return $this->db()->lastInsertId();
     }
 
 	/**
 	 * Delete ALL existing records. (Prepares and executes the DELETE statements)
 	 */
 	public function deleteAll() {
-		return$this->db()->deleteAll($this);
+		return $this->db()->deleteAll($this);
 	}
 
     /**
@@ -253,7 +263,7 @@ class Core_Db_Model
      * @param array $opt Associative array of options to generate the UPDATE statement. Supported: <i>where, limit, param</i>
      */
     public function delete($opt=NULL){
-        return$this->db()->delete($this, $opt);
+        return $this->db()->delete($this, $opt);
     }
 
     //---------- Useful querying methods such as getOne, count, limit

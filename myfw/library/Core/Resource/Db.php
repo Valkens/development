@@ -407,8 +407,6 @@ class Core_Resource_Db
                 }
             }
         }else{
-            //require file only when String is passed in
-            $this->loadModel($model);
             $class_name = $model;
             $model = new $model;
         }
@@ -646,8 +644,6 @@ class Core_Resource_Db
                 }
             }
         }else{
-            //require file only when String is passed in
-            $this->loadModel($model);
             $class_name = $model;
             $model = new $model;
         }
@@ -2179,7 +2175,6 @@ class Core_Resource_Db
 	 */
 	public function deleteAll($model) {
 		if (!is_object($model)) {
-			$this->loadModel($model);
 			$model = new $model;
 		}
 
@@ -2216,8 +2211,6 @@ class Core_Resource_Db
                 }
             }
         }else{
-            //require file only when String is passed in
-            $this->loadModel($model);
             $model = new $model;
         }
 

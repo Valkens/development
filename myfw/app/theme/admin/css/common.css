@@ -74,7 +74,7 @@ textarea {
     -ms-box-sizing: border-box;
     font-size: 13px;
     color: #333;
-    padding: 5px 7px;
+    padding: 4px 7px;
     border: 1px solid #d7d7d7;
     display: inline-block;
     background: #fdfdfd;
@@ -85,7 +85,7 @@ textarea { height: auto; }
 .formRow label > img { float: left; margin: 5px 10px 0 0; }
 .formRow select, .rowFilter select {
     border: 1px solid #D7D7D7;
-    padding: 3px;
+    padding: 2px;
     width: 100px;
 }
 .formRow .stError{
@@ -104,9 +104,12 @@ textarea { height: auto; }
     padding: 0
 }
 button, input[type="submit"], input[type="image"], input[type="reset"] {
-    cursor: pointer
+    cursor: pointer;
+    font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
 }
-
+.btnAction{
+    font-size: 12px
+}
 
 /* Inputs */
 div.checker {

@@ -3,10 +3,10 @@
 
 [: block content :]
 <div id="wrapper">
-    <h3 id="pageTitle">
+    <h1 id="pageTitle">
         List category
-        <a href="{{$adminUrl}}/category/add" class="buttonS bDefault addLink mr5">Add</a>
-    </h3>
+        <a href="{{$adminUrl}}/category/add" class="buttonS bDefault btnAction fright">Add</a>
+    </h1>
     <div class="widget">
         <table width="100%" cellspacing="0" cellpadding="0" class="tDefault checkAll check dTable">
             <thead>

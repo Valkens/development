@@ -33,7 +33,7 @@ padding: 10px;
 color: #5BA5CB;
 border-bottom: 4px solid #CCC;
 font-size: 13px;
-    font-weight: bo;
+font-weight: bold;
 }
 #page {
 float: left;
@@ -215,10 +215,4 @@ margin-top: 5px
 }
 #loginForm  .loginControl input[type="submit"] {
 float: right
-}
-
-/* Manage page */
-.addLink {
-float: right;
-font-size: 12px
 }

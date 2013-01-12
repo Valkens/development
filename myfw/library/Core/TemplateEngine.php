@@ -87,7 +87,7 @@ class Core_TemplateEngine
         }
 
         // Cache template
-        $cachePath = APPLICATION_PATH . '/cache/template';
+        $cachePath = CACHE_PATH . '/template';
         $cacheFile = $cachePath . '/' . md5($fpath);
 
         if (!file_exists($cacheFile)

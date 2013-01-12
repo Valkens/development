@@ -5,7 +5,7 @@
 <div id="wrapper">
     <div id="sideMenu">
         <ul>
-            <li><a href="{{$adminUrl}}/category">List</a></li>
+            <li><a href="{{$adminUrl}}/category">List category</a></li>
         </ul>
     </div>
 
@@ -46,10 +46,25 @@
                         @endif
                         <div class="clear"></div>
                     </div>
+                    <div class="formRow">
+                        <div class="grid3"><span class="required fleft">*</span><label>Slug</label></div>
+                        <div class="grid4"><input type="text" name="slug" maxlength="100" /></div>
+                        @if (isset($errors['slug'])) :
+                        <div class="clear"></div>
+                        <div class="grid3">&nbsp;</div>
+                        <div class="stError">{{$errors['slug']}}</div>
+                        @endif
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow">
+                        <div class="grid3"><label>Meta description</label></div>
+                        <div class="grid5"><textarea cols="40" rows="5" name="description"></textarea></div>
+                        <div class="clear"></div>
+                    </div>
                     <div class="formRow rowSubmit">
                         <div class="grid3">&nbsp;</div>
                         <div class="grid4">
-                            <input type="submit" class="buttonS bLightBlue" name="submit" value="Submit" />
+                            <input type="submit" class="buttonS bBlue btnAction" name="submit" value="Submit" />
                         </div>
                         <div class="clear"></div>
                     </div>
