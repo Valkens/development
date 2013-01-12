@@ -33,7 +33,7 @@ padding: 10px;
 color: #5BA5CB;
 border-bottom: 4px solid #CCC;
 font-size: 13px;
-    font-weight: bo;
+font-weight: bold;
 }
 #page {
 float: left;
@@ -51,10 +51,8 @@ background:none repeat scroll 0 0 #E7EFEF
 }
 #wrapper #sideMenu ul li a {
 border-bottom: 1px  dashed #CCC;
-color: #596677;
 display: block;
-padding: 3px 5px 3px 10px;
-color: #333
+padding: 3px 5px 3px 10px
 }
 
 /* Top navigation */
@@ -215,10 +213,4 @@ margin-top: 5px
 }
 #loginForm  .loginControl input[type="submit"] {
 float: right
-}
-
-/* Manage page */
-.addLink {
-float: right;
-font-size: 12px
 }

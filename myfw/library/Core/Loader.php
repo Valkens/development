@@ -11,7 +11,7 @@ class Core_Loader
         $this->_options = $options;
 
         // Cache
-        $this->_cacheFile = APPLICATION_PATH . '/cache/system/' . $this->_cacheFileName;
+        $this->_cacheFile = CACHE_PATH . '/system/' . $this->_cacheFileName;
 
         if (file_exists($this->_cacheFile) && trim(file_get_contents($this->_cacheFile))) {
             $this->_cacheIndex = include_once $this->_cacheFile;
