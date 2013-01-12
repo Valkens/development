@@ -6,11 +6,12 @@
     <div id="sideMenu">
         <ul>
             <li><a href="{{$adminUrl}}/category">List category</a></li>
+            <li><a href="{{$adminUrl}}/category/add">Add new category</a></li>
         </ul>
     </div>
 
     <div id="page">
-        <h1 id="pageTitle">Add new category</h1>
+        <h1 id="pageTitle">Edit category</h1>
 
         <div class="widget fluid">
             <div class="whead">
@@ -25,8 +26,9 @@
                         <div class="grid4">
                             <select name="parent">
                                 <option value="-1">Select...</option>
-                                @foreach ($categories as $category) :
-                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                @foreach ($categories as $obj) :
+                                    @$selected = ($obj->id == $category->id_parent) ? ' selected="selected"' : ''
+                                <option value="{{$obj->id}}"{{$selected}}>{{$obj->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -39,7 +41,7 @@
                     </div>
                     <div class="formRow">
                         <div class="grid3"><span class="required fleft">*</span><label>Name</label></div>
-                        <div class="grid4"><input type="text" name="name" maxlength="100" /></div>
+                        <div class="grid4"><input type="text" name="name" maxlength="100" value="{{$category->name}}" /></div>
                         @if (isset($errors['name'])) :
                         <div class="clear"></div>
                         <div class="grid3">&nbsp;</div>
@@ -49,7 +51,7 @@
                     </div>
                     <div class="formRow">
                         <div class="grid3"><span class="required fleft">*</span><label>Slug</label></div>
-                        <div class="grid4"><input type="text" name="slug" maxlength="100" /></div>
+                        <div class="grid4"><input type="text" name="slug" maxlength="100" value="{{$category->slug}}" /></div>
                         @if (isset($errors['slug'])) :
                         <div class="clear"></div>
                         <div class="grid3">&nbsp;</div>
@@ -59,7 +61,7 @@
                     </div>
                     <div class="formRow">
                         <div class="grid3"><label>Meta description</label></div>
-                        <div class="grid5"><textarea cols="40" rows="5" name="description"></textarea></div>
+                        <div class="grid5"><textarea cols="40" rows="5" name="description">{{$category->description}}</textarea></div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow rowSubmit">

@@ -8,7 +8,9 @@ body {
     background: none repeat scroll 0 0 #F4F4F4
 }
 a{
-text-decoration: none
+    text-decoration: none;
+    color: #3993BA;
+    font-weight: bold;
 }
 .clear {
     clear: both;
@@ -331,20 +333,6 @@ table .selector, table .selector > span{ height: 26px; line-height: 26px; }
 table thead td span { background: url(../img/tables/sort.png) no-repeat 0; display: block; width: 7px; float: right; margin: 2px 2px 0 5px; height: 16px; }
 .checkAll tbody tr td:first-child { width: 40px; padding: 0; vertical-align: middle; margin: 0;}
 .checkAll tbody tr td:first-child .checker, .checkAll tbody tr td:first-child .radio { margin: 0 auto; float: none; }
-table td.expand {
-    padding: 2px 2px 2px 40px!important
-}
-table td .arrow {
-    background: url("../img/icons/arrows.png") no-repeat scroll;
-    width: 10px;
-    height: 8px;
-    float: right;
-    margin: 6px 5px 0 0;
-    cursor: pointer
-}
-table td .arrowUp {
-    background: url("../img/icons/arrows.png") no-repeat scroll 0 -12px
-}
 table > tr > td:first-child .checker span{ margin: 2px auto 0 auto; float: none; }
 table thead > tr > td .checker {
     position: absolute;
@@ -352,7 +340,7 @@ table thead > tr > td .checker {
 }
 
 /* Default table */
-.tDefault tbody td, .tDefault thead td { border-left: 1px solid #DFDFDF;}
+.tDefault tbody td, .tDefault thead td { border-left: 1px solid #DFDFDF; text-align: center}
 .tDefault tbody td:first-child, .tDefault thead td:first-child { border-left: none; }
 .checkAll thead td:first-child > img { vertical-align: middle; padding-bottom: 2px; }
 .tDefault thead td { text-align: center; font-size: 11px; padding: 3px 5px 2px; color: #909090; background: #eee; }

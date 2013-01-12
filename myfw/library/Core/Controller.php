@@ -15,7 +15,7 @@ class Core_Controller
     {
         $this->_options = $options;
 
-        $this->_params = ($this->isPost()) ? array_merge($params, $_POST) : $params;
+        $this->_params = array_merge($params, $_REQUEST);
 
         $classPortion = explode('_', get_class($this));
         $this->_moduleName = $classPortion[0];
