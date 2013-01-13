@@ -1,6 +1,8 @@
 <?php
 class Category_Model_Category extends Core_Model
 {
+    public $name;
+
     public $_table = 'category';
     public $_primarykey = 'id';
     public $_fields = array('id', 'id_parent', 'name', 'slug', 'meta_description', 'sort');

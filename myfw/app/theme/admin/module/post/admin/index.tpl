@@ -28,7 +28,7 @@
                 <td>#{{$post->id}}</td>
                 <td><img src="{{$post->thumbnail}}" width="50" height="50" /></td>
                 <td>{{$post->title}}</td>
-                <td>{{strtoupper($post->Category_Model_Category->name)}}</td>
+                <td>{{strtoupper($post->category->name)}}</td>
                 <td>{{$post->description}}</td>
                 <td>
                     @echo ($post->featured_status) ? '<span class="stSuccess">[Yes]</span>' : '<span class="stError">[No]</span>';

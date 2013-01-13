@@ -667,7 +667,7 @@ class Core_Resource_Db
         if(isset($opt['select'])){
             $sqladd['select']=$opt['select'];
         }else{
-            $sqladd['select'] ='*';
+            $sqladd['select'] = '*';
         }
 
         //joinType
@@ -1313,21 +1313,23 @@ class Core_Resource_Db
         }
 
         //conditions WHERE param
-        if(isset($opt['param']) && isset($where_values))
+        if(isset($opt['param']) && isset($where_values)) {
             $rs = $this->query($sql, array_merge( $opt['param'], $where_values));
-        else if(isset($opt['param']))
+        } else if(isset($opt['param'])) {
             $rs = $this->query($sql, $opt['param']);
-        else if(isset($where_values))
+        } else if(isset($where_values)) {
             $rs = $this->query($sql, $where_values);
-        else
+        } else {
             $rs = $this->query($sql);
+        }
 
         //if limit is only one, then just return the single result, we don't need an array
         if($opt['limit']===1){
-            if(isset($opt['asArray']) && $opt['asArray']===true)
+            if(isset($opt['asArray']) && $opt['asArray']===true) {
                 return $rs->fetch();
-            else
+            } else {
                 return $rs->fetchObject($class_name);
+            }
         }else{
 
             //return as Array of objects / assoc arrays
@@ -1341,6 +1343,9 @@ class Core_Resource_Db
                     $tmodelArray=null;
                 }
 
+                $modelNameArr = explode('_', $rmodel);
+                $rmodelName = strtolower(array_pop($modelNameArr));
+
                 switch($rtype){
                     case 'has_one':
 					case 'belongs_to':
@@ -1352,7 +1357,7 @@ class Core_Resource_Db
                             $rfk = $v[$rretrieved_pk_key];
 
                             $record = new $class_name;
-                            $record->{$rmodel} = ($rfk!=NULL)? new $rmodel : NULL;
+                            $record->{$rmodelName} = ($rfk!=NULL)? new $rmodel : NULL;
                             if(isset($tmodel_class) && !isset($record->{$tmodel_class}) ){
                                 if($tmodel_rtype=='has_many'){
                                     #echo 'Has Many 3rd';
@@ -1384,7 +1389,7 @@ class Core_Resource_Db
                                 $inAsSelect = preg_match('/[\s]+(as|AS|aS|As)[\s]+'. $k2 .',/', $oriSel.',');
 
 								if($inAsSelect || in_array($k2, $model_vars)){
-										if( !$inAsSelect && $oriSel[0]!=='*' && 
+										if( !$inAsSelect && $oriSel[0]!=='*' &&
                                             !preg_match("/,(\s+)?({$model->_table}\.)?$k2(\s+)?,/", ','.$oriSel.',') &&
 											!preg_match('/,(\s+)?'.$model->_table .'\.\*/', ','. str_replace($model->_table .'.'. str_replace('_'.$model->_table.'__', '', $k2), $model->_table.'.*', $oriSel)) ){
 
@@ -1411,8 +1416,8 @@ class Core_Resource_Db
 
                                     if( isset($ralias_vars[$k2]) ){
                                         $k2 = $ralias_vars[$k2];
-                                    }	
-	
+                                    }
+
                                     if($oriSel[0]!=='*'){
                                         if(	in_array($k2, $rmodel_vars)===false &&
                                             !preg_match('/,(\s+)?'.$relatedmodel->_table .'\.\*/', ','. str_replace($relatedmodel->_table .'.'. $k2, $relatedmodel->_table .'.*', $oriSel)) ){
@@ -1424,20 +1429,20 @@ class Core_Resource_Db
                                             continue;
                                         }
                                     }
-	
+
 
                                     if($rfk!=NULL){
                                         if($k2===$rretrieved_pk_key){
-                                             $record->{$rmodel}->{$rparams['foreign_key']} = $v2;
+                                             $record->{$rmodelName}->{$rparams['foreign_key']} = $v2;
                                              #echo "<h3>{$rparams['foreign_key']}</h3>";
                                          }else{
                                             //if it's a repeated var which is rename earlier, replace it to its original var by spilting it _table__field '__'
                                             if(isset($ralias_vars[$k2])){
                                                  #echo "<h1>{$ralias_vars[$k2]}</h1>";
-                                                 $record->{$rmodel}->{$ralias_vars[$k2]} = $v2;
+                                                 $record->{$rmodelName}->{$ralias_vars[$k2]} = $v2;
                                             }else{
 												 #echo "<h2>$rmodel $k2</h2>";
-                                                 $record->{$rmodel}->{$k2} = $v2;
+                                                 $record->{$rmodelName}->{$k2} = $v2;
                                             }
                                         }
                                     }
@@ -1480,7 +1485,7 @@ class Core_Resource_Db
                                 if(!in_array($fk, $model_pk_arr)){
                                     $model_pk_arr[]=$fk;
                                     $record = new $class_name;
-                                    $record->{$rmodel} = ($rfk!=NULL)? array() : NULL;
+                                    $record->{$rmodelName} = ($rfk!=NULL)? array() : NULL;
 
 									if(isset($tmodel_class) && !isset($record->{$tmodel_class}) ){
 										if($tmodel_rtype=='has_many'){
@@ -1510,12 +1515,12 @@ class Core_Resource_Db
 										}
 
 										$gotoRelateSect = true;
-                                        
+
                                         $inAsSelect = preg_match('/[\s]+(as|AS|aS|As)[\s]+'. $k2 .',/', $oriSel.',');
-                                        
-                                        if($inAsSelect || in_array($k2, $model_vars)){  
-                                            
-											if( !$inAsSelect && $oriSel[0]!=='*' && 
+
+                                        if($inAsSelect || in_array($k2, $model_vars)){
+
+											if( !$inAsSelect && $oriSel[0]!=='*' &&
                                                 !preg_match("/,(\s+)?({$model->_table}\.)?$k2(\s+)?,/", ','.$oriSel.',') &&
                                                 !preg_match('/,(\s+)?'.$model->_table .'\.\*/', ','. str_replace($model->_table .'.'. str_replace('_'.$model->_table.'__', '', $k2), $model->_table .'.*', $oriSel)) ){
 
@@ -1526,9 +1531,9 @@ class Core_Resource_Db
 
 
 											if($gotoRelateSect===false){
-												if($k2===$retrieved_pk_key)
+												if($k2===$retrieved_pk_key) {
 													$record->{$mparams['foreign_key']} = $v2;
-												else{
+                                                } else{
 													//if it's a repeated var which is rename earlier(alias _table__fieldname), replace the original var with its value
 													if(isset($alias_vars[$k2])){
 														$record->{$alias_vars[$k2]} = $v2;
@@ -1585,9 +1590,9 @@ class Core_Resource_Db
 
                                     //do not add to the associated object Array if, relation not found, means empty Array, no record! if not it will create an Array with an empty Model Object
                                     if($rfk!=NULL)
-                                        array_push($record->{$rmodel}, $assoc_model);
+                                        array_push($record->{$rmodelName}, $assoc_model);
                                     else{
-                                        $record->{$rmodel} = array();
+                                        $record->{$rmodelName} = array();
                                     }
 
                                     $arr[] = $record;
@@ -1632,7 +1637,7 @@ class Core_Resource_Db
                                         }
                                     }
 
-                                    array_push($record->{$rmodel}, $assoc_model);
+                                    array_push($record->{$rmodelName}, $assoc_model);
                                     $arr[ $indexToChg ] = $record;
                                 }
                             }
