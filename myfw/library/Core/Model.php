@@ -1,5 +1,5 @@
 <?php
-class Core_Db_Model
+class Core_Model
 {
     public static $db = array();
 

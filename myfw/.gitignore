@@ -1,0 +1,5 @@
+/app/cache/system/*
+/app/cache/template/*
+/app/cache/db/*
+/app/log/*
+/public/cache/*

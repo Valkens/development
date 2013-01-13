@@ -68,12 +68,16 @@ class Core_Controller
     public function redirect($location, $code = 302)
     {
         if (is_array($location)) {
-            $url = $this->_router->generate($location['name'], $location['params']);
+            if (isset($location['params'])) {
+                $url = $this->_router->generate($location['name'], $location['params']);
+            } else {
+                $url = $this->_router->generate($location['name']);
+            }
         } elseif (is_string($location)) {
-            $location = BASE_URL . '/' . $location;
+            $url = BASE_URL . '/' . $location;
         }
 
-        header("Location: $location", true, $code);
+        header("Location: $url", true, $code);
         exit();
     }
 

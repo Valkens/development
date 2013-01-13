@@ -19,12 +19,12 @@
             </div>
 
             <div class="wbody">
-                <form id="formAdd" method="post">
+                <form id="frmCategoryAdd" method="post">
                     <div class="formRow">
                         <div class="grid3"><span class="required fleft">*</span><label>Parent</label></div>
                         <div class="grid4">
                             <select name="parent">
-                                <option value="-1">Select...</option>
+                                <option value="0">None</option>
                                 @foreach ($categories as $category) :
                                     <option value="{{$category->id}}">{{$category->name}}</option>
                                 @endforeach
@@ -39,7 +39,7 @@
                     </div>
                     <div class="formRow">
                         <div class="grid3"><span class="required fleft">*</span><label>Name</label></div>
-                        <div class="grid4"><input type="text" name="name" maxlength="100" /></div>
+                        <div class="grid4"><input id="name" type="text" name="name" maxlength="100" class="required" /></div>
                         @if (isset($errors['name'])) :
                         <div class="clear"></div>
                         <div class="grid3">&nbsp;</div>
@@ -49,7 +49,7 @@
                     </div>
                     <div class="formRow">
                         <div class="grid3"><span class="required fleft">*</span><label>Slug</label></div>
-                        <div class="grid4"><input type="text" name="slug" maxlength="100" /></div>
+                        <div class="grid4"><input id="slug" type="text" name="slug" maxlength="100" class="required" /></div>
                         @if (isset($errors['slug'])) :
                         <div class="clear"></div>
                         <div class="grid3">&nbsp;</div>
@@ -59,7 +59,12 @@
                     </div>
                     <div class="formRow">
                         <div class="grid3"><label>Meta description</label></div>
-                        <div class="grid5"><textarea cols="40" rows="5" name="description"></textarea></div>
+                        <div class="grid5"><textarea cols="40" rows="5" name="meta_description" class="required"></textarea></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow">
+                        <div class="grid3"><label>Sort</label></div>
+                        <div class="grid3"><input id="sort" type="text" maxlength="3" name="sort" /></div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow rowSubmit">
@@ -75,4 +80,19 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(function(){
+        // Generate slug
+        $('#name').change(function(){
+            $('#slug').val($.Utility.generateSlug($(this).val()));
+        });
+        $('#frmCategoryAdd').validate({
+            rules: {
+                sort: {
+                    digits: true
+                }
+            }
+        });
+    });
+</script>
 [: endblock :]

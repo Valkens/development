@@ -1,6 +1,6 @@
 <?php
 // Define base url
-define('BASE_URL', 'http://web.local/github/development/myfw');
+define('BASE_URL', 'http://github.local/development/myfw');
 
 // Admin url suffix
 define('ADMIN_URL_SUFFIX', 'admin');
@@ -22,6 +22,8 @@ define('APPLICATION_ENV', 'development');
 
 // Core_Application
 require_once BASE_PATH . '/library/Core/Application.php';
+
+set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARY_PATH);
 
 // Create application, and run
 $application = new Core_Application(

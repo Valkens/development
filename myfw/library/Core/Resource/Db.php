@@ -346,7 +346,7 @@ class Core_Resource_Db
      * @param array $opt Associative array of options to generate the SELECT statement. Supported: <i>where, limit, select, groupby, having, param, asc, desc, custom, asArray, filters</i>
      * @return mixed A model object or associateve array of the queried result
      */
-    public function find($model, $opt=null){
+    public function find($model, $opt = null){
         if(is_object($model)){
             $class_name = get_class($model);
 
@@ -355,7 +355,9 @@ class Core_Resource_Db
 
             $wheresql ='';
             $where_values = array();
-            foreach($obj as $o=>$v){
+
+            if (!isset($opt['all'])) {
+                foreach($obj as $o=>$v){
                 if(isset($v) && in_array($o, $model->_fields)){
                     if( is_object($v) ){
                         $firstChr = substr($v, 0, 1);
@@ -397,6 +399,7 @@ class Core_Resource_Db
                         $where_values[] = $v;
                     }
                 }
+            }
             }
 
             if($wheresql!=''){
@@ -444,7 +447,7 @@ class Core_Resource_Db
 					$fTableName = $fmodel->_table;
 					$fmodel_class = get_class($fmodel);
 				}else{
-					$fmodel = $this->loadModel($filter['model'], true);
+					$fmodel = new $filter['model'];
 					$fTableName = $fmodel->_table;
 					$fmodel_class = $filter['model'];
 				}
@@ -577,6 +580,15 @@ class Core_Resource_Db
         }
     }
 
+    public function findAll($model, $columns = null, $limit = null)
+    {
+        $sqladd['select'] = ($columns) ? implode(',', $columns) : '*';
+        $sqladd['limit'] = ($limit) ? "LIMIT $limit" : '';
+
+        $rs = $this->query("SELECT {$sqladd['select']} FROM {$model->_table} {$sqladd['limit']}");
+        return $rs->fetchAll(PDO::FETCH_CLASS, get_class($model));
+    }
+
     /**
      * Find a record and its associated model. Relational search. (Prepares and execute the SELECT statements)
      * @param mixed $model The model class name or object to be select.
@@ -592,46 +604,49 @@ class Core_Resource_Db
 
             $wheresql ='';
             $where_values = array();
-            foreach($obj as $o=>$v){
-                if(isset($v) && in_array($o, $model->_fields)){
-                    if( is_object($v) ){
-                        $firstChr = substr($v, 0, 1);
-						$andOrStr = ($v->useOrStatement) ? 'OR ' : 'AND';
 
-                        if(ctype_punct($firstChr)){
-							if(ctype_punct(substr($v, 1, 1))){
-								$firstChr .= substr($v, 1, 1);
-								$wvalue = substr($v, 2);
-							}else{
-								$wvalue = substr($v, 1);
-							}
-							if($v->skipBinding === TRUE){
-								$wheresql .= " {$andOrStr} {$obj['_table']}.$o $firstChr " . $wvalue;
-							}else{
-								$wheresql .= " {$andOrStr} {$obj['_table']}.$o $firstChr ?";
-								$where_values[] = substr($v, 1);
-							}
+            if (!isset($opt['all'])) {
+                foreach($obj as $o=>$v){
+                    if(isset($v) && in_array($o, $model->_fields)){
+                        if( is_object($v) ){
+                            $firstChr = substr($v, 0, 1);
+                            $andOrStr = ($v->useOrStatement) ? 'OR ' : 'AND';
+
+                            if(ctype_punct($firstChr)){
+                                if(ctype_punct(substr($v, 1, 1))){
+                                    $firstChr .= substr($v, 1, 1);
+                                    $wvalue = substr($v, 2);
+                                }else{
+                                    $wvalue = substr($v, 1);
+                                }
+                                if($v->skipBinding === TRUE){
+                                    $wheresql .= " {$andOrStr} {$obj['_table']}.$o $firstChr " . $wvalue;
+                                }else{
+                                    $wheresql .= " {$andOrStr} {$obj['_table']}.$o $firstChr ?";
+                                    $where_values[] = substr($v, 1);
+                                }
+                            }else{
+                                if($v->skipBinding === TRUE){
+                                    $wheresql .= " {$andOrStr} {$obj['_table']}.$o $v";
+                                }else{
+                                    if(strpos(strtoupper($v), 'LIKE')===0){
+                                        preg_match('/^LIKE[ ]{1,}[\'\"]{1}(.+)[\'\"]{1}[ ]{1,}$/i', $v, $matches);
+                                        $wheresql .= " {$andOrStr} {$obj['_table']}.$o LIKE ?";
+                                        $where_values[] = $matches[1];
+                                    }
+                                    else if(strpos(strtoupper($v), 'IS')===0){
+                                        $wheresql .= " {$andOrStr} {$obj['_table']}.$o $v";
+                                    }
+                                    else{
+                                        $wheresql .= " {$andOrStr} {$obj['_table']}.$o=?";
+                                        $where_values[] = $v;
+                                    }
+                                }
+                            }
                         }else{
-							if($v->skipBinding === TRUE){
-                                $wheresql .= " {$andOrStr} {$obj['_table']}.$o $v";
-							}else{
-								if(strpos(strtoupper($v), 'LIKE')===0){
-									preg_match('/^LIKE[ ]{1,}[\'\"]{1}(.+)[\'\"]{1}[ ]{1,}$/i', $v, $matches);
-									$wheresql .= " {$andOrStr} {$obj['_table']}.$o LIKE ?";
-									$where_values[] = $matches[1];
-								}
-								else if(strpos(strtoupper($v), 'IS')===0){
-									$wheresql .= " {$andOrStr} {$obj['_table']}.$o $v";
-								}
-								else{
-									$wheresql .= " {$andOrStr} {$obj['_table']}.$o=?";
-									$where_values[] = $v;
-								}
-							}
+                            $wheresql .= " AND {$obj['_table']}.$o=?";
+                            $where_values[] = $v;
                         }
-                    }else{
-                        $wheresql .= " AND {$obj['_table']}.$o=?";
-                        $where_values[] = $v;
                     }
                 }
             }
@@ -795,7 +810,6 @@ class Core_Resource_Db
 			if($rtype==NULL)
 				throw new Exception("Model $class_name does not relate to $rmodel");
 
-			$this->loadModel($rmodel);
 			$relatedmodel = new $rmodel;
 			$rtable = $relatedmodel->_table;
 
@@ -937,7 +951,7 @@ class Core_Resource_Db
                 $sqladd['include'] = $tmodel->_table;
                 $tmodel_class = get_class($tmodel);
             }else{
-                $tmodel = $this->loadModel($opt['include'], true);
+                $tmodel = new $opt['include'];
                 $sqladd['include'] = $tmodel->_table;
                 $tmodel_class = $opt['include'];
             }
@@ -1007,7 +1021,7 @@ class Core_Resource_Db
 					$fTableName = $fmodel->_table;
 					$fmodel_class = get_class($fmodel);
 				}else{
-					$fmodel = $this->loadModel($filter['model'], true);
+					$fmodel = new $filter['model'];
 					$fTableName = $fmodel->_table;
 					$fmodel_class = $filter['model'];
 				}
@@ -1326,6 +1340,7 @@ class Core_Resource_Db
                 if(isset($tmodel_class) && isset($record->{$tmodel_class}) ){
                     $tmodelArray=null;
                 }
+
                 switch($rtype){
                     case 'has_one':
 					case 'belongs_to':
@@ -1337,7 +1352,6 @@ class Core_Resource_Db
                             $rfk = $v[$rretrieved_pk_key];
 
                             $record = new $class_name;
-
                             $record->{$rmodel} = ($rfk!=NULL)? new $rmodel : NULL;
                             if(isset($tmodel_class) && !isset($record->{$tmodel_class}) ){
                                 if($tmodel_rtype=='has_many'){
@@ -1662,7 +1676,6 @@ class Core_Resource_Db
 
 		$modelObj = $model;
 		if (is_string($modelObj)) {
-			$this->loadModel($modelObj);
 			$modelObj = new $modelObj();
 		}
 		$mdl_pk = $modelObj->_primarykey;
@@ -1690,7 +1703,6 @@ class Core_Resource_Db
 			if(isset($rOpt['select'])){
 				$rOpt['select'] = "$mdl_tbl.$mdl_pk, " . $rOpt['select'];
 			}else{
-				$this->loadModel($rm);
                 $newrm = new $rm;
 				$rOpt['select'] = "$mdl_tbl.$mdl_pk, {$newrm->_table}.*";
 			}
@@ -1762,11 +1774,9 @@ class Core_Resource_Db
             }
         }
 
-        $this->loadModel($rm);
         $newrm = new $rm;
 
         $rm2 = $rmodel[1];
-        $this->loadModel($rm2);
         $newrm2 = new $rm2;
 
         $rOpt = (isset($opt[$rm2])) ? $opt[$rm2] : null;
@@ -1865,7 +1875,7 @@ class Core_Resource_Db
      */
     public function insertAttributes($model, $data){
         if(is_string($model)){
-            $model = $this->loadModel($model,true);
+            $model = new $model;
             $table = $model->_table;
         }else{
             $table = $model->_table;
@@ -2045,7 +2055,7 @@ class Core_Resource_Db
      */
     public function update_attributes($model, $data, $opt=NULL){
         if(is_string($model)){
-            $model = $this->loadModel($model,true);
+            $model = new $model;
             $table = $model->_table;
         }else{
             $table = $model->_table;

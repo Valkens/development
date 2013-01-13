@@ -26,19 +26,20 @@ return array(
             'display_startup_errors' => 0,
             'display_errors' => 0,
             'error_reporting' => 0,
-            'error_log' => APPLICATION_PATH . '/log/system/error'
+            'error_log' => APPLICATION_PATH . '/log/error'
         ),
         'development' => array(
             'display_startup_errors' => 1,
             'display_errors' => 1,
             'error_reporting' => E_ALL,
-            'error_log' => APPLICATION_PATH . '/log/system/error'
+            'error_log' => APPLICATION_PATH . '/log/error'
         )
     ),
     'modules' => array(
-
+		'Base',
         'Default',
-        'Category'
+        'Category',
+        'Post'
     ),
     'libraries' => array(
         'Core',

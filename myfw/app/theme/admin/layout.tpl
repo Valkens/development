@@ -9,7 +9,8 @@
                            'css/main.css'))
     ]]
     [[ $this->addScript(array('/public/js/jquery/jquery.js',
-                              '/public/js/jquery/jquery.elastic/jquery.elastic.source.js'))
+                              '/public/js/jquery/form/validation.js',
+                              'js/utility.js'))
     ]]
 </head>
 

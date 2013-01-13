@@ -5,6 +5,7 @@ class Base_Controller_AdminController extends Core_Controller
 
     public function init()
     {
+        if (!file_exists(CACHE_PATH . '/db')) mkdir(CACHE_PATH . '/db', 777);
         // Cache
         $dbCache = array(
             'frontend' => array(
@@ -17,7 +18,7 @@ class Base_Controller_AdminController extends Core_Controller
             'backend' => array(
                 'name' => 'File',
                 'options' => array(
-                    'cache_dir'=> CACHE_PATH . '/db',
+                    'cache_dir' => CACHE_PATH . '/db',
                 ),
             )
         );

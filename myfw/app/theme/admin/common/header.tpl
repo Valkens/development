@@ -7,14 +7,7 @@
                 <a href="{{$adminUrl}}/category">Category</a>
             </li>
             <li class="dropdown">
-                <a href="#">Thống kê <b class="caret"></b></a>
-                <ul>
-                    <li><a href="#">Sản phẩm</a></li>
-                    <li><a href="#">Hóa đơn</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#">Hệ thống <b class="caret"></b></a>
+                <a href="{{$adminUrl}}/post">Post</a>
             </li>
         </ul>
 

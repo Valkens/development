@@ -48,7 +48,7 @@ class Core_Router {
 	* @param array @params Associative array of parameters to replace placeholders with.
 	* @return string The URL of the route with named parameters in place.
 	*/
-	public function generate($routeName, array $params = array()) {
+	public function generate($routeName, $params = array()) {
 
 		// Check if named route exists
 		if(!isset($this->namedRoutes[$routeName])) {
@@ -60,7 +60,6 @@ class Core_Router {
 		$url = $route;
 
 		if (preg_match_all('`(/|\.|)\[([^:\]]*+)(?::([^:\]]*+))?\](\?|)`', $route, $matches, PREG_SET_ORDER)) {
-			
 			foreach($matches as $match) {
 				list($block, $pre, $type, $param, $optional) = $match;
 
@@ -69,13 +68,11 @@ class Core_Router {
 				}
 
 				if(isset($params[$param])) {
-					$url = str_replace($block, $params[$param], $url);
+					$url = str_replace($block, $params[$param], $url);die();
 				} elseif ($optional) {
 					$url = str_replace($block, '', $url);
 				}
 			}
-			
-
 		}
 
 		return $url;

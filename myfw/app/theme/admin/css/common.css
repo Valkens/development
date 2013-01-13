@@ -90,8 +90,8 @@ textarea { height: auto; }
     padding: 2px;
     width: 100px;
 }
-.formRow .stError{
-    padding-top: 5px;
+.formRow label.error{
+    color: #BF2C11
 }
 .rowFilter {
     background: #E7EFEF

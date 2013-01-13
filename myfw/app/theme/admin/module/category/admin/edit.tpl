@@ -20,12 +20,12 @@
             </div>
 
             <div class="wbody">
-                <form id="formAdd" method="post">
+                <form id="frmCategoryEdit" method="post">
                     <div class="formRow">
                         <div class="grid3"><span class="required fleft">*</span><label>Parent</label></div>
                         <div class="grid4">
                             <select name="parent">
-                                <option value="-1">Select...</option>
+                                <option value="0">None</option>
                                 @foreach ($categories as $obj) :
                                     @$selected = ($obj->id == $category->id_parent) ? ' selected="selected"' : ''
                                 <option value="{{$obj->id}}"{{$selected}}>{{$obj->name}}</option>
@@ -61,7 +61,12 @@
                     </div>
                     <div class="formRow">
                         <div class="grid3"><label>Meta description</label></div>
-                        <div class="grid5"><textarea cols="40" rows="5" name="description">{{$category->description}}</textarea></div>
+                        <div class="grid5"><textarea cols="40" rows="5" name="meta_description">{{$category->meta_description}}</textarea></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow">
+                        <div class="grid3"><label>Sort</label></div>
+                        <div class="grid3"><input id="sort" type="text" maxlength="3" name="sort" value="{{$category->sort}}" /></div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow rowSubmit">
@@ -77,4 +82,19 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(function(){
+        // Generate slug
+        $('#name').change(function(){
+            $('#slug').val($.Utility.generateSlug($(this).val()));
+        });
+        $('#frmCategoryEdit').validate({
+            rules: {
+                sort: {
+                    digits: true
+                }
+            }
+        });
+    });
+</script>
 [: endblock :]

@@ -16,6 +16,7 @@ class Core_Helper_View
 
         $compressed_js_filename = md5($compressed_js_filename);
 
+        if (!file_exists(BASE_PATH . '/public/cache')) mkdir(BASE_PATH . '/public/cache', 777);
         $compressed_js_path = BASE_PATH . '/public/cache/' . $compressed_js_filename . '.js';
         $compressed_js_file_date = file_exists($compressed_js_path) ? filemtime($compressed_js_path) : 0;
 
@@ -53,6 +54,7 @@ class Core_Helper_View
 
         $compressed_css_filename = md5($compressed_css_filename);
 
+        if (!file_exists(BASE_PATH . '/public/cache')) mkdir(BASE_PATH . '/public/cache', 777);
         $compressed_css_path = BASE_PATH . '/public/cache/' . $compressed_css_filename . '.css';
         $compressed_css_file_date = file_exists($compressed_css_path) ? filemtime($compressed_css_path) : 0;
 
