@@ -8,7 +8,8 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
         // Write cache
         if (!$categories = $this->_cache['db']->load('db_categories')) {
             $categoryModel = new Category_Model_Category();
-            if ($categories = $categoryModel->find(array('all' => true, 'asc' => 'sort'))) {
+            $sql = "SELECT * FROM {$categoryModel->table} ORDER BY sort DESC";
+            if ($categories = $categoryModel->fetch($sql)) {
                 $this->_cache['db']->save($categories, 'db_categories');
             }
         }
@@ -49,10 +50,11 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
             if (trim($this->_params['meta_description'])) {
                 $categoryModel->meta_description = trim($this->_params['meta_description']);
             }
-            $categoryModel->insert();
+            $categoryModel->save();
 
             // Write cache
-            $this->_cache['db']->save($categoryModel->find(array('all' => true, 'asc' => 'sort')), 'db_categories');
+            $sql = "SELECT * FROM {$categoryModel->table} ORDER BY sort DESC";
+            $this->_cache['db']->save($categoryModel->fetch($sql), 'db_categories');
 
             $this->redirect(array('name' => 'route_admin_category'));
         }
@@ -67,7 +69,9 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
         $categoryModel = new Category_Model_Category();
         $categoryModel->id = $categoryId;
 
-        $this->_data['category'] = $categoryModel->find(array('limit' => 1));
+        $sql = "SELECT * FROM {$categoryModel->table} ORDER BY sort DESC LIMIT 1";
+        $this->_data['category'] = $categoryModel->fetch($sql, 'one');
+
         if ($this->_data['categories']) {
             $this->_data['categories'] = array_filter($this->_cache['db']->load('db_categories'),
                                                       create_function('$obj', 'return $obj->id_parent == 0;'));
@@ -85,7 +89,8 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
             $categoryModel->update();
 
             // Write cache
-            $this->_cache['db']->save($categoryModel->find(array('all' => true, 'asc' => 'sort')), 'db_categories');
+            $sql = "SELECT * FROM {$categoryModel->table} ORDER BY sort DESC";
+            $this->_cache['db']->save($categoryModel->fetch($sql), 'db_categories');
 
             $this->redirect(array('name' => 'route_admin_category'));
         }

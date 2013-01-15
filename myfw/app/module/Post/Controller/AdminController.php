@@ -5,10 +5,24 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
     {
         $this->_data['pageTitle'] = 'List Post';
 
-        $postModel = new Post_Model_Post();
-        $categoryModel = new Category_Model_Category();
+        $posts = array();
+        $cates = array();
 
-        $this->_data['posts'] = $postModel->relate('Category_Model_Category', array('all' => true, 'desc' => 'post.id', 'limit' => '0,10'));
+        if ($categories = $this->_cache['db']->load('db_categories')) {
+            foreach ($categories as $category) {
+                $cates[$category->id] = $category->name;
+            }
+
+            $postModel = new Post_Model_Post();
+            $sql = "SELECT * FROM {$postModel->table} ORDER BY id DESC";
+            $posts = $postModel->fetch($sql);
+
+            foreach ($posts as $post) {
+                $post->categoryName = $cates[$post->id_category];
+            }
+        }
+
+        $this->_data['posts'] = $posts;
     }
 
     public function addAction()

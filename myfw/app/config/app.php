@@ -6,9 +6,7 @@ return array(
                 'host' => 'localhost',
                 'username' => 'root',
                 'password' => 'root',
-                'dbname' => 'dev_blog',
-                'persistent' => false,
-                'charset' => 'utf8'
+                'dbname' => 'dev_blog'
             ),
             'sqlite' => array(
                 'dbname' => APPLICATION_PATH . '/db/db'
