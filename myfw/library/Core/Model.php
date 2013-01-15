@@ -28,24 +28,21 @@ class Core_Model
         return self::$db;
     }
 
-    /**
-     * Commits a transaction. Transactions can be nestable.
-     */
-    public function commit(){
+    public function commit()
+    {
        $this->db()->commit();
     }
 
-    /**
-     * Initiates a transaction. Transactions can be nestable.
-     */
-    public function beginTransaction(){
+    public function beginTransaction()
+    {
        $this->db()->beginTransaction();
     }
 
     /**
      * Rolls back a transaction. Transactions can be nestable.
      */
-    public function rollBack(){
+    public function rollBack()
+    {
        $this->db()->rollBack();
     }
 
@@ -59,14 +56,14 @@ class Core_Model
         return $this->db()->update($this);
     }
 
-    public function query($sql)
+    public function fetch($column = '*', $custom = null, $params = null)
     {
-        return $this->db()->query($sql);
+        return $this->db()->fetch($this, $column, $custom, $params);
     }
 
-    public function fetch($sql, $fetchType = 'all', $params = null)
+    public function fetchAll($column = '*', $custom = null, $params = null)
     {
-        return $this->db()->fetch($sql, $fetchType, $params);
+        return $this->db()->fetchAll($this, $column, $custom, $params);
     }
 
 }

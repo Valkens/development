@@ -6,11 +6,15 @@
     [[ $this->addCss(array('/public/css/reset.css',
                            '/public/css/reset.css',
                            'css/common.css',
+                           'css/plugins.css',
                            'css/main.css'))
     ]]
     [[ $this->addScript(array('/public/js/jquery/jquery.js',
                               '/public/js/jquery/form/validation.js',
-                              'js/utility.js'))
+                              'js/jquery/jquery.uniform.js',
+                              'js/jquery/jquery.chosen.min.js',
+                              'js/utility.js',
+                              'js/main.js'))
     ]]
 </head>
 

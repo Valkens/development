@@ -8,8 +8,7 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
         // Write cache
         if (!$categories = $this->_cache['db']->load('db_categories')) {
             $categoryModel = new Category_Model_Category();
-            $sql = "SELECT * FROM {$categoryModel->table} ORDER BY sort DESC";
-            if ($categories = $categoryModel->fetch($sql)) {
+            if ($categories = $categoryModel->fetchAll('*', 'ORDER BY sort ASC')) {
                 $this->_cache['db']->save($categories, 'db_categories');
             }
         }
@@ -53,8 +52,7 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
             $categoryModel->save();
 
             // Write cache
-            $sql = "SELECT * FROM {$categoryModel->table} ORDER BY sort DESC";
-            $this->_cache['db']->save($categoryModel->fetch($sql), 'db_categories');
+            $this->_cache['db']->save($categoryModel->fetchAll('*', ' ORDER BY sort ASC'), 'db_categories');
 
             $this->redirect(array('name' => 'route_admin_category'));
         }
@@ -67,10 +65,7 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
         $categoryId = (int) $this->_params['id'];
 
         $categoryModel = new Category_Model_Category();
-        $categoryModel->id = $categoryId;
-
-        $sql = "SELECT * FROM {$categoryModel->table} ORDER BY sort DESC LIMIT 1";
-        $this->_data['category'] = $categoryModel->fetch($sql, 'one');
+        $this->_data['category'] = $categoryModel->fetch('*', 'WHERE id=:id ORDER BY sort ASC LIMIT 1', array(':id'=>$categoryId));
 
         if ($this->_data['categories']) {
             $this->_data['categories'] = array_filter($this->_cache['db']->load('db_categories'),
@@ -83,14 +78,11 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
             $categoryModel->name = trim($this->_params['name']);
             $categoryModel->slug = trim($this->_params['slug']);
             $categoryModel->sort = (int) $this->_params['sort'];
-            if (trim($this->_params['meta_description'])) {
-                $categoryModel->meta_description = trim($this->_params['meta_description']);
-            }
+            $categoryModel->meta_description = trim($this->_params['meta_description']);
             $categoryModel->update();
 
             // Write cache
-            $sql = "SELECT * FROM {$categoryModel->table} ORDER BY sort DESC";
-            $this->_cache['db']->save($categoryModel->fetch($sql), 'db_categories');
+            $this->_cache['db']->save($categoryModel->fetchAll('*', 'ORDER BY sort ASC'), 'db_categories');
 
             $this->redirect(array('name' => 'route_admin_category'));
         }

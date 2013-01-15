@@ -7,9 +7,6 @@ class Core_Resource_Db
     protected $_transactionLevel = 0;
     protected $_options;
 
-    /**
-     * Connects to the database with the default database connection configuration
-     */
     public function connect($options, $adapter)
     {
         $this->adapter = $adapter;
@@ -39,18 +36,12 @@ class Core_Resource_Db
         }
     }
 
-    /**
-     * Close a database connection
-     */
     public function disconnect(){
         $this->_pdo[$this->adapter] = null;
         $adapter = $this->adapter;
         $this->$adapter->connected = false;
     }
-    
-    /**
-     * Initiates a transaction. Transactions can be nestable.
-     */
+
     public function beginTransaction() {
         if($this->transactionLevel === 0){
             $this->_pdo[$this->adapter]->beginTransaction();
@@ -61,9 +52,6 @@ class Core_Resource_Db
         $this->transactionLevel++;
     }
 
-    /**
-     * Commits a transaction. Transactions can be nestable.
-     */
     public function commit() {
         $this->transactionLevel--;
         if($this->transactionLevel === 0){
@@ -74,9 +62,6 @@ class Core_Resource_Db
         }
     }
 
-    /**
-     * Rolls back a transaction. Transactions can be nestable.
-     */
     public function rollBack() {
         $this->transactionLevel--;
         if($this->transactionLevel === 0){
@@ -87,14 +72,6 @@ class Core_Resource_Db
         }
     }
 
-    /**
-     * Quotes a string for use in a query.
-     *
-     * Places quotes around the input string and escapes and single quotes within the input string, using a quoting style appropriate to the underlying driver.
-     * @param string $string The string to be quoted.
-     * @param int $type Provides a data type hint for drivers that have alternate quoting styles. The default value is PDO::PARAM_STR.
-     * @return string Returns a quoted string that is theoretically safe to pass into an SQL statement. Returns FALSE if the driver does not support quoting in this way.
-     */
     public function quote($string, $type=null) {
         return $this->_pdo[$this->adapter]->quote($string, $type);
     }
@@ -114,20 +91,8 @@ class Core_Resource_Db
 		return $array;
 	}
 
-    /**
-     * Returns the last inserted record's id
-     * @return int
-     */
     public function lastInsertId() {
         return $this->_pdo[$this->adapter]->lastInsertId();
-    }
-
-    /**
-     * Returns the underlying PDO object used in Core_Db_SqlMagic
-     * @return PDO
-     */
-    public function getDbObject(){
-        return $this->_pdo;
     }
 
     public function save($model)
@@ -158,7 +123,7 @@ class Core_Resource_Db
         return $this->lastInsertId();
     }
 
-    public function update($model)
+    public function update($model, $options)
     {
         $properties = array_keys(get_object_vars($model));
 
@@ -183,31 +148,61 @@ class Core_Resource_Db
         return $this->lastInsertId();
     }
 
-    public function fetch($sql, $fetchType, $params)
+    public function fetch($model, $column = '*', $custom = null, $params = null)
     {
-        if ($params) {
-            $stmt = $this->_pdo[$this->adapter]->prepare($sql, $params);
-        } else {
-            $stmt = $this->_pdo[$this->adapter]->prepare($sql);
-        }
-        $stmt->execute($params);
+        $sql = "SELECT {$column} FROM {$model->table}";
 
-        if ($fetchType == 'all') {
-            return $stmt->fetchAll(PDO::FETCH_OBJ);
+        if ($custom) {
+            $sql .= " {$custom}";
+        }
+
+        $stmt = $this->_pdo[$this->adapter]->prepare($sql);
+
+        if ($params) {
+            $stmt->execute($params);
+        } else {
+            $stmt->execute();
         }
 
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
-    public function query($sql, $params)
+    public function fetchAll($model, $column = '*', $custom = null, $params = null)
     {
-        if ($params) {
-            $stmt = $this->_pdo[$this->adapter]->prepare($sql, $params);
-        } else {
-            $stmt = $this->_pdo[$this->adapter]->prepare($sql);
-        }
-        $stmt->execute($params);
+        $sql = "SELECT {$column} FROM {$model->table}";
 
-        return $stmt->rowCount();
+        if ($custom) {
+            $sql .= " {$custom}";
+        }
+
+        $stmt = $this->_pdo[$this->adapter]->prepare($sql);
+
+        if ($params) {
+            $stmt->execute($params);
+        } else {
+            $stmt->execute();
+        }
+
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function query($sql, $params, $all = true)
+    {
+        $arr = explode(' ', $sql);
+        $type = strtoupper(array_pop($arr));
+
+        $stmt = $this->_pdo[$this->adapter]->prepare($sql);
+
+        if ($params) {
+            $stmt->execute($params);
+        } else {
+            $stmt->execute();
+        }
+
+        if ($type == 'SELECT') {
+            return ($all) ? $stmt->fetchAll(PDO::FETCH_OBJ) : $stmt->fetch(PDO::FETCH_OBJ);
+        } else {
+            return $stmt->rowCount();
+        }
     }
 }
