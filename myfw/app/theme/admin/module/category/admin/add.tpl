@@ -21,7 +21,7 @@
             <div class="wbody">
                 <form id="frmCategoryAdd" method="post">
                     <div class="formRow">
-                        <div class="grid3"><span class="required fleft">*</span><label>Parent</label></div>
+                        <div class="grid2"><span class="required fleft">*</span><label>Parent</label></div>
                         <div class="grid4 noSearch">
                             <select name="parent" class="select">
                                 <option value="0">None</option>
@@ -33,27 +33,27 @@
                         <div class="clear"></div>
                     </div>
                     <div class="formRow">
-                        <div class="grid3"><span class="required fleft">*</span><label>Name</label></div>
+                        <div class="grid2"><span class="required fleft">*</span><label>Name</label></div>
                         <div class="grid4"><input id="name" type="text" name="name" maxlength="100" class="required" /></div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow">
-                        <div class="grid3"><span class="required fleft">*</span><label>Slug</label></div>
+                        <div class="grid2"><span class="required fleft">*</span><label>Slug</label></div>
                         <div class="grid4"><input id="slug" type="text" name="slug" maxlength="100" class="required" /></div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow">
-                        <div class="grid3"><label>Meta description</label></div>
-                        <div class="grid5"><textarea cols="40" rows="5" name="meta_description" class="required"></textarea></div>
+                        <div class="grid2"><label>Meta description</label></div>
+                        <div class="grid7"><textarea cols="40" rows="5" name="meta_description" class="required"></textarea></div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow">
-                        <div class="grid3"><label>Sort</label></div>
-                        <div class="grid3"><input id="sort" type="text" maxlength="3" name="sort" /></div>
+                        <div class="grid2"><label>Sort</label></div>
+                        <div class="grid2"><input id="sort" type="text" maxlength="3" name="sort" /></div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow rowSubmit">
-                        <div class="grid3">&nbsp;</div>
+                        <div class="grid2">&nbsp;</div>
                         <div class="grid4">
                             <input type="submit" class="buttonS bBlue btnAction" name="submit" value="Submit" />
                         </div>

@@ -1,5 +1,4 @@
-/* Commons
-================================================== */
+/* Commons */
 body {
     font-size: 12px;
     min-height: 100%;
@@ -26,8 +25,7 @@ a{
 .required {color: red}
 
 
-/* Message types
-================================================== */
+/* Message types */
 .mSuccess {
     border: 1px solid #BEE4A5;
     color: #658C2C;
@@ -59,8 +57,7 @@ a{
     border-right: none
 }
 
-/* Form styles
-================================================== */
+/* Form styles */
 input[type="text"],
 input[type="password"],
 textarea {
@@ -304,20 +301,9 @@ div.tagsinput div { display: block; float: left; }
 }
 .bBrown:active { background: #ad7f45; box-shadow: 0 0 2px #707070 inset, 0 1px 0 #fff; -webkit-box-shadow: 0 0 2px #707070 inset, 0 1px 0 #fff; -moz-box-shadow: 0 0 2px #707070 inset, 0 1px 0 #fff; }
 
-/* Widget and Widget head
-================================================== */
+/* Widget and Widget head */
 .widget {border: 1px solid #cdcdcd; position: relative; border-left:none; border-right: none }
 .whead a { color: #636363; }
-/*.whead {
-color: #636363;
-background: #f8f8f8;
-background: -moz-linear-gradient(top,  #f8f8f8 0%, #e8e8e8 100%);
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f8f8f8), color-stop(100%,#e8e8e8));
-background: -webkit-linear-gradient(top,  #f8f8f8 0%,#e8e8e8 100%);
-background: -o-linear-gradient(top,  #f8f8f8 0%,#e8e8e8 100%);
-background: -ms-linear-gradient(top,  #f8f8f8 0%,#e8e8e8 100%);
-background: linear-gradient(top,  #f8f8f8 0%,#e8e8e8 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', endColorstr='#e8e8e8',GradientType=0 );}*/
 .widget > .whead {
     background: none repeat scroll 0 0 #3993BA;
     padding: 2px 10px
@@ -351,8 +337,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 .widget .whead > .titleIcon { float: left; padding: 9px 0 10px 0; width: 40px; border-right: 1px solid #D5D5D5; text-align: center; }
 
 
-/* Tables
-================================================== */
+/* Tables */
 table .selector, table .selector > span{ height: 26px; line-height: 26px; }
 .dataTables_length .selector { margin-top: 1px; }
 table thead td span { background: url(../img/tables/sort.png) no-repeat 0; display: block; width: 7px; float: right; margin: 2px 2px 0 5px; height: 16px; }
@@ -377,8 +362,7 @@ table thead > tr > td .checker {
 .tDefault tbody td { padding: 7px 11px; vertical-align: middle; }
 .tDefault tbody tr { border-top: 1px solid #DFDFDF; }
 
-/* Status
-================================================== */
+/* Status */
 .stSuccess {
     color: #70A415
 }
@@ -389,8 +373,7 @@ table thead > tr > td .checker {
     color: #C62626
 }
 
-/* Grids
-================================================== */
+/* Grids */
 .fluid { width: 100%; *zoom: 1; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; }
 .fluid:before, .fluid:after { display: table; content: ""; }
 .fluid:after { clear: both; }
@@ -412,8 +395,7 @@ table thead > tr > td .checker {
 .fluid .grid1 { width: 6.382978723%; *width: 6.329787233638298%; }
 
 
-/* Tabs
-================================================== */
+/* Tabs */
 /* Content tabs */
 ul.tabs { height: 37px; font-size: 12px; font-weight: bold; color: #636363; border-bottom: 1px solid #CDCDCD; box-shadow: 0 1px 0 #fff; -webkit-box-shadow: 0 1px 0 #fff; -moz-box-shadow: 0 1px 0 #fff; text-shadow: 0 1px white; -webkit-border-top-right-radius: 3px; -webkit-border-top-left-radius: 3px; -moz-border-radius-topright: 3px; -moz-border-radius-topleft: 3px;
     background: #F8F8F8;
