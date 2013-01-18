@@ -15,7 +15,7 @@
                               'js/jquery/jquery.chosen.min.js',
                               'js/ckeditor/ckeditor.js',
                               'js/utility.js',
-                              'js/main.js',))
+                              'js/main.js'))
     ]]
 </head>
 

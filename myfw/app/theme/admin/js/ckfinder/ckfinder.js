@@ -3737,8 +3737,9 @@
         });
         a.aL.Connector = function (p) {
             this.app = p;
-            var q = p.config.connectorLanguage || 'php';
-            this.oN = a.basePath + 'core/connector/' + q + '/connector.' + q;
+            //var q = p.config.connectorLanguage || 'php';
+            //this.oN = a.basePath + 'core/connector/' + q + '/connector.' + q;
+            this.oN = p.config.connectorUrl;
         };
         a.aL.Connector.prototype = {
             ERROR_NONE: 0,

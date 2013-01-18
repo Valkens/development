@@ -52,23 +52,11 @@ define('CKFINDER_CONNECTOR_ERROR_THUMBNAILS_DISABLED',501);
 
 define('CKFINDER_CONNECTOR_DEFAULT_USER_FILES_PATH',"/userfiles/");
 define('CKFINDER_CONNECTOR_LANG_PATH',"./lang");
-define('CKFINDER_CONNECTOR_CONFIG_FILE_PATH',"./../../../config.php");
+define('CKFINDER_CONNECTOR_CONFIG_FILE_PATH', dirname(__FILE__) . "/../../../config.php");
 
-if (version_compare(phpversion(), '6', '>=')) {
-    define('CKFINDER_CONNECTOR_PHP_MODE', 6);
-}
-else if (version_compare(phpversion(), '5', '>=')) {
-    define('CKFINDER_CONNECTOR_PHP_MODE', 5);
-}
-else {
-    define('CKFINDER_CONNECTOR_PHP_MODE', 4);
-}
+define('CKFINDER_CONNECTOR_PHP_MODE', 5);
 
-if (CKFINDER_CONNECTOR_PHP_MODE == 4) {
-    define('CKFINDER_CONNECTOR_LIB_DIR', "./php4");
-} else {
-    define('CKFINDER_CONNECTOR_LIB_DIR', "./php5");
-}
+define('CKFINDER_CONNECTOR_LIB_DIR', dirname(__FILE__) . "/php5");
 
 define('CKFINDER_CHARS', '123456789ABCDEFGHJKLMNPQRSTUVWXYZ');
 define('CKFINDER_REGEX_IMAGES_EXT', '/\.(jpg|gif|png|bmp|jpeg)$/i');

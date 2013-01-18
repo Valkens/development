@@ -1,6 +1,9 @@
 <?php
-global $config;
 session_start();
+
+global $config;
+require_once __DIR__ . '/../../../../../constant.php';
+
 /*
  * ### CKFinder : Configuration File - Basic Instructions
  *
@@ -26,11 +29,12 @@ function CheckAuthentication()
 	// "anyone" to upload and list the files in your server. You must implement
 	// some kind of session validation here. Even something very simple as...
 
-	if (isset($_SESSION['IsAuthorized']) && ($_SESSION['IsAuthorized']=='a82x-sg7012a-341')){
+	/*if (isset($_SESSION['IsAuthorized']) && ($_SESSION['IsAuthorized']=='a82x-sg7012a-341')){
 		return true;
 	}else{
 		return false;
-	}
+	}*/
+    return true;
 
 	// ... where $_SESSION['IsAuthorized'] is set to "true" as soon as the
 	// user logs in your system. To be able to use session variables don't
@@ -66,34 +70,16 @@ Examples:
 
 ATTENTION: The trailing slash is required.
 */
+if (APPLICATION_ENV == 'development') {
+    ini_set('display_errors', 1);
+} else {
+    ini_set('display_errors', 0);
+}
 
-ini_set('display_errors', 0); 
-define( '_ITECH_VALID' , '1') ;
-include ('../../../../../config.php');
-$config2= new Config();
-$baseUrl = $config2->livesite.'media/editor/';
+$baseUrl = BASE_URL . '/public/upload/';
+$baseDir = BASE_PATH . '/public/upload/';
 
 
-
-
-/*
-$baseDir : the path to the local directory (in the server) which points to the
-above $baseUrl URL. This is the path used by CKFinder to handle the files in
-the server. Full write permissions must be granted to this directory.
-
-Examples:
-	// You may point it to a directory directly:
-	$baseDir = '/home/login/public_html/ckfinder/files/';
-	$baseDir = 'C:/SiteDir/CKFinder/userfiles/';
-
-	// Or you may let CKFinder discover the path, based on $baseUrl.
-	// WARNING: resolveUrl() *will not work* if $baseUrl does not start with a slash ("/"),
-	// for example if $baseDir is set to  http://example.com/ckfinder/files/
-	$baseDir = resolveUrl($baseUrl);
-
-ATTENTION: The trailing slash is required.
-*/
-$baseDir = $_SERVER['DOCUMENT_ROOT'].'/'.$config2->paht.'media/editor/';
 /*
  * ### Advanced Settings
  */

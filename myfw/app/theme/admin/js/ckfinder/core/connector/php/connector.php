@@ -1,29 +1,5 @@
 <?php
-/*
- * CKFinder
- * ========
- * http://ckfinder.com
- * Copyright (C) 2007-2010, CKSource - Frederico Knabben. All rights reserved.
- *
- * The software, this file and its contents are subject to the CKFinder
- * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
- * this file is part of the Source Code of CKFinder.
- */
-
-/**
- * Main heart of CKFinder - Connector
- *
- * @package CKFinder
- * @subpackage Connector
- * @copyright CKSource - Frederico Knabben
- */
-
-/**
- * Protect against sending warnings to the browser.
- * Comment out this line during debugging.
- */
-// error_reporting(0);
+global $connector;
 
 /**
  * Protect against sending content before all HTTP headers are sent (#186).
@@ -33,7 +9,7 @@ ob_start();
 /**
  * define required constants
  */
-require_once "./constants.php";
+require_once dirname(__FILE__) . "/constants.php";
 
 // @ob_end_clean();
 // header("Content-Encoding: none");
@@ -84,7 +60,8 @@ $config['Plugins'] = array();
 require_once CKFINDER_CONNECTOR_CONFIG_FILE_PATH;
 
 CKFinder_Connector_Core_Factory::initFactory();
-$connector =& CKFinder_Connector_Core_Factory::getInstance("Core_Connector");
+$connector = CKFinder_Connector_Core_Factory::getInstance("Core_Connector");
+$GLOBALS['connecter'] = $connector;
 
 if(isset($_GET['command'])) {
     $connector->executeCommand($_GET['command']);
