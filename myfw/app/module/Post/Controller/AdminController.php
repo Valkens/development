@@ -13,7 +13,7 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
             }
         }
 
-        $this->_data['categories'] = $categories;
+        $this->_data['categories'] = array_filter($categories, create_function('$obj', 'return $obj->id_parent != 0;'));
     }
 
     public function indexAction()
@@ -25,6 +25,7 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
 
         if ($this->_data['categories']) {
             foreach ($this->_data['categories'] as $category) {
+                if ($category->id_parent == 0) continue;
                 $cates[$category->id] = $category->name;
             }
 
@@ -42,7 +43,5 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
     public function addAction()
     {
         $this->_data['pageTitle'] = 'Add New Post';
-
-
     }
 }

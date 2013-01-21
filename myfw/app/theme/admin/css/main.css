@@ -39,13 +39,13 @@ font-weight: bold;
 #page {
 float: left;
 margin-left: 14px;
-width: 785px
+width: 855px
 }
 
 /* Side menu */
 #wrapper #sideMenu {
 float: left;
-width: 200px;
+width: 130px;
 margin-top: 45px;
 border-right: 1px solid #F5F5F5;
 background:none repeat scroll 0 0 #E7EFEF
@@ -189,15 +189,15 @@ text-align: center;
 width: 240px;
 position: absolute
 }
-#loginForm  .loginPic {
+#loginWrapper > form .loginPic {
 display: block;
 overflow: hidden;
 position: relative;
 text-align: center;
 margin-bottom: 5px
 }
-#loginForm .loginUsername,
-#loginForm .loginPassword{
+#loginWrapper > form .loginUsername,
+#loginWrapper > form .loginPassword{
 color: #333;
 display: inline-block;
 font-size: 12px;
@@ -205,13 +205,6 @@ margin-top: 10px;
 padding: 7px 27px 7px 9px;
 width: 198px
 }
-.loginControl {
+#loginWrapper > form .loginControl {
 margin-top: 15px
-}
-#loginForm  .loginControl .memory {
-float: left;
-margin-top: 5px
-}
-#loginForm  .loginControl input[type="submit"] {
-float: right
 }

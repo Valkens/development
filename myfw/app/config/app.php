@@ -37,7 +37,8 @@ return array(
 		'Base',
         'Default',
         'Category',
-        'Post'
+        'Post',
+        'User'
     ),
     'libraries' => array(
         'Core',

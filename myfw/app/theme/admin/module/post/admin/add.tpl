@@ -24,7 +24,6 @@
                         <div class="grid2"><span class="required fleft">*</span><label>Category</label></div>
                         <div class="grid4 noSearch">
                             <select name="category" class="select">
-                                <option value="0">None</option>
                                 @foreach ($categories as $category) :
                                 <option value="{{$category->id}}">{{$category->name}}</option>
                                 @endforeach
@@ -83,7 +82,7 @@
                     </div>
                     <div class="formRow">
                         <div class="grid2"><label>Content</label></div>
-                        <div class="grid10"><textarea id="editor1" class="ckeditor" cols="40" rows="5" name="c"></textarea></div>
+                        <div class="grid10"><textarea id="editor1" class="ckeditor" cols="40" rows="5" name="content"></textarea></div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow rowSubmit">

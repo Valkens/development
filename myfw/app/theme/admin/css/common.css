@@ -23,7 +23,7 @@ a{
 }
 .thisRow { background: #f3f3e8!important; }
 .required {color: red}
-
+.hidden{display: none}
 
 /* Message types */
 .mSuccess {
@@ -87,7 +87,7 @@ textarea { height: auto; }
     padding: 2px;
     width: 100px;
 }
-.formRow label.error{
+label.error{
     color: #BF2C11
 }
 .rowFilter {

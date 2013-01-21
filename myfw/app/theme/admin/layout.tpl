@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="description" content="Welcome to my basic template.">
     [[ $this->addCss(array('/public/css/reset.css',
-                           '/public/css/reset.css',
                            'css/common.css',
                            'css/plugins.css',
                            'css/main.css'))
@@ -17,6 +16,10 @@
                               'js/utility.js',
                               'js/main.js'))
     ]]
+    <script type="text/javascript">
+        var BASE_URL = '{{$baseUrl}}';
+        var ADMIN_URL = '{{$adminUrl}}';
+    </script>
 </head>
 
 <body>

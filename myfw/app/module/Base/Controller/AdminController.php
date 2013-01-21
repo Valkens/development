@@ -28,6 +28,7 @@ class Base_Controller_AdminController extends Core_Controller
 
         // Set data
         $this->_data['adminUrl'] = BASE_URL . '/admin';
+        $this->_data['baseUrl']  = BASE_URL;
 
         $this->_view->setTheme('admin');
     }
