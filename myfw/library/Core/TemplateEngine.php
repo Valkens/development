@@ -36,36 +36,18 @@ class Core_TemplateEngine
         $this->_paths[$namespace] = rtrim($path, '/');
     }
 
-    /**
-     * @brief Set a universal variable which will available in each template created with this Template instance.
-     * @param $varValue (mixed) The value of the variable.
-     */
     public function setVar($varValue) {
         $this->varsUniversal = $varValue;
     }
 
-    /**
-     * @brief Turn the auto escape on or off. If on, all content rendered using {{ and }} will automatically be escaped with htmlspecialchars().
-     * @param $escape (boolean) True of False. If True, auto escaping is turned on (this is the default). If False, it is turned off for templates retrieved with this Template engine.
-     * @note Auto escaping can be overridden by passing the $autoEscape option to the template() and templateFromString() methods.
-     */
     public function setAutoEscape($escape = True) {
         $this->autoEscape = $escape;
     }
 
-    /**
-     * @brief Set the locale for templates.
-     * @param $locale (string) The locale for the templates to retrieve. If a file with the suffix noted in $locale is available, it will be returned instead of the default .tpl file.
-     */
     public function setLocale($locale) {
         $this->locale = $locale;
     }
 
-    /**
-     * @param $path (string) Template path, without the .tpl extension, relative to the templatePath.
-     * @param $autoEscape (boolean) Whether to auto escape {{ and }} output with htmlspecialchars()
-     * @throw Exception if the template is not exists
-     */
     public function template($file, $autoEscape = NULL)
     {
         if ($autoEscape === NULL) {
@@ -113,17 +95,6 @@ class Core_TemplateEngine
         return $template;
     }
 
-    /**
-     * @brief Create a Template from a string.
-     *
-     * Create a Template instance using $contents as the template contents.
-     * This severely limited what you can do with the Template. There will be
-     * no including from the template, no translations, no caching, etc.
-     *
-     * @param $contents (string) The template contents.
-     * @param $autoEscape (boolean) Whether to auto escape {{ and }} output with htmlspecialchars()
-     * @returns (Template) Template class instance.
-     */
     public function templateFromString($contents, $autoEscape = Null) {
         if ($autoEscape === Null) {
             $autoEscape = $this->autoEscape;
@@ -139,12 +110,6 @@ class Core_TemplateEngine
         return($template);
     }
 
-    /**
-     * @brief Compile a template string to PHP code.
-     * @param $contents (string) String to compile to PHP code.
-     * @param $autoEscape (boolean) Whether to auto escape {{ and }} output with htmlspecialchars()
-     * @note This method is used by the Template class itself, and shouldn't be called directly yourself. Use templateFromString() instead.
-     */
     private function compile($contents, $autoEscape = true)
     {
         // Parse custom short-hand tags to PHP code.

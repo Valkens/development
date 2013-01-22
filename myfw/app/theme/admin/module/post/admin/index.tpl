@@ -45,6 +45,9 @@
             @endforeach
             </tbody>
         </table>
+        <div class="paginator">
+            [[print_r($paginator)]]
+        </div>
     </div>
 </div>
 [: endblock :]

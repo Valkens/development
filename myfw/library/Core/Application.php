@@ -68,7 +68,6 @@ class Core_Application
 
         try {
             $controller = new $controllerClass($this->_options, isset($match['params']) ? $match['params'] : array());
-
             $this->_dispatch($controller, $match['target']['action']);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
@@ -86,9 +85,9 @@ class Core_Application
         $modules = $this->_options['modules'];
 
         foreach ($modules as $module) {
-            $routeDir = APPLICATION_PATH . '/module/' . $module . '/Route/Route.php';
-            if (file_exists($routeDir)) {
-                $routes = include_once $routeDir;
+            $routeFile = APPLICATION_PATH . '/module/' . $module . '/Route/Route.php';
+            if (file_exists($routeFile)) {
+                $routes = include_once $routeFile;
                 foreach ($routes  as $route) {
                     $this->_router->map($route['method'], $route['route'], $route['target'], $route['name']);
                 }

@@ -1,6 +1,8 @@
 <?php
 class Post_Controller_AdminController extends Base_Controller_AdminController
 {
+    const PER_PAGE = 10;
+
     public function init()
     {
         parent::init();
@@ -29,11 +31,22 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
                 $cates[$category->id] = $category->name;
             }
 
+            $paginator = new Base_Helper_Paginator();
             $postModel = new Post_Model_Post();
-            $posts = $postModel->fetchAll('*', 'ORDER BY id DESC LIMIT 0,10');
+            $result = $postModel->fetch('COUNT(id) AS count_all');
 
-            foreach ($posts as $post) {
-                $post->categoryName = $cates[$post->id_category];
+            // Pagination
+            $page = (isset($this->_params['page'])) ? $this->_params['page'] : 1;
+            $offset = ($page - 1) * self::PER_PAGE;
+
+            $posts = $postModel->fetchAll('*', "ORDER BY id DESC LIMIT {$offset}," . self::PER_PAGE);
+
+            if (count($posts)) {
+                foreach ($posts as $post) {
+                    $post->categoryName = $cates[$post->id_category];
+                }
+
+                $this->_data['paginator'] = $paginator->calculate_pages($result->count_all, self::PER_PAGE, $page);
             }
         }
 

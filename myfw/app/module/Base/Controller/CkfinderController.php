@@ -8,8 +8,5 @@ class Base_Controller_CkfinderController extends Base_Controller_AdminController
         require_once APPLICATION_PATH . '/theme/admin/js/ckfinder/core/connector/php/connector.php';
     }
 
-    public function popupAction()
-    {
-
-    }
+    public function popupAction() {}
 }

@@ -123,7 +123,7 @@ class Core_Resource_Db
         return $this->lastInsertId();
     }
 
-    public function update($model, $options)
+    public function update($model)
     {
         $properties = array_keys(get_object_vars($model));
 
@@ -148,9 +148,9 @@ class Core_Resource_Db
         return $this->lastInsertId();
     }
 
-    public function fetch($model, $column = '*', $custom = null, $params = null)
+    public function fetch($model, $columns = '*', $custom = null, $params = null)
     {
-        $sql = "SELECT {$column} FROM {$model->table}";
+        $sql = "SELECT {$columns} FROM {$model->table}";
 
         if ($custom) {
             $sql .= " {$custom}";
@@ -167,9 +167,9 @@ class Core_Resource_Db
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
-    public function fetchAll($model, $column = '*', $custom = null, $params = null)
+    public function fetchAll($model, $columns = '*', $custom = null, $params = null)
     {
-        $sql = "SELECT {$column} FROM {$model->table}";
+        $sql = "SELECT {$columns} FROM {$model->table}";
 
         if ($custom) {
             $sql .= " {$custom}";

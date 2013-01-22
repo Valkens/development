@@ -8,13 +8,6 @@ class Core_Template
     public $inheritFrom;
     public $inheritBlocks = array();
 
-    /**
-     * @brief Create a new Template instance. You'd normally get an instance from a Template class instance.
-     * @param $engine (TemplateEngine instance) The TemplateEngine class instance that generated this Template instance.
-     * @param $filename (string) The filename of this template.
-     * @param $contents (string) The compiled contents of this template.
-     * @param $varsGlobal (array) An array of key/value pairs which represent the global variables for this template and the templates it includes.
-     */
     public function __construct($engine, $filename, $contents, $varsGlobal = array()) {
         $this->engine = $engine;
         $this->filename = $filename;
@@ -22,20 +15,10 @@ class Core_Template
         $this->varsGlobal = $varsGlobal;
     }
 
-    /**
-     * @brief Add an global variable. The global variable will be available to this templates and all the templates it includes.
-     * @param $varName (string) The name of the variable.
-     * @param $varValue (mixed) The value of the variable.
-     */
     public function setVar($varName, $varValue) {
         $this->varsGlobal[$varName] = $varValue;
     }
 
-    /**
-     * @brief Render the contents of the template and return it as a string.
-     * @param $varsLocal (array) An array of key/value pairs which represent the local variables for this template.
-     * @return (string) The rendered contents of the template.
-     */
     public function render($varsLocal = array()) {
         // Extract the Universal (embedded in global), Global and
         // Localvariables into the current scope.
@@ -72,14 +55,6 @@ class Core_Template
         return $result;
     }
 
-    /**
-     * @brief The error handler that handles errors during the parsing of the template.
-     * @param $nr (int) Error code
-     * @param $string (string) Error message
-     * @param $file (string) Filename of the file in which the erorr occurred.
-     * @param $line (int) Linenumber of the line on which the error occurred.
-     * @note Do not call this yourself. It is used internally by TemplateEngine but must be public.
-     */
     public function errorHandler($nr, $string, $file, $line) {
         // We can restore the old error handler, otherwise this error handler
         // will stay active because we throw an exception below.
@@ -94,11 +69,6 @@ class Core_Template
         throw new Exception("$string (file: {$this->filename}, line $line)");
     }
 
-    /**
-     * @brief Include another template.
-     * @param $template (string) The template to include.
-     * @param $varsLocal (array) An array of key/value pairs which represent the local variables for this template.
-     */
     public function inc($template) {
         if (!isset($this->engine)) {
             throw new Exception("Cannot include templates in a Template instance created from a string.");
@@ -107,18 +77,10 @@ class Core_Template
         print ($t->render());
     }
 
-    /**
-     * @brief Inherit from a parent template.
-     * @param $template (string) The template to inherit from.
-     */
     public function inherit($template) {
         $this->inheritFrom = $this->engine->template($template);
     }
 
-    /**
-     * @brief Add javascript file
-     * @param $file
-     */
     public function addScript($files)
     {
         if ($this->engine->options['combineJs']) {
@@ -134,10 +96,6 @@ class Core_Template
         }
     }
 
-    /**
-     * @brief Add javascript file
-     * @param $file
-     */
     public function addCss($files)
     {
         if ($this->engine->options['combineCss']) {
@@ -153,10 +111,6 @@ class Core_Template
         }
     }
 
-    /**
-     * @brief Get absolute url
-     * @param $file
-     */
     public function getAbsoluteUrl($file)
     {
         if (strpos($file, '/', 0) == 0) {
@@ -168,10 +122,6 @@ class Core_Template
         return $file;
     }
 
-    /**
-     * @brief Get absolute path
-     * @param $file
-     */
     public function getAbsolutePath($file)
     {
         if (strpos($file, '/', 0) == 0) {

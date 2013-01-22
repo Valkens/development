@@ -20,20 +20,23 @@ class Core_Controller
         $classPortion = explode('_', get_class($this));
         $this->_moduleName = $classPortion[0];
         $this->_controllerName = str_replace('Controller', '', $classPortion[2]);
-
         $this->_view = Core_Resource_Manager::getResource('view');
+
+        $this->init();
     }
 
-    public function execute($action, $dispatch = true)
+    public function setRouter($router)
+    {
+        $this->_router = $router;
+    }
+
+    public function init() {}
+
+    public function execute($action)
     {
         // Execute action
         if(!method_exists($this, $action . 'Action')) {
             throw new Exception(sprintf('The required method "%s" does not exist for %s', $action, get_class($this)));
-        }
-
-        // Call init method first
-        if ($dispatch == true && method_exists($this, 'init')) {
-            $this->init();
         }
 
         $actionName = $action . 'Action';
@@ -61,10 +64,10 @@ class Core_Controller
         if (is_array($target)) {
             $controllerClass = $target['module'] . '_Controller_' . $target['controller'] . 'Controller';
             $controller = new $controllerClass($this->_options, $params);
-            $controller->execute(lcfirst($target['action']), false);
+            $controller->execute(lcfirst($target['action']));
         } else {
             array_merge($this->_params, $params);
-            $this->execute(lcfirst($target), false);
+            $this->execute(lcfirst($target));
         }
     }
 
@@ -128,8 +131,4 @@ class Core_Controller
         return ($_SERVER['REQUEST_METHOD'] === 'POST');
     }
 
-    public function setRouter($router)
-    {
-        $this->_router = $router;
-    }
 }

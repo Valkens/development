@@ -31,7 +31,7 @@ $(function(){
     $('#frmLogin').validate({
         submitHandler: function() {
             $('#frmLogin .albox').hide();
-            var jqxhr = $.post('{{$adminUrl}}/login', $('#frmLogin').serialize(), function(response) {
+            var jqxhr = $.post('{{$adminUrl}}/auth', $('#frmLogin').serialize(), function(response) {
             }, 'json')
             .success(function(response) {
                 if (response.success == 0) {
@@ -40,8 +40,7 @@ $(function(){
                     $('#frmLogin .albox').hide();
                     window.location.replace('{{$adminUrl}}');
                 }
-            })
-            .error(function() { alert("error"); });
+            });
         }
     });
 });

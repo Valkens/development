@@ -56,14 +56,14 @@ class Core_Model
         return $this->db()->update($this);
     }
 
-    public function fetch($column = '*', $custom = null, $params = null)
+    public function fetch($columns = '*', $custom = null, $params = null)
     {
-        return $this->db()->fetch($this, $column, $custom, $params);
+        return $this->db()->fetch($this, $columns, $custom, $params);
     }
 
-    public function fetchAll($column = '*', $custom = null, $params = null)
+    public function fetchAll($columns = '*', $custom = null, $params = null)
     {
-        return $this->db()->fetchAll($this, $column, $custom, $params);
+        return $this->db()->fetchAll($this, $columns, $custom, $params);
     }
 
 }
