@@ -3,9 +3,10 @@ class Base_Controller_AdminController extends Core_Controller
 {
     protected $_cache;
 
-    public function init()
+    public function __construct($options, $params = array())
     {
-        if (!file_exists(CACHE_PATH . '/db')) mkdir(CACHE_PATH . '/db', 777);
+        parent::__construct($options, $params);
+
         // Cache
         $dbCache = array(
             'frontend' => array(
@@ -24,12 +25,23 @@ class Base_Controller_AdminController extends Core_Controller
         );
 
         $this->_cache['db'] = Zend_Cache::factory($dbCache['frontend']['name'], $dbCache['backend']['name'],
-                                                  $dbCache['frontend']['options'], $dbCache['backend']['options']);
+            $dbCache['frontend']['options'], $dbCache['backend']['options']);
+
+        // Set session
+        $this->_session = Core_Session::getInstance();
 
         // Set data
         $this->_data['adminUrl'] = BASE_URL . '/admin';
         $this->_data['baseUrl']  = BASE_URL;
 
         $this->_view->setTheme('admin');
+    }
+
+    public function init()
+    {
+        if (!$this->isPost() && !$this->isAjax() && !$this->_session->get('username')) {
+            $this->_noRender = true;
+            $this->forward(array('module' => 'User', 'controller' => 'Admin', 'action' => 'login'));
+        }
     }
 }

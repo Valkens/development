@@ -11,7 +11,6 @@ class Core_Loader
         $this->_options = $options;
 
         // Cache
-        if (!file_exists(CACHE_PATH . '/system')) @mkdir(CACHE_PATH . '/system', 777);
         $this->_cacheFile = CACHE_PATH . '/system/' . $this->_cacheFileName;
 
         if (file_exists($this->_cacheFile) && trim(file_get_contents($this->_cacheFile))) {
@@ -43,13 +42,9 @@ class Core_Loader
                 // Write cache
                 $content = file_get_contents($this->_cacheFile);
                 $content = str_replace(');', '', $content);
+                $content .= "'{$class}'=>'{$file}',);";
 
-                $putContent = "'{$class}'=>'{$file}',);";
-
-                if (!is_writable($this->_cacheFile)) {
-                    throw new Exception("{$this->_cacheFile} is not writable");
-                }
-                file_put_contents($this->_cacheFile, $content . $putContent);
+                file_put_contents($this->_cacheFile, $content);
             }
         }
     }

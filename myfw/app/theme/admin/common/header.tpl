@@ -17,7 +17,7 @@
                 <a href="#">Đức <b class="caret"></b></a>
                 <ul>
                     <li><a href="#">Tài khoản</a></li>
-                    <li><a href="#">Thoát</a></li>
+                    <li><a href="{{$adminUrl}}/logout">Thoát</a></li>
                 </ul>
             </li>
         </ul>

@@ -24,7 +24,7 @@ class Core_Controller
         $this->_view = Core_Resource_Manager::getResource('view');
     }
 
-    public function execute($action)
+    public function execute($action, $dispatch = true)
     {
         // Execute action
         if(!method_exists($this, $action . 'Action')) {
@@ -32,7 +32,7 @@ class Core_Controller
         }
 
         // Call init method first
-        if (method_exists($this, 'init')) {
+        if ($dispatch == true && method_exists($this, 'init')) {
             $this->init();
         }
 
@@ -61,7 +61,10 @@ class Core_Controller
         if (is_array($target)) {
             $controllerClass = $target['module'] . '_Controller_' . $target['controller'] . 'Controller';
             $controller = new $controllerClass($this->_options, $params);
-            $controller->execute(lcfirst($target['action']));
+            $controller->execute(lcfirst($target['action']), false);
+        } else {
+            array_merge($this->_params, $params);
+            $this->execute(lcfirst($target), false);
         }
     }
 
