@@ -4,18 +4,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="description" content="Welcome to my basic template.">
     [[ $this->addCss(array('/public/css/reset.css',
-                           'css/common.css',
-                           'css/plugins.css',
-                           'css/main.css'))
+                            'css/plugins.less',
+                            'css/common.less',
+                            'css/main.less'))
     ]]
-    [[ $this->addScript(array('/public/js/jquery/jquery.js',
-                              '/public/js/jquery/form/validation.js',
-                              'js/jquery/jquery.uniform.js',
-                              'js/jquery/jquery.chosen.min.js',
-                              'js/ckeditor/ckeditor.js',
-                              'js/utility.js',
-                              'js/main.js'))
-    ]]
+
     <script type="text/javascript">
         var BASE_URL = '{{$baseUrl}}';
         var ADMIN_URL = '{{$adminUrl}}';
@@ -25,5 +18,15 @@
 <body>
 @$this->inc('@_theme_/common/header')
 [: block content :][: endblock :]
+
+[[ $this->addScript(array('/public/js/jquery/jquery.js',
+                          '/public/js/jquery/form/validation.js',
+                          'js/jquery/jquery.uniform.js',
+                          'js/jquery/jquery.chosen.min.js',
+                          'js/utility.js',
+                          'js/main.js'))
+]]
+
+[: block script :][: endblock :]
 </body>
 </html>

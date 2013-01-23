@@ -67,19 +67,22 @@
         </div>
     </div>
 </div>
+[: endblock :]
+
+[: block script :]
 <script type="text/javascript">
-    $(function(){
-        // Generate slug
-        $('#name').change(function(){
-            $('#slug').val($.Utility.generateSlug($(this).val()));
-        });
-        $('#frmCategoryEdit').validate({
-            rules: {
-                sort: {
-                    digits: true
-                }
-            }
-        });
+$(function(){
+    // Generate slug
+    $('#name').change(function(){
+        $('#slug').val($.Utility.generateSlug($(this).val()));
     });
+    $('#frmCategoryEdit').validate({
+        rules: {
+            sort: {
+                digits: true
+            }
+        }
+    });
+});
 </script>
 [: endblock :]

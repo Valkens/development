@@ -66,12 +66,8 @@ class Core_Application
             $controllerClass = $match['target']['module'] . '_Controller_' . $match['target']['controller'] . 'Controller';
         }
 
-        try {
-            $controller = new $controllerClass($this->_options, isset($match['params']) ? $match['params'] : array());
-            $this->_dispatch($controller, $match['target']['action']);
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
-        }
+        $controller = new $controllerClass($this->_options, isset($match['params']) ? $match['params'] : array());
+        $this->_dispatch($controller, $match['target']['action']);
     }
 
     protected function _dispatch($controller, $action)

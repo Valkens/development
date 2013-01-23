@@ -11,35 +11,26 @@ class Core_Resource_View
         $this->_templateEngine = new Core_TemplateEngine(NULL, $this->_options);
 
         // Add layout path
-        $this->_theme = $this->_options['theme'];
-
-        // Delete all cache file
-        if (!$this->_options['combineCss']) {
-            Core_Helper_File::deleteAllFile(BASE_PATH . '/public/cache', 'css');
-        }
-        if (!$this->_options['combineJs']) {
-            Core_Helper_File::deleteAllFile(BASE_PATH . '/public/cache', 'js');
-        }
+        $this->setTheme($this->_options['theme']);
     }
 
     public function setTheme($theme)
     {
-        $this->_templateEngine->setTheme($theme);
+        $this->_templateEngine->theme = $theme;
     }
 
     public function getTheme()
     {
-        return $this->_templateEngine->getTheme();
+        return $this->_templateEngine->theme;
     }
 
     public function render($dir, $file, $data = array())
     {
-        $path = APPLICATION_PATH . '/theme';
-        // Theme
-        $this->_templateEngine->addPath($path . '/' . $this->_templateEngine->getTheme());
+        $path = APPLICATION_PATH . '/theme/' . $this->getTheme();
 
+        $this->_templateEngine->addPath($path);
         $namespace = '_' . str_replace(array(APPLICATION_PATH, '/'), array('', '_'), $dir) . '_';
-        $this->_templateEngine->addPath($path. '/' . $this->_templateEngine->getTheme() . '/'  . $dir, $namespace);
+        $this->_templateEngine->addPath($path . '/' . $dir, $namespace);
 
         // Registry filter
         if ($this->_options['minify']) {

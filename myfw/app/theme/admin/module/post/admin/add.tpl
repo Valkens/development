@@ -97,6 +97,10 @@
         </div>
     </div>
 </div>
+[: endblock :]
+
+[: block script :]
+<script type="text/javascript" src="{{$baseUrl}}/app/theme/admin/js/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
     $(function(){
         // Generate slug

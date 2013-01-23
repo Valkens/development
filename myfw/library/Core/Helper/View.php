@@ -1,87 +1,134 @@
 <?php
 class Core_Helper_View
 {
-    public static function cccJs($files, $options)
+    public static $theme;
+    public static $options;
+
+    public static function generateCss($files)
     {
-        $js_files_date = 0;
-        $compressed_js_filename = '';
+        require_once LIBRARY_PATH . '/Less/lessc.inc.php';
 
-        // Check app config modify
-        $files[] = BASE_PATH . '/app/config/app.php';
+        $less = new lessc();
 
-        foreach ($files as $file) {
-            $js_files_date = max(filemtime($file), $js_files_date);
-            $compressed_js_filename .= $file;
-        };
+        foreach ($files as $key => $file) {
+            if (substr($file, 0, 1) != '/') {
+                $filePaths[] = BASE_PATH . '/app/theme/' . self::$theme . '/' . $file;
+            } else {
+                $filePaths[] = BASE_PATH . $file;
+            }
+        }
 
-        $compressed_js_filename = md5($compressed_js_filename);
+        if (self::$options['combineCss']) {
+            $fileDate = 0;
+            $cachedFile = '';
 
-        if (!file_exists(BASE_PATH . '/public/cache')) mkdir(BASE_PATH . '/public/cache', 777);
-        $compressed_js_path = BASE_PATH . '/public/cache/' . $compressed_js_filename . '.js';
-        $compressed_js_file_date = file_exists($compressed_js_path) ? filemtime($compressed_js_path) : 0;
+            foreach ($filePaths as $filePath) {
+                $fileDate = max(filemtime($filePath), $fileDate);
+                $cachedFile .= $filePath;
+            }
 
-        // aggregate and compress js files content, write new caches files
-        if ($js_files_date > $compressed_js_file_date) {
-            $content = '';
-            foreach ($files as $file) {
-                if (pathinfo($file, PATHINFO_EXTENSION) != 'js') continue;
+            $cachedFile = md5($cachedFile) . '.css';
+            $cachedFilePath = BASE_PATH . '/public/cache/' . $cachedFile;
+            $cachedFileDate = file_exists($cachedFilePath) ? filemtime($cachedFilePath) : 0;
 
-                if ($options['minify']) {
-                    $content .= self::minifyJs(file_get_contents($file));
-                } else {
-                    $content .= file_get_contents($file);
+            if ($cachedFileDate < $fileDate) {
+                file_put_contents($cachedFilePath, ''); // Clear file
+                $less->setVariables(array(
+                    'themeUrl' => "'" . BASE_URL . '/app/theme/' . self::$theme . "'"
+                ));
+
+                foreach ($filePaths as $filePath) {
+                    $ext = pathinfo($filePath, PATHINFO_EXTENSION);
+                    if ($ext == 'less') {
+                        file_put_contents($cachedFilePath, $less->compileFile($filePath) . PHP_EOL, FILE_APPEND);
+                    } else {
+                        file_put_contents($cachedFilePath, file_get_contents($filePath) . PHP_EOL, FILE_APPEND);
+                    }
+                }
+
+                if (self::$options['minify']) {
+                    file_put_contents($cachedFilePath, self::minifyCss(file_get_contents($cachedFilePath)));
                 }
             }
 
-            file_put_contents($compressed_js_path, $content . "\r\n");
-        }
+            return array(BASE_URL . '/public/cache/' . $cachedFile);
+        } else {
+            foreach ($filePaths as $key => $filePath) {
+                $ext = pathinfo($filePath, PATHINFO_EXTENSION);
 
-        return BASE_URL . '/public/cache/' . $compressed_js_filename . '.js';
-    }
+                if ($ext == 'less') {
+                    $less->setVariables(array(
+                        'themeUrl' => "'" . BASE_URL . '/app/theme/' . self::$theme . "'"
+                    ));
+                    $cachedFile = md5($filePath) . '.css';
+                    $cachedFilePath = BASE_PATH . '/public/cache/' . $cachedFile;
 
-    public static function cccCss($files, $options)
-    {
-        $css_files_date = 0;
-        $compressed_css_filename = '';
+                    if (self::$options['minify']) {
+                        $less->setFormatter('compressed');
+                    }
+                    $less->checkedCompile($filePath, $cachedFilePath);
 
-        // Check app config modify
-        $files[] = BASE_PATH . '/app/config/app.php';
-
-        foreach ($files as $file) {
-            $css_files_date = max(filemtime($file), $css_files_date);
-            $compressed_css_filename .= $file;
-        };
-
-        $compressed_css_filename = md5($compressed_css_filename);
-
-        if (!file_exists(BASE_PATH . '/public/cache')) mkdir(BASE_PATH . '/public/cache', 777);
-        $compressed_css_path = BASE_PATH . '/public/cache/' . $compressed_css_filename . '.css';
-        $compressed_css_file_date = file_exists($compressed_css_path) ? filemtime($compressed_css_path) : 0;
-
-        // aggregate and compress css files content, write new caches files
-        if ($css_files_date > $compressed_css_file_date) {
-            $content = '';
-            foreach ($files as $file) {
-                if (pathinfo($file, PATHINFO_EXTENSION) != 'css') continue;
-
-                if ($options['minify']) {
-                    $content .= self::minifyCss(file_get_contents($file));
+                    $fileLinks[] = BASE_URL . '/public/cache/' . $cachedFile;
                 } else {
-                    $content .= file_get_contents($file);
+                    $fileLinks[] = BASE_URL . '/' . trim(str_replace(BASE_PATH, '', $filePath), '/');
                 }
             }
 
-            file_put_contents($compressed_css_path, $content . "\r\n");
+            return $fileLinks;
         }
-
-        return BASE_URL . '/public/cache/' . $compressed_css_filename . '.css';
     }
 
-    public static function minifyHtml($html, $params)
+    public static function generateJs($files)
     {
-        require_once BASE_PATH . '/library/Min/lib/Minify/HTML.php';
+        foreach ($files as $key => $file) {
+            if (substr($file, 0, 1) != '/') {
+                $filePaths[] = BASE_PATH . '/app/theme/' . self::$theme . '/' . $file;
+            } else {
+                $filePaths[] = BASE_PATH . $file;
+            }
+        }
 
-        return call_user_func(array('Minify_HTML', 'minify'), $html, $params);
+        if (self::$options['combineJs']) {
+            $fileDate = 0;
+            $cachedFile = '';
+
+            foreach ($filePaths as $filePath) {
+                $fileDate = max(filemtime($filePath), $fileDate);
+                $cachedFile .= $filePath;
+            }
+
+            $cachedFile = md5($cachedFile) . '.js';
+            $cachedFilePath = BASE_PATH . '/public/cache/' . $cachedFile;
+            $cachedFileDate = file_exists($cachedFilePath) ? filemtime($cachedFilePath) : 0;
+
+            if ($cachedFileDate < $fileDate) {
+                file_put_contents($cachedFilePath, ''); // Clear file
+
+                foreach ($filePaths as $filePath) {
+                    $ext = pathinfo($filePath, PATHINFO_EXTENSION);
+                    file_put_contents($cachedFilePath, file_get_contents($filePath) . ';' . PHP_EOL, FILE_APPEND);
+                }
+
+                if (self::$options['minify']) {
+                    file_put_contents($cachedFilePath, self::minifyJs(file_get_contents($cachedFilePath)));
+                }
+            }
+
+            return array(BASE_URL . '/public/cache/' . $cachedFile);
+        } else {
+            foreach ($filePaths as $filePath) {
+                $fileLinks[] = BASE_URL . '/' . trim(str_replace(BASE_PATH, '', $filePath), '/');
+            }
+
+            return $fileLinks;
+        }
+    }
+
+    public static function minifyCss($css)
+    {
+        require_once BASE_PATH . '/library/Min/lib/Minify/CSS.php';
+
+        return call_user_func(array('Minify_CSS', 'minify'), $css);
     }
 
     public static function minifyJs($js)
@@ -91,10 +138,10 @@ class Core_Helper_View
         return call_user_func(array('JsMin', 'minify'), $js);
     }
 
-    public static function minifyCss($css)
+    public static function minifyHtml($html, $params)
     {
-        require_once BASE_PATH . '/library/Min/lib/Minify/CSS.php';
+        require_once BASE_PATH . '/library/Min/lib/Minify/HTML.php';
 
-        return call_user_func(array('Minify_CSS', 'minify'), $css);
+        return call_user_func(array('Minify_HTML', 'minify'), $html, $params);
     }
 }

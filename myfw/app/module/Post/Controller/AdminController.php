@@ -46,7 +46,8 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
                     $post->categoryName = $cates[$post->id_category];
                 }
 
-                $this->_data['paginator'] = $paginator->calculate_pages($result->count_all, self::PER_PAGE, $page);
+                $this->_data['paginator'] = $paginator->generateLinks($result->count_all, self::PER_PAGE,
+                                                                      $page, $this->_router->generate('route_admin_post'));
             }
         }
 

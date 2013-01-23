@@ -7,24 +7,13 @@ class Core_TemplateEngine
     public $registryFilters = array();
     public $autoEscape = true;
     public $cache = array();
-    public $_theme;
+    public $theme;
 
     public function __construct($locale = NULL, $options = array())
     {
         $this->locale = $locale;
         $this->options = $options;
-
-        $this->setTheme($options['theme']);
-    }
-
-    public function setTheme($theme)
-    {
-        $this->_theme = $theme;
-    }
-
-    public function getTheme()
-    {
-        return $this->_theme;
+        $this->theme = $options['theme'];
     }
 
     public function addPath($path, $namespace = '_theme_')
@@ -69,17 +58,13 @@ class Core_TemplateEngine
         }
 
         // Cache template
-
         $cachePath = CACHE_PATH . '/template';
         if (!file_exists($cachePath)) mkdir($cachePath, 777);
         $cacheFile = $cachePath . '/' . md5($fpath);
-
-        if (!file_exists($cacheFile)
-            || (filemtime($fpath) > filemtime($cacheFile))
-        ) {
+        $cacheFileDate = (file_exists($cacheFile)) ? filemtime($cacheFile) : 0;
+        if ((filemtime($fpath) > $cacheFileDate)) {
             $content = $this->compile(file_get_contents($fpath), $autoEscape);
             file_put_contents($cacheFile, $content);
-            touch($cacheFile, filemtime($fpath));
         } else {
             $content = file_get_contents($cacheFile);
         }

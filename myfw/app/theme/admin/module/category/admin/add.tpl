@@ -65,6 +65,9 @@
         </div>
     </div>
 </div>
+[: endblock :]
+
+[: block script :]
 <script type="text/javascript">
     $(function(){
         // Generate slug

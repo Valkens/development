@@ -13,6 +13,10 @@ class Core_Template
         $this->filename = $filename;
         $this->contents = $contents;
         $this->varsGlobal = $varsGlobal;
+
+        // Set view helper
+        Core_Helper_View::$options = $this->engine->options;
+        Core_Helper_View::$theme = $this->engine->theme;
     }
 
     public function setVar($varName, $varValue) {
@@ -81,55 +85,20 @@ class Core_Template
         $this->inheritFrom = $this->engine->template($template);
     }
 
-    public function addScript($files)
-    {
-        if ($this->engine->options['combineJs']) {
-            $files = array_map(array($this, 'getAbsolutePath'), $files);
-            $fileCache = Core_Helper_View::cccJs($files, $this->engine->options);
-
-            echo "<script type=\"text/javascript\" src=\"$fileCache\"></script>\n";
-        } else {
-            $files = array_map(array($this, 'getAbsoluteUrl'), $files);
-            foreach ($files as $file) {
-                echo "<script type=\"text/javascript\" src=\"$file\"></script>\n";
-            }
-        }
-    }
-
     public function addCss($files)
     {
-        if ($this->engine->options['combineCss']) {
-            $files = array_map(array($this, 'getAbsolutePath'), $files);
-            $fileCache = Core_Helper_View::cccCss($files, $this->engine->options);
-
-            echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$fileCache\" />\n";
-        } else {
-            $files = array_map(array($this, 'getAbsoluteUrl'), $files);
-            foreach ($files as $file) {
-                echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$file\" />\n";
-            }
+        $links = Core_Helper_View::generateCss($files);
+        foreach ($links as $link) {
+            echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$link}\" />" . PHP_EOL;
         }
     }
 
-    public function getAbsoluteUrl($file)
+    public function addScript($files)
     {
-        if (strpos($file, '/', 0) == 0) {
-            $file = BASE_URL . $file;
-        } else {
-            $file = BASE_URL . '/app/theme/' . $this->engine->getTheme() . '/' . $file;
+        $links = Core_Helper_View::generateJs($files);
+        foreach ($links as $link) {
+            echo "<script type=\"text/javascript\" src=\"{$link}\"></script>" . PHP_EOL;
         }
-
-        return $file;
     }
 
-    public function getAbsolutePath($file)
-    {
-        if (strpos($file, '/', 0) == 0) {
-            $file = BASE_PATH . $file;
-        } else {
-            $file = BASE_PATH . '/app/theme/' . $this->engine->getTheme() . '/' . $file;
-        }
-
-        return $file;
-    }
 }

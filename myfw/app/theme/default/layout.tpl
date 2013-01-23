@@ -25,9 +25,9 @@
     </header>
 
     [: block content :][: endblock :]
-        [[ $this->addScript(array('/public/js/jquery/jquery.js',
-                                  '/public/js/jquery/jquery.elastic/jquery.elastic.source.js',
-                                  'js/main.js'))
+    [[ $this->addScript(array('/public/js/jquery/jquery.js',
+                              '/public/js/jquery/jquery.elastic.js',
+                              'js/main.js'))
     ]]
 
     <footer id="footer">

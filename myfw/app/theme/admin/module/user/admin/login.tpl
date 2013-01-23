@@ -4,13 +4,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>User login</title>
     [[ $this->addCss(array('/public/css/reset.css',
-                           'css/common.css',
-                           'css/main.css'))
+                           'css/common.less',
+                           'css/main.less'))
     ]]
 </head>
 <body>
 <div id="loginWrapper">
-    <form id="frmLogin">
+    <form id="frmLogin" method="post">
         <div class="loginPic">
             <img src="{{$baseUrl}}/app/theme/admin/img/userLogin.png">
         </div>

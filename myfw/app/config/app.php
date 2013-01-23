@@ -13,9 +13,9 @@ return array(
             )
         ),
         'view' => array(
-            'minify' => 0,
-            'combineJs' => 0,
-            'combineCss' => 0,
+            'minify' => 1, // Only effect for combine, otherwise minify less css file
+            'combineCss' => 1,
+            'combineJs' => 1,
             'theme' => 'default'
         )
     ),

@@ -46,7 +46,7 @@
             </tbody>
         </table>
         <div class="paginator">
-            [[print_r($paginator)]]
+            @echo htmlspecialchars_decode($paginator,ENT_NOQUOTES);
         </div>
     </div>
 </div>

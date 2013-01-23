@@ -8,12 +8,9 @@ class Base_Helper_Paginator
         $last_page = ceil($total_rows / $rows_per_page);
         // make sure we are within limits
         $page_num = (int) $page_num;
-        if ($page_num < 1)
-        {
+        if ($page_num < 1) {
             $page_num = 1;
-        }
-        elseif ($page_num > $last_page)
-        {
+        } elseif ($page_num > $last_page) {
             $page_num = $last_page;
         }
         $upto = ($page_num - 1) * $rows_per_page;
@@ -39,8 +36,7 @@ class Base_Helper_Paginator
         $arr = array();
         $show = 5; // how many boxes
         // at first
-        if ($page_num == 1)
-        {
+        if ($page_num == 1) {
             // case of 1 page only
             if ($next == $page_num) return array(1);
             for ($i = 0; $i < $show; $i++)
@@ -51,12 +47,10 @@ class Base_Helper_Paginator
             return $arr;
         }
         // at last
-        if ($page_num == $last_page)
-        {
+        if ($page_num == $last_page) {
             $start = $last_page - $show;
             if ($start < 1) $start = 0;
-            for ($i = $start; $i < $last_page; $i++)
-            {
+            for ($i = $start; $i < $last_page; $i++) {
                 array_push($arr, $i + 1);
             }
             return $arr;
@@ -67,7 +61,6 @@ class Base_Helper_Paginator
         if ($start < 1)
             $start = 0;
         for ($i = $start; $i < $page_num; $i++) {
-            if ($i == $start) array_push($arr, '...');
             array_push($arr, floor($i + 1));
         }
         for ($i = ($page_num + 1); $i < ($page_num + $show / 2 + 1); $i++) {
@@ -76,6 +69,42 @@ class Base_Helper_Paginator
         }
 
         return $arr;
+    }
+
+    public function generateLinks($total_rows, $rows_per_page, $page_num, $href)
+    {
+        if ($total_rows == 1) return '';
+
+        $arr = $this->calculate_pages($total_rows, $rows_per_page, $page_num);
+        $content = '<ul>';
+
+        // Array ( [limit] => LIMIT 0,10 [current] => 1 [previous] => 1 [next] => 2 [last] => 8 [info] => Page (1 of 8) [pages] => Array ( [0] => 1 [1] => 2 [2] => 3 [3] => 4 [4] => 5 ))
+        // Previous
+        if ($arr['current'] != 1) {
+            $url = $href . '/page/' . $arr['previous'];
+            $content .= "<li><a href=\"{$url}\">Previous</a></li>";
+        }
+
+        foreach ($arr['pages'] as $page) {
+            if ($page != 1 && $page != '...') {
+                $url = $href . '/page/' . $page;
+            } elseif ($page == '...') {
+                $url = 'javascript:void(0)';
+            } else {
+                $url = $href;
+            }
+            $content .= "<li><a href=\"{$url}\">{$page}</a></li>";
+        }
+
+        // Next
+        if ($arr['current'] != $arr['last']) {
+            $url = $href . '/page/' . $arr['next'];
+            $content .= "<li><a href=\"{$url}\">Next</a></li>";
+        }
+
+        $content .= '</ul>';
+
+        return $content;
     }
 
 }
