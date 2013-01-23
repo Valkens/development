@@ -31,7 +31,6 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
                 $cates[$category->id] = $category->name;
             }
 
-            $paginator = new Base_Helper_Paginator();
             $postModel = new Post_Model_Post();
             $result = $postModel->fetch('COUNT(id) AS count_all');
 
@@ -46,8 +45,16 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
                     $post->categoryName = $cates[$post->id_category];
                 }
 
-                $this->_data['paginator'] = $paginator->generateLinks($result->count_all, self::PER_PAGE,
-                                                                      $page, $this->_router->generate('route_admin_post'));
+                // Paginator
+                $paginator = new Base_Helper_Paginator();
+                $paginator->items_total = $result->count_all;
+                $paginator->items_per_page = self::PER_PAGE;
+                $paginator->current_page = $page;
+                $paginator->mid_range = 4;
+                $paginator->baseUrl = $this->_router->generate('route_admin_post');
+                $paginator->paginate();
+
+                $this->_data['paginator'] = $paginator;
             }
         }
 

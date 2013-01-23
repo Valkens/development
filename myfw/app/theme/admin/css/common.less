@@ -315,7 +315,7 @@ div.tagsinput div { display: block; float: left; }
 .bBrown:active { background: #ad7f45; box-shadow: 0 0 2px #707070 inset, 0 1px 0 #fff; -webkit-box-shadow: 0 0 2px #707070 inset, 0 1px 0 #fff; -moz-box-shadow: 0 0 2px #707070 inset, 0 1px 0 #fff; }
 
 /* Widget and Widget head */
-.widget {border: 1px solid #cdcdcd; position: relative; border-left:none; border-right: none }
+.widget {border: 1px solid #cdcdcd; position: relative; border-left:none; border-right: none; border-bottom: none}
 .whead a { color: #636363; }
 .widget > .whead {
     background: none repeat scroll 0 0 #3993BA;
@@ -349,6 +349,19 @@ div.tagsinput div { display: block; float: left; }
 .whead .headInput input[type=text] { width: 100%; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; font-size: 11px; color: #858585; box-shadow: 0 1px 0 #f5f5f5; -webkit-box-shadow: 0 1px 0 #f5f5f5; -moz-box-shadow: 0 1px 0 #f5f5f5; padding: 4px 20px 5px 5px; border: 1px solid #d7d7d7; display: inline-block; background: #fdfdfd; -webkit-appearance: none; }
 .widget .whead > .titleIcon { float: left; padding: 9px 0 10px 0; width: 40px; border-right: 1px solid #D5D5D5; text-align: center; }
 
+/* Paginator */
+.widget .paginator {float:right;margin: 9px 0}
+.widget .paginator .paginate, .widget .paginator .current{
+  border: 1px solid #D3D3D3;
+  border-radius: 3px 3px 3px 3px;
+  color: #606060;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 14px;
+  padding: 4px 7px;
+  margin-right: 4px;
+}
+.widget .paginator .current {background:#606060;color: #fff;border: none}
 
 /* Tables */
 table .selector, table .selector > span{ height: 26px; line-height: 26px; }
@@ -363,6 +376,7 @@ table thead > tr > td .checker {
 }
 
 /* Default table */
+.tDefault {border-bottom: 1px solid #DFDFDF}
 .tDefault tbody td, .tDefault thead td { border-left: 1px solid #DFDFDF; text-align: center}
 .tDefault tbody td:first-child, .tDefault thead td:first-child { border-left: none; }
 .checkAll thead td:first-child > img { vertical-align: middle; padding-bottom: 2px; }
@@ -372,8 +386,8 @@ table thead > tr > td .checker {
     margin-right:0
 }
 
-.tDefault tbody td { padding: 7px 11px; vertical-align: middle; }
-.tDefault tbody tr { border-top: 1px solid #DFDFDF; }
+.tDefault td { padding: 7px 11px; vertical-align: middle; }
+.tDefault tr { border-top: 1px solid #DFDFDF; }
 
 /* Status */
 .stSuccess {

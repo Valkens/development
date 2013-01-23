@@ -1,110 +1,107 @@
 <?php
 class Base_Helper_Paginator
 {
-    public function calculate_pages($total_rows, $rows_per_page, $page_num)
-    {
-        $arr = array();
-        // calculate last page
-        $last_page = ceil($total_rows / $rows_per_page);
-        // make sure we are within limits
-        $page_num = (int) $page_num;
-        if ($page_num < 1) {
-            $page_num = 1;
-        } elseif ($page_num > $last_page) {
-            $page_num = $last_page;
-        }
-        $upto = ($page_num - 1) * $rows_per_page;
-        $arr['limit'] = 'LIMIT '.$upto.',' .$rows_per_page;
-        $arr['current'] = $page_num;
-        if ($page_num == 1)
-            $arr['previous'] = $page_num;
-        else
-            $arr['previous'] = $page_num - 1;
-        if ($page_num == $last_page)
-            $arr['next'] = $last_page;
-        else
-            $arr['next'] = $page_num + 1;
-        $arr['last'] = $last_page;
-        $arr['info'] = 'Page ('.$page_num.' of '.$last_page.')';
-        $arr['pages'] = $this->get_surrounding_pages($page_num, $last_page, $arr['next']);
+    public $items_per_page;
+    public $items_total;
+    public $current_page = 1;
+    public $num_pages;
+    public $mid_range = 6;
+    public $return;
+    public $baseUrl;
+    public $prefix = 'page/';
+    public $first = 'First';
+    public $last = 'Last';
+    public $end = 'End';
+    public $prev = '«';
+    public $next = '»';
 
-        return $arr;
-    }
-
-    function get_surrounding_pages($page_num, $last_page, $next)
+    function paginate()
     {
-        $arr = array();
-        $show = 5; // how many boxes
-        // at first
-        if ($page_num == 1) {
-            // case of 1 page only
-            if ($next == $page_num) return array(1);
-            for ($i = 0; $i < $show; $i++)
-            {
-                if ($i == $last_page) break;
-                array_push($arr, $i + 1);
+        $this->num_pages = ceil($this->items_total/$this->items_per_page);
+
+        if($this->current_page > $this->num_pages) $this->current_page = $this->num_pages;
+
+        $prev_page = $this->current_page - 1;
+        $next_page = $this->current_page + 1;
+
+        $href = "{$this->baseUrl}/{$this->prefix}";
+
+        if ($this->num_pages > $this->mid_range) {
+            $this->start_range = $this->current_page - floor($this->mid_range/2);
+            $this->end_range = $this->current_page + floor($this->mid_range/2);
+
+            if ($this->start_range <= 0) {
+                $this->end_range += abs($this->start_range) + 1;
+                $this->start_range = 1;
             }
-            return $arr;
-        }
-        // at last
-        if ($page_num == $last_page) {
-            $start = $last_page - $show;
-            if ($start < 1) $start = 0;
-            for ($i = $start; $i < $last_page; $i++) {
-                array_push($arr, $i + 1);
+
+            if ($this->end_range > $this->num_pages) {
+                $this->start_range -= $this->end_range-$this->num_pages;
+                $this->end_range = $this->num_pages;
             }
-            return $arr;
-        }
-        // at middle
-        $start = $page_num - $show / 2;
 
-        if ($start < 1)
-            $start = 0;
-        for ($i = $start; $i < $page_num; $i++) {
-            array_push($arr, floor($i + 1));
-        }
-        for ($i = ($page_num + 1); $i < ($page_num + $show / 2 + 1); $i++) {
-            if ($i == ($last_page + 1)) break;
-            array_push($arr, floor($i));
-        }
+            $this->range = range($this->start_range, $this->end_range);
 
-        return $arr;
-    }
+            for ($i = $this->start_range; $i < $this->end_range; $i++) {
+                if ($this->range[0] >= 2 And $i == $this->range[0]) {
+                    $this->return .= "<a class=\"paginate\" href=\"{$this->baseUrl}\">{$this->first}</a>";
+                    $this->return .= ($this->current_page != 1 And $this->items_total >= $this->mid_range)
+                                  ? "<a class=\"paginate\" href=\"{$href}{$prev_page}\">{$this->prev}</a> "
+                                  : '';
+                    $this->return .= ' ... ';
+                }
 
-    public function generateLinks($total_rows, $rows_per_page, $page_num, $href)
-    {
-        if ($total_rows == 1) return '';
+                if ($i == 1) {
+                    $url = $this->baseUrl;
+                } else {
+                    $url = $href . $i;
+                }
 
-        $arr = $this->calculate_pages($total_rows, $rows_per_page, $page_num);
-        $content = '<ul>';
+                // loop through all pages. if first, last, or in range, display
+                if ($i==1 Or $i==$this->num_pages Or in_array($i,$this->range)) {
+                    $this->return .= ($i == $this->current_page And $this->current_page != $this->num_pages)
+                                   ? "<a class=\"current\" href=\"javascript:void(0)\">$i</a>"
+                                   : "<a class=\"paginate\" href=\"{$url}\">$i</a>";
+                }
 
-        // Array ( [limit] => LIMIT 0,10 [current] => 1 [previous] => 1 [next] => 2 [last] => 8 [info] => Page (1 of 8) [pages] => Array ( [0] => 1 [1] => 2 [2] => 3 [3] => 4 [4] => 5 ))
-        // Previous
-        if ($arr['current'] != 1) {
-            $url = $href . '/page/' . $arr['previous'];
-            $content .= "<li><a href=\"{$url}\">Previous</a></li>";
-        }
+                if ($this->range[$this->mid_range-1] < $this->num_pages-1 And $i == $this->range[$this->mid_range-1]) {
+                    $this->return .= " ... ";
+                }
+            }
 
-        foreach ($arr['pages'] as $page) {
-            if ($page != 1 && $page != '...') {
-                $url = $href . '/page/' . $page;
-            } elseif ($page == '...') {
-                $url = 'javascript:void(0)';
+            if ($next_page != $i) {
+                $this->return .= (($this->current_page != $this->num_pages And $this->items_total >= $this->mid_range) And ($this->current_page != $this->num_pages))
+                               ? "<a class=\"paginate\" href=\"{$href}{$next_page}\">{$this->next}</a>"
+                               : '';
+                $this->return .= ($this->current_page == $this->num_pages)
+                               ? "<a class=\"current\" href=\"javascript:void(0)\">{$this->num_pages}</a>"
+                               : "<a class=\"paginate\" href=\"{$href}{$this->num_pages}\">{$this->end}</a>";
             } else {
-                $url = $href;
+                $this->return .= "<a class=\"paginate\" href=\"{$href}{$next_page}\">{$next_page}</a>";
             }
-            $content .= "<li><a href=\"{$url}\">{$page}</a></li>";
+        } else {
+            for($i = 1; $i <= $this->num_pages; $i++) {
+                if ($i == 1) {
+                    $url = $this->baseUrl;
+                } else {
+                    $url = $href . $i;
+                }
+
+                $p = $i;
+                if ($i == $this->num_pages) {
+                    $p = $this->end;
+                }
+
+                $this->return .= ($i == $this->current_page)
+                               ? "<a class=\"current\" href=\"javascript:void(0)\">$i</a>"
+                               : "<a class=\"paginate\" href=\"{$url}\">$p</a>";
+            }
         }
+    }
 
-        // Next
-        if ($arr['current'] != $arr['last']) {
-            $url = $href . '/page/' . $arr['next'];
-            $content .= "<li><a href=\"{$url}\">Next</a></li>";
-        }
-
-        $content .= '</ul>';
-
-        return $content;
+    function display_pages()
+    {
+        return $this->return;
     }
 
 }

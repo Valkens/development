@@ -1,64 +1,18 @@
 <?php
-session_start();
-
 global $config;
 require_once __DIR__ . '/../../../../../constant.php';
 
-/*
- * ### CKFinder : Configuration File - Basic Instructions
- *
- * In a generic usage case, the following tasks must be done to configure
- * CKFinder:
- *     1. Check the $baseUrl and $baseDir variables;
- *     2. If available, paste your license key in the "LicenseKey" setting;
- *     3. Create the CheckAuthentication() function that enables CKFinder for authenticated users;
- *
- * Other settings may be left with their default values, or used to control
- * advanced features of CKFinder.
- */
-
-/**
- * This function must check the user session to be sure that he/she is
- * authorized to upload and access files in the File Browser.
- *
- * @return boolean
- */
 function CheckAuthentication()
 {
-	// WARNING : DO NOT simply return "true". By doing so, you are allowing
-	// "anyone" to upload and list the files in your server. You must implement
-	// some kind of session validation here. Even something very simple as...
+    if (User_Helper_Auth::hasIdentity()) {
+        return true;
+    }
 
-	/*if (isset($_SESSION['IsAuthorized']) && ($_SESSION['IsAuthorized']=='a82x-sg7012a-341')){
-		return true;
-	}else{
-		return false;
-	}*/
-    return true;
-
-	// ... where $_SESSION['IsAuthorized'] is set to "true" as soon as the
-	// user logs in your system. To be able to use session variables don't
-	// forget to add session_start() at the top of this file.
-
-	
+    return false;
 }
 
-// LicenseKey : Paste your license key here. If left blank, CKFinder will be
-// fully functional, in demo mode.
 $config['LicenseName'] = 'damir';
 $config['LicenseKey'] = 'RMRHY5Q4SGGYXTSBLAQS8F4ZFUJ';
-
-/*
- Uncomment lines below to enable PHP error reporting and displaying PHP errors.
- Do not do this on a production server. Might be helpful when debugging why CKFinder does not work as expected.
-*/
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
-
-/*
-To make it easy to configure CKFinder, the $baseUrl and $baseDir can be used.
-Those are helper variables used later in this config file.
-*/
 
 /*
 $baseUrl : the base path used to build the final URL for the resources handled
@@ -111,12 +65,8 @@ $config['Images'] = Array(
 RoleSessionVar : the session variable name that CKFinder must use to retrieve
 the "role" of the current user. The "role", can be used in the "AccessControl"
 settings (bellow in this page).
-
-To be able to use this feature, you must initialize the session data by
-uncommenting the following "session_start()" call.
 */
 $config['RoleSessionVar'] = 'CKFinder_UserRole';
-//session_start();
 
 /*
 AccessControl : used to restrict access or features to specific folders.
@@ -130,7 +80,7 @@ Subfolders inherit their default settings from their parents' definitions.
 	  means "all resource types".
 */
 
-$config['AccessControl'][] = Array(
+$config['AccessControl'][] = array(
 		'role' => '*',
 		'resourceType' => '*',
 		'folder' => '/',
@@ -151,7 +101,7 @@ the "Logos" folder of the resource type "Images", you may uncomment the
 following definition, leaving the above one:
 
 $config['AccessControl'][] = Array(
-		'role' => '*',
+		'uhm' => '*',
 		'resourceType' => 'Images',
 		'folder' => '/Logos',
 
@@ -189,7 +139,7 @@ $config['ResourceType'][] = Array(
 		'name' => 'Files',				// Single quotes not allowed
 		'url' => $baseUrl . 'files',
 		'directory' => $baseDir . 'files',
-		'maxSize' => 0,
+		'maxSize' => '2M',
 		'allowedExtensions' => '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip',
 		'deniedExtensions' => '');
 
@@ -197,7 +147,7 @@ $config['ResourceType'][] = Array(
 		'name' => 'Images',
 		'url' => $baseUrl . 'images',
 		'directory' => $baseDir . 'images',
-		'maxSize' => "16M",
+		'maxSize' => "2M",
 		'allowedExtensions' => 'bmp,gif,jpeg,jpg,png,avi,iso,mp3',
 		'deniedExtensions' => '');
 
@@ -205,7 +155,7 @@ $config['ResourceType'][] = Array(
 		'name' => 'Flash',
 		'url' => $baseUrl . 'flash',
 		'directory' => $baseDir . 'flash',
-		'maxSize' => 0,
+		'maxSize' => '2M',
 		'allowedExtensions' => 'swf,flv',
 		'deniedExtensions' => '');
 

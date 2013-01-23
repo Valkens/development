@@ -44,10 +44,16 @@
             </tr>
             @endforeach
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="9">
+                        <div class="paginator">
+                            @echo $paginator->display_pages();
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
         </table>
-        <div class="paginator">
-            @echo htmlspecialchars_decode($paginator,ENT_NOQUOTES);
-        </div>
     </div>
 </div>
 [: endblock :]

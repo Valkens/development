@@ -8,17 +8,15 @@
                             'css/common.less',
                             'css/main.less'))
     ]]
-
-    <script type="text/javascript">
-        var BASE_URL = '{{$baseUrl}}';
-        var ADMIN_URL = '{{$adminUrl}}';
-    </script>
 </head>
 
 <body>
 @$this->inc('@_theme_/common/header')
 [: block content :][: endblock :]
-
+<script type="text/javascript">
+    var BASE_URL = '{{$baseUrl}}';
+    var ADMIN_URL = '{{$adminUrl}}';
+</script>
 [[ $this->addScript(array('/public/js/jquery/jquery.js',
                           '/public/js/jquery/form/validation.js',
                           'js/jquery/jquery.uniform.js',
