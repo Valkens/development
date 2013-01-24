@@ -6,7 +6,7 @@ class Core_Helper_View
 
     public static function generateCss($files)
     {
-        require_once LIBRARY_PATH . '/Less/lessc.inc.php';
+        include_once LIBRARY_PATH . '/Less/lessc.inc.php';
 
         $less = new lessc();
 
@@ -32,7 +32,7 @@ class Core_Helper_View
             $cachedFileDate = file_exists($cachedFilePath) ? filemtime($cachedFilePath) : 0;
 
             if ($cachedFileDate < $fileDate) {
-                file_put_contents($cachedFilePath, ''); // Clear file
+                $fileContent = '';
                 $less->setVariables(array(
                     'themeUrl' => "'" . BASE_URL . '/app/theme/' . self::$theme . "'"
                 ));
@@ -40,15 +40,13 @@ class Core_Helper_View
                 foreach ($filePaths as $filePath) {
                     $ext = pathinfo($filePath, PATHINFO_EXTENSION);
                     if ($ext == 'less') {
-                        file_put_contents($cachedFilePath, $less->compileFile($filePath) . PHP_EOL, FILE_APPEND);
+                        $fileContent .= $less->compileFile($filePath) . PHP_EOL;
                     } else {
-                        file_put_contents($cachedFilePath, file_get_contents($filePath) . PHP_EOL, FILE_APPEND);
+                        $fileContent .= file_get_contents($filePath) . PHP_EOL;
                     }
                 }
 
-                if (self::$options['minify']) {
-                    file_put_contents($cachedFilePath, self::minifyCss(file_get_contents($cachedFilePath)));
-                }
+                file_put_contents($cachedFilePath, (self::$options['minify']) ? self::minifyCss($fileContent) : $fileContent);
             }
 
             return array(BASE_URL . '/public/cache/' . $cachedFile);
@@ -102,16 +100,13 @@ class Core_Helper_View
             $cachedFileDate = file_exists($cachedFilePath) ? filemtime($cachedFilePath) : 0;
 
             if ($cachedFileDate < $fileDate) {
-                file_put_contents($cachedFilePath, ''); // Clear file
+                $fileContent = '';
 
                 foreach ($filePaths as $filePath) {
-                    $ext = pathinfo($filePath, PATHINFO_EXTENSION);
-                    file_put_contents($cachedFilePath, file_get_contents($filePath) . ';' . PHP_EOL, FILE_APPEND);
+                    $fileContent .= file_get_contents($filePath) . ';';
                 }
 
-                if (self::$options['minify']) {
-                    file_put_contents($cachedFilePath, self::minifyJs(file_get_contents($cachedFilePath)));
-                }
+                file_put_contents($cachedFilePath, (self::$options['minify']) ? self::minifyJs($fileContent) : $fileContent);
             }
 
             return array(BASE_URL . '/public/cache/' . $cachedFile);
@@ -126,21 +121,21 @@ class Core_Helper_View
 
     public static function minifyCss($css)
     {
-        require_once BASE_PATH . '/library/Min/lib/Minify/CSS.php';
+        include_once BASE_PATH . '/library/Min/lib/Minify/CSS.php';
 
         return call_user_func(array('Minify_CSS', 'minify'), $css);
     }
 
     public static function minifyJs($js)
     {
-        require_once BASE_PATH . '/library/Min/lib/JsMin.php';
+        include_once BASE_PATH . '/library/Min/lib/JsMin.php';
 
         return call_user_func(array('JsMin', 'minify'), $js);
     }
 
     public static function minifyHtml($html, $params)
     {
-        require_once BASE_PATH . '/library/Min/lib/Minify/HTML.php';
+        include_once BASE_PATH . '/library/Min/lib/Minify/HTML.php';
 
         return call_user_func(array('Minify_HTML', 'minify'), $html, $params);
     }

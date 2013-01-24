@@ -9,8 +9,6 @@ class Core_Resource_View
     {
         $this->_options = Core_Resource_Manager::getOption('view');
         $this->_templateEngine = new Core_TemplateEngine(NULL, $this->_options);
-
-        // Add layout path
         $this->setTheme($this->_options['theme']);
     }
 

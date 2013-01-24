@@ -23,11 +23,11 @@ class Core_Loader
     public function autoload($class)
     {
         if (isset($this->_cacheIndex[$class])) {
-            require_once $this->_cacheIndex[$class];
+            include_once $this->_cacheIndex[$class];
         } else {
             if (!class_exists($class)) { // Multiple class in one file
-                $portions = explode('_', $class);
-                $namespace = $portions[0];
+                $classInfo = explode('_', $class);
+                $namespace = $classInfo[0];
 
                 if (in_array($namespace, $this->_options['libraries'])) {
                     $dir = LIBRARY_PATH;
@@ -37,7 +37,7 @@ class Core_Loader
 
                 $file =  $dir . '/' . str_replace('_', '/', $class) . '.php';
 
-                require_once $file;
+                include_once $file;
 
                 // Write cache
                 $content = file_get_contents($this->_cacheFile);

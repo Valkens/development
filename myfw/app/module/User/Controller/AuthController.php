@@ -12,7 +12,7 @@ class User_Controller_AuthController extends Core_Controller
 
             if ($user = User_Helper_Auth::checkAuth($username, $password)) {
                 // Update user login
-                $user->last_login_ip = $_SERVER['REMOTE_ADDR'];
+                $user->last_login_ip = $this->getClientIp();
                 $user->last_login = time();
                 $user->update();
 

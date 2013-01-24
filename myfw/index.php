@@ -1,5 +1,5 @@
 <?php
-require_once 'constant.php';
+include_once 'constant.php';
 
 // Core_Application
 require_once BASE_PATH . '/library/Core/Application.php';

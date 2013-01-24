@@ -6,7 +6,7 @@ class Core_Controller
     protected $_moduleName;
     protected $_controllerName;
     protected $_params;
-    protected $_noRender;
+    protected $_noRender = false;
     protected $_data = array();
     protected $_fileRender;
     protected $_view;
@@ -14,13 +14,15 @@ class Core_Controller
     public function __construct($options, $params = array())
     {
         $this->_options = $options;
-
         $this->_params = array_merge($params, $_REQUEST);
 
-        $classPortion = explode('_', get_class($this));
-        $this->_moduleName = $classPortion[0];
-        $this->_controllerName = str_replace('Controller', '', $classPortion[2]);
-        $this->_view = Core_Resource_Manager::getResource('view');
+        $classInfo = explode('_', get_class($this));
+        $this->_moduleName = $classInfo[0];
+        $this->_controllerName = str_replace('Controller', '', $classInfo[2]);
+
+        if (!$this->_noRender) {
+            $this->_view = Core_Resource_Manager::getResource('view');
+        }
 
         $this->init();
     }
@@ -34,7 +36,6 @@ class Core_Controller
 
     public function execute($action)
     {
-        // Execute action
         if(!method_exists($this, $action . 'Action')) {
             throw new Exception(sprintf('The required method "%s" does not exist for %s', $action, get_class($this)));
         }
@@ -87,7 +88,8 @@ class Core_Controller
         exit();
     }
 
-    public function setContentType($type, $charset='utf-8') {
+    public function setContentType($type, $charset='utf-8')
+    {
         if (headers_sent())return;
 
         $extensions = array('html'=>'text/html',
@@ -111,7 +113,8 @@ class Core_Controller
         }
     }
 
-    public function clientIP() {
+    public function getClientIp()
+    {
         if (getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {
             return getenv('HTTP_CLIENT_IP');
         } elseif(getenv('HTTP_X_FORWARDED_FOR') && strcasecmp(getenv('HTTP_X_FORWARDED_FOR'), 'unknown')) {
@@ -123,11 +126,13 @@ class Core_Controller
         }
     }
 
-    public function isAjax(){
+    public function isAjax()
+    {
         return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
     }
 
-    public function isPost() {
+    public function isPost()
+    {
         return ($_SERVER['REQUEST_METHOD'] === 'POST');
     }
 

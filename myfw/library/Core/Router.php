@@ -1,5 +1,6 @@
 <?php
-class Core_Router {
+class Core_Router
+{
 
 	private $routes = array();
 	private $namedRoutes = array();
