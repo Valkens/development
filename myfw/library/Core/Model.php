@@ -38,9 +38,6 @@ class Core_Model
        $this->db()->beginTransaction();
     }
 
-    /**
-     * Rolls back a transaction. Transactions can be nestable.
-     */
     public function rollBack()
     {
        $this->db()->rollBack();

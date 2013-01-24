@@ -205,4 +205,5 @@ class Core_Resource_Db
             return $stmt->rowCount();
         }
     }
+
 }

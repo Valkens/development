@@ -36,7 +36,7 @@ class Core_Controller
 
     public function execute($action)
     {
-        if(!method_exists($this, $action . 'Action')) {
+        if (!method_exists($this, $action . 'Action')) {
             throw new Exception(sprintf('The required method "%s" does not exist for %s', $action, get_class($this)));
         }
 

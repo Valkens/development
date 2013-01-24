@@ -9,9 +9,8 @@ class Core_TemplateEngine
     public $cache = array();
     public $theme;
 
-    public function __construct($locale = NULL, $options = array())
+    public function __construct($options = array())
     {
-        $this->locale = $locale;
         $this->options = $options;
         $this->theme = $options['theme'];
     }
@@ -31,10 +30,6 @@ class Core_TemplateEngine
 
     public function setAutoEscape($escape = True) {
         $this->autoEscape = $escape;
-    }
-
-    public function setLocale($locale) {
-        $this->locale = $locale;
     }
 
     public function template($file, $autoEscape = NULL)
@@ -127,4 +122,5 @@ class Core_TemplateEngine
     {
         $this->registryFilters[$type] = array($callback, $params);
     }
+
 }

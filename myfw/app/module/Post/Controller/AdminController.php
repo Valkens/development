@@ -50,7 +50,6 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
                 $paginator->items_total = $result->count_all;
                 $paginator->items_per_page = self::PER_PAGE;
                 $paginator->current_page = $page;
-                $paginator->mid_range = 4;
                 $paginator->baseUrl = $this->_router->generate('route_admin_post');
                 $paginator->paginate();
 
@@ -65,4 +64,5 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
     {
         $this->_data['pageTitle'] = 'Add New Post';
     }
+
 }

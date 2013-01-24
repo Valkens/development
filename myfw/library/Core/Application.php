@@ -7,13 +7,14 @@ class Core_Application
 
     public function __construct($environment, $options)
     {
-        require_once LIBRARY_PATH . '/' . 'Core/Loader.php';
+        include_once LIBRARY_PATH . '/' . 'Core/Loader.php';
 
         // Registry auto loader
         spl_autoload_register(array(new Core_Loader($options), 'autoload'));
 
         $this->_environment = $environment;
         $this->_setOptions($options);
+        $this->_setExceptionHandler();
     }
 
     protected function _setOptions($options)
@@ -40,6 +41,12 @@ class Core_Application
         }
     }
 
+    protected function _setExceptionHandler()
+    {
+        $errorHandler = new Base_Controller_ErrorController($this->_options);
+        set_exception_handler(array($errorHandler, 'errorAction'));
+    }
+
     protected function _registryResources($resources)
     {
         foreach ($resources as $resource => $options) {
@@ -49,21 +56,20 @@ class Core_Application
 
     public function run()
     {
-        // Set Router
         $subFolder = '/' . ltrim(str_replace($_SERVER['DOCUMENT_ROOT'], '', str_replace('\\','/', BASE_PATH)), '/');
         $basePath = ($subFolder == '/') ? '' : $subFolder;
 
+        // Set Router
         $this->_router = new Core_Router();
         $this->_router->setBasePath($basePath);
         $this->_getRoutes();
 
         $match = $this->_router->match();
 
-        if (empty($match)) {
-            $controllerClass = 'Default_Controller_ErrorController';
-            $match['target']['action'] = 'error404';
-        } else {
+        if ($match) {
             $controllerClass = $match['target']['module'] . '_Controller_' . $match['target']['controller'] . 'Controller';
+        } else {
+            throw new Exception('Page not found', 404);
         }
 
         $controller = new $controllerClass($this->_options, isset($match['params']) ? $match['params'] : array());
@@ -90,4 +96,5 @@ class Core_Application
             }
         }
     }
+
 }

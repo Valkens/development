@@ -8,7 +8,7 @@ class Core_Resource_View
     public function __construct()
     {
         $this->_options = Core_Resource_Manager::getOption('view');
-        $this->_templateEngine = new Core_TemplateEngine(NULL, $this->_options);
+        $this->_templateEngine = new Core_TemplateEngine($this->_options);
         $this->setTheme($this->_options['theme']);
     }
 

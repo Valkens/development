@@ -36,8 +36,6 @@ class Core_Router
 			}
 			
 		}
-
-		return;
 	}
 
 	/**
