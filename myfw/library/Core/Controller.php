@@ -1,30 +1,25 @@
 <?php
 class Core_Controller
 {
-    protected $_options;
     protected $_router;
-    protected $_moduleName;
-    protected $_controllerName;
-    protected $_params;
+    protected $_request = array();
     protected $_noRender = false;
     protected $_data = array();
     protected $_fileRender;
     protected $_view;
 
-    public function __construct($options, $params = array())
+    public function __construct($request)
     {
-        $this->_options = $options;
-        $this->_params = array_merge($params, $_REQUEST);
-
-        $classInfo = explode('_', get_class($this));
-        $this->_moduleName = $classInfo[0];
-        $this->_controllerName = str_replace('Controller', '', $classInfo[2]);
-
-        if (!$this->_noRender) {
-            $this->_view = Core_Resource_Manager::getResource('view');
-        }
-
+        $this->_request = $request;
+        $this->_initView();
         $this->init();
+    }
+
+    public function init() {}
+
+    protected function _initView()
+    {
+        $this->_view = Core_Resource_Manager::getResource('view');
     }
 
     public function setRouter($router)
@@ -32,7 +27,15 @@ class Core_Controller
         $this->_router = $router;
     }
 
-    public function init() {}
+    public function setRequest($request)
+    {
+        $this->_request = $request;
+    }
+
+    protected function _render($file)
+    {
+        $this->_fileRender =  $file;
+    }
 
     public function execute($action)
     {
@@ -52,23 +55,6 @@ class Core_Controller
                 $lastSlashPos = strrpos($this->_fileRender, '/');
                 $this->_view->render(substr($this->_fileRender, 0,  $lastSlashPos), substr($this->_fileRender, $lastSlashPos), $this->_data);
             }
-        }
-    }
-
-    protected function _render($file)
-    {
-        $this->_fileRender =  $file;
-    }
-
-    public function forward($target, $params = array())
-    {
-        if (is_array($target)) {
-            $controllerClass = $target['module'] . '_Controller_' . $target['controller'] . 'Controller';
-            $controller = new $controllerClass($this->_options, $params);
-            $controller->execute(lcfirst($target['action']));
-        } else {
-            array_merge($this->_params, $params);
-            $this->execute(lcfirst($target));
         }
     }
 

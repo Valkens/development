@@ -43,8 +43,7 @@ class Core_Application
 
     protected function _setExceptionHandler()
     {
-        $errorHandler = new Base_Controller_ErrorController($this->_options);
-        set_exception_handler(array($errorHandler, 'errorAction'));
+        set_exception_handler(array(new Base_Controller_ErrorController($this->_options), 'errorAction'));
     }
 
     protected function _registryResources($resources)
@@ -72,14 +71,14 @@ class Core_Application
             throw new Exception('Page not found', 404);
         }
 
-        $controller = new $controllerClass($this->_options, isset($match['params']) ? $match['params'] : array());
-        $this->_dispatch($controller, $match['target']['action']);
-    }
-
-    protected function _dispatch($controller, $action)
-    {
+        $controller = new $controllerClass(array(
+            'module' => $match['target']['module'],
+            'controller' => $match['target']['controller'],
+            'action' => $match['target']['action'],
+            'params' => isset($match['params']) ? array_merge($match['params'], $_REQUEST) : array()
+        ));
         $controller->setRouter($this->_router);
-        $controller->execute($action);
+        $controller->dispatch();
     }
 
     protected function _getRoutes()
