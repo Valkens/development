@@ -22,7 +22,7 @@ class Core_Model
         if ((!isset(self::$db->$adapter) && !isset(self::$db->$adapter->connected))
             || (!isset(self::$db->$adapter) && !self::$db->$adapter->connected)
         ) {
-            self::$db->connect(Core_Resource_Manager::getOption('db'), self::$defaultAdapter);
+            self::$db->connect(Core_Resource_Manager::getOptions('db'), self::$defaultAdapter);
         }
 
         return self::$db;

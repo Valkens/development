@@ -12,7 +12,7 @@
         </ul>
 
         <ul class="nav userNav">
-            <li><a href="{{$baseUrl}}">Trang chủ</a></li>
+            <li><a href="{{$baseUrl}}" target="_blank">Homepage</a></li>
             <li class="dropdown">
                 <a href="javascript:void(0)">Đức <b class="caret"></b></a>
                 <ul>

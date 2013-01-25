@@ -18,8 +18,6 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
 
     public function indexAction()
     {
-        $this->_data['pageTitle'] = 'List Category';
-
         if ($this->_data['categories']) {
             $categories = array_filter($this->_data['categories'], create_function('$obj', 'return $obj->id_parent == 0;'));
             foreach ($categories as $category) {
@@ -27,14 +25,15 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
                                                  create_function('$obj','return $obj->id_parent == '.$category->id.';'));
             }
 
+            $this->_data['pageTitle'] = 'List Category';
             $this->_data['categories'] = $categories;
         }
     }
 
     public function addAction()
     {
-        $this->_data['pageTitle'] = 'Add New Category';
-
+        $params = $this->_request['params'];
+        
         if ($this->_data['categories']) {
             $this->_data['categories'] = array_filter($this->_cache['db']->load('db_categories'),
                                                       create_function('$obj', 'return $obj->id_parent == 0;'));
@@ -42,12 +41,12 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
 
         if ($this->isPost()) {
             $categoryModel = new Category_Model_Category();
-            $categoryModel->id_parent = (int) $this->_params['parent'];
-            $categoryModel->name = trim($this->_params['name']);
-            $categoryModel->slug = trim($this->_params['slug']);
-            $categoryModel->sort = (int) $this->_params['sort'];
-            if (trim($this->_params['meta_description'])) {
-                $categoryModel->meta_description = trim($this->_params['meta_description']);
+            $categoryModel->id_parent = (int) $params['parent'];
+            $categoryModel->name = trim($params['name']);
+            $categoryModel->slug = trim($params['slug']);
+            $categoryModel->sort = (int) $params['sort'];
+            if (trim($params['meta_description'])) {
+                $categoryModel->meta_description = trim($params['meta_description']);
             }
             $categoryModel->save();
 
@@ -56,13 +55,14 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
 
             $this->redirect(array('name' => 'route_admin_category'));
         }
+
+        $this->_data['pageTitle'] = 'Add New Category';
     }
 
     public function editAction()
     {
-        $this->_data['pageTitle'] = 'Edit Category';
-
-        $categoryId = (int) $this->_params['id'];
+        $params = $this->_request['params'];
+        $categoryId = (int) $params['id'];
 
         $categoryModel = new Category_Model_Category();
         $this->_data['category'] = $categoryModel->fetch('*', 'WHERE id=:id ORDER BY sort ASC LIMIT 1', array(':id'=>$categoryId));
@@ -74,11 +74,11 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
 
         if ($this->isPost()) {
             $categoryModel->id = $categoryId;
-            $categoryModel->id_parent = (int) $this->_params['parent'];
-            $categoryModel->name = trim($this->_params['name']);
-            $categoryModel->slug = trim($this->_params['slug']);
-            $categoryModel->sort = (int) $this->_params['sort'];
-            $categoryModel->meta_description = trim($this->_params['meta_description']);
+            $categoryModel->id_parent = (int) $params['parent'];
+            $categoryModel->name = trim($params['name']);
+            $categoryModel->slug = trim($params['slug']);
+            $categoryModel->sort = (int) $params['sort'];
+            $categoryModel->meta_description = trim($params['meta_description']);
             $categoryModel->update();
 
             // Write cache
@@ -86,6 +86,8 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
 
             $this->redirect(array('name' => 'route_admin_category'));
         }
+
+        $this->_data['pageTitle'] = 'Edit Category';
     }
 
 }

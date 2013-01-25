@@ -21,7 +21,6 @@ class Base_Controller_ErrorController extends Core_Controller
             $this->_data['exception'] = $e;
         }
 
-        $dir = 'module/' . strtolower($this->_moduleName) . '/' . strtolower($this->_controllerName);
-        $this->_view->render($dir, 'error', $this->_data);
+        echo $this->_view->render('module/base/error', 'error', $this->_data);
     }
 }

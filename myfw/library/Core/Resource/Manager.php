@@ -13,13 +13,13 @@ class Core_Resource_Manager
         return self::$_resourceManager;
     }
 
-    public static function setOption($resource, $options = array())
+    public static function setOptions($resource, $options = array())
     {
         $instance = self::getInstance();
         self::$_resources[$resource]['options'] = $options;
     }
 
-    public static function getOption($resource)
+    public static function getOptions($resource)
     {
         $instance = self::getInstance();
         return self::$_resources[$resource]['options'];

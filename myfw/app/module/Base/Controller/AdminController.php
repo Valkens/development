@@ -35,7 +35,7 @@ class Base_Controller_AdminController extends Core_Controller
         $this->_session = Core_Session::getInstance();
 
         if (!User_Helper_Auth::hasIdentity()) {
-            $this->_render('module/user/admin/login');
+            $this->_renderFile('module/user/admin/login');
         }
     }
 }

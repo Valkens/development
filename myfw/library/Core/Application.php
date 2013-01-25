@@ -49,7 +49,7 @@ class Core_Application
     protected function _registryResources($resources)
     {
         foreach ($resources as $resource => $options) {
-            Core_Resource_Manager::setOption($resource, $options);
+            Core_Resource_Manager::setOptions($resource, $options);
         }
     }
 
@@ -64,13 +64,13 @@ class Core_Application
         $this->_getRoutes();
 
         $match = $this->_router->match();
-
         if ($match) {
             $controllerClass = $match['target']['module'] . '_Controller_' . $match['target']['controller'] . 'Controller';
         } else {
             throw new Exception('Page not found', 404);
         }
 
+        // Set controller
         $controller = new $controllerClass(array(
             'module' => $match['target']['module'],
             'controller' => $match['target']['controller'],

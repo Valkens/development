@@ -11,15 +11,23 @@ class Core_Controller
     public function __construct($request)
     {
         $this->_request = $request;
-        $this->_initView();
+        $this->_view = Core_Resource_Manager::getResource('view');
         $this->init();
     }
 
     public function init() {}
 
-    protected function _initView()
+    protected function _render()
     {
-        $this->_view = Core_Resource_Manager::getResource('view');
+        if (!$this->_noRender) {
+            $dir = 'module/' . strtolower($this->_request['module']) . '/' . strtolower($this->_request['controller']);
+            if (!$this->_fileRender) {
+                echo $this->_view->render($dir, $this->_request['action'], $this->_data);
+            } else {
+                $lastSlashPos = strrpos($this->_fileRender, '/');
+                echo $this->_view->render(substr($this->_fileRender, 0,  $lastSlashPos), substr($this->_fileRender, $lastSlashPos), $this->_data);
+            }
+        }
     }
 
     public function setRouter($router)
@@ -27,35 +35,21 @@ class Core_Controller
         $this->_router = $router;
     }
 
-    public function setRequest($request)
-    {
-        $this->_request = $request;
-    }
-
-    protected function _render($file)
+    protected function _renderFile($file)
     {
         $this->_fileRender =  $file;
     }
 
-    public function execute($action)
+    public function dispatch()
     {
-        if (!method_exists($this, $action . 'Action')) {
-            throw new Exception(sprintf('The required method "%s" does not exist for %s', $action, get_class($this)));
+        $actionMethod = $this->_request['action'] . 'Action';
+
+        if (!method_exists($this, $actionMethod)) {
+            throw new Exception(sprintf('The required method "%s" does not exist for %s', $actionMethod, get_class($this)));
         }
 
-        $actionName = $action . 'Action';
-        $this->$actionName();
-
-        if (!$this->_noRender) {
-            $dir = 'module/' . strtolower($this->_moduleName) . '/' . strtolower($this->_controllerName);
-
-            if (!$this->_fileRender) {
-                $this->_view->render($dir, $action, $this->_data);
-            } else {
-                $lastSlashPos = strrpos($this->_fileRender, '/');
-                $this->_view->render(substr($this->_fileRender, 0,  $lastSlashPos), substr($this->_fileRender, $lastSlashPos), $this->_data);
-            }
-        }
+        $this->$actionMethod();
+        $this->_render();
     }
 
     public function redirect($location, $code = 302)
@@ -78,7 +72,8 @@ class Core_Controller
     {
         if (headers_sent())return;
 
-        $extensions = array('html'=>'text/html',
+        $extensions = array(
+            'html'=>'text/html',
             'xml'=>'application/xml',
             'json'=>'application/json',
             'js'=>'application/javascript',

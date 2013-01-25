@@ -65,6 +65,11 @@
                         <div class="clear"></div>
                     </div>
                     <div class="formRow">
+                        <div class="grid2"><label>Tags:</label></div>
+                        <div class="grid9"><input type="text" id="tags" name="tags" class="tags" value="these,are,sample,tags" /></div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="formRow">
                         <div class="grid2"><label>Status</label></div>
                         <div class="grid3">
                             <label>Show&nbsp;</label><input type="radio" name="status" value="1" checked="checked" />&nbsp;
@@ -109,6 +114,15 @@
         });
 
         $('#frmPostAdd').validate({
+        });
+
+        //Tags input
+        $('#tags').tagsInput({
+            width:'100%',
+            'height':'',
+            'defaultText':'Add a tag',
+            autocomplete_url:'http://xoxco.com/projects/code/tagsinput/test/fake_json_endpoint.html',
+            autocomplete:{selectFirst:true,width:'100px',autoFill:true}
         });
     });
 </script>

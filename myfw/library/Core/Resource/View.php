@@ -7,7 +7,7 @@ class Core_Resource_View
 
     public function __construct()
     {
-        $this->_options = Core_Resource_Manager::getOption('view');
+        $this->_options = Core_Resource_Manager::getOptions('view');
         $this->_templateEngine = new Core_TemplateEngine($this->_options);
         $this->setTheme($this->_options['theme']);
     }
@@ -38,6 +38,6 @@ class Core_Resource_View
         }
 
         $this->_templateEngine->setVar($data);
-        echo $this->_templateEngine->template('@' . $namespace . '/' . $file)->render();
+        return $this->_templateEngine->template('@' . $namespace . '/' . $file)->render();
     }
 }

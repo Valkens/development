@@ -1,27 +1,14 @@
 <?php
 class Core_Router
 {
-
 	private $routes = array();
 	private $namedRoutes = array();
 	private $basePath = '';
 
-	/**
-	* Set the base path.
-	* Useful if you are running your application from a subdirectory.
-	*/
 	public function setBasePath($basePath) {
 		$this->basePath = $basePath;
 	}
-	/**
-	* Map a route to a target
-	*
-	* @param string $method One of 4 HTTP Methods, or a pipe-separated list of multiple HTTP Methods (GET|POST|PUT|DELETE)
-	* @param string $route The route regex, custom regex must start with an @. You can use multiple pre-set regex filters, like [i:id]
-	* @param mixed $target The target where this route should point to. Can be anything.
-	* @param string $name Optional name of this route. Supply if you want to reverse route this url in your application.
-	*
-	*/
+
 	public function map($method, $route, $target, $name = null) {
 		
 		$route = $this->basePath . $route;
@@ -38,15 +25,6 @@ class Core_Router
 		}
 	}
 
-	/**
-	* Reversed routing
-	*
-	* Generate the URL for a named route. Replace regexes with supplied parameters
-	*
-	* @param string $routeName The name of the route.
-	* @param array @params Associative array of parameters to replace placeholders with.
-	* @return string The URL of the route with named parameters in place.
-	*/
 	public function generate($routeName, $params = array()) {
 
 		// Check if named route exists
@@ -77,12 +55,6 @@ class Core_Router
 		return $url;
 	}
 
-	/**
-	* Match a given Request Url against stored routes
-	* @param string $requestUrl
-	* @param string $requestMethod
-	* @return array|boolean Array with route information on success, false on failure (no match).
-	*/
 	public function match($requestUrl = null, $requestMethod = null) {
 
 		$params = array();
@@ -178,9 +150,6 @@ class Core_Router
 		return false;
 	}
 
-	/**
-	* Compile the regex for a given route (EXPENSIVE)
-	*/
 	private function compileRoute($route) {
 		if (preg_match_all('`(/|\.|)\[([^:\]]*+)(?::([^:\]]*+))?\](\?|)`', $route, $matches, PREG_SET_ORDER)) {
 

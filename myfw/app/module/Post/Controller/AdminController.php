@@ -20,29 +20,28 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
 
     public function indexAction()
     {
-        $this->_data['pageTitle'] = 'List Post';
-
+        $params = $this->_request['params'];
         $posts = array();
-        $cates = array();
+        $categories = array();
 
         if ($this->_data['categories']) {
             foreach ($this->_data['categories'] as $category) {
                 if ($category->id_parent == 0) continue;
-                $cates[$category->id] = $category->name;
+                $categories[$category->id] = $category->name;
             }
 
             $postModel = new Post_Model_Post();
             $result = $postModel->fetch('COUNT(id) AS count_all');
 
             // Pagination
-            $page = (isset($this->_params['page'])) ? $this->_params['page'] : 1;
+            $page = (isset($params['page'])) ? $params['page'] : 1;
             $offset = ($page - 1) * self::PER_PAGE;
 
             $posts = $postModel->fetchAll('*', "ORDER BY id DESC LIMIT {$offset}," . self::PER_PAGE);
 
             if (count($posts)) {
                 foreach ($posts as $post) {
-                    $post->categoryName = $cates[$post->id_category];
+                    $post->categoryName = $categories[$post->id_category];
                 }
 
                 // Paginator
@@ -57,6 +56,7 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
             }
         }
 
+        $this->_data['pageTitle'] = 'List Post';
         $this->_data['posts'] = $posts;
     }
 

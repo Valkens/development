@@ -4,11 +4,12 @@ class User_Controller_AuthController extends Core_Controller
     public function authAction()
     {
         $this->_noRender = true;
-
+        $params = $this->_request['params'];
+        
         if ($this->isAjax()) {
             $session = Core_Session::getInstance();
-            $username = $this->_params['username'];
-            $password = $this->_params['password'];
+            $username = $params['username'];
+            $password = $params['password'];
 
             if ($user = User_Helper_Auth::checkAuth($username, $password)) {
                 // Update user login

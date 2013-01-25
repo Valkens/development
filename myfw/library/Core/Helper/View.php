@@ -34,7 +34,8 @@ class Core_Helper_View
             if ($cachedFileDate < $fileDate) {
                 $fileContent = '';
                 $less->setVariables(array(
-                    'themeUrl' => "'" . BASE_URL . '/app/theme/' . self::$theme . "'"
+                    'themeUrl' => "'" . BASE_URL . '/app/theme/' . self::$theme . "'",
+                    'publicUrl' => "'" . BASE_URL . '/public' . "'"
                 ));
 
                 foreach ($filePaths as $filePath) {
