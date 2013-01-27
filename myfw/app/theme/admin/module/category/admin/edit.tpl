@@ -1,6 +1,4 @@
 [[ $this->inherit('@_theme_/layout') ]]
-[: block page :]{{$pageTitle}}[: endblock :]
-
 [: block content :]
 <div id="wrapper">
     <div id="sideMenu">
@@ -19,6 +17,7 @@
                 <div class="clear"></div>
             </div>
 
+            @if ($category) :
             <div class="wbody">
                 <form id="frmCategoryEdit" method="post">
                     <div class="formRow">
@@ -57,13 +56,15 @@
                     <div class="formRow rowSubmit">
                         <div class="grid2">&nbsp;</div>
                         <div class="grid4">
-                            <input type="submit" class="buttonS bBlue btnAction" name="submit" value="Submit" />
+                            <input type="submit" class="buttonS bBlue btnAction" name="submit" value="Save" />
                         </div>
                         <div class="clear"></div>
                     </div>
                 </form>
             </div>
-
+            @else :
+            <div class="albox mError">This category is not exist.</div>
+            @endif
         </div>
     </div>
 </div>

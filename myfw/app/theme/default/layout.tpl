@@ -1,9 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
 <head>
     <title>[: block page :]Index[: endblock :]</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="description" content="Welcome to my basic template.">
-    [[ $this->addCss(array('/public/css/reset.css',
+    [[ $this->generateCss(array('/public/css/reset.css',
                            '/public/css/style.css',
                            'css/common.css',
                            'css/post.css'))
@@ -25,7 +26,7 @@
     </header>
 
     [: block content :][: endblock :]
-    [[ $this->addScript(array('/public/js/jquery/jquery.js',
+    [[ $this->generateCss(array('/public/js/jquery/jquery.js',
                               '/public/js/jquery/jquery.elastic.js',
                               'js/main.js'))
     ]]

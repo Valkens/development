@@ -63,6 +63,10 @@ class Core_Application
         $this->_router->setBasePath($basePath);
         $this->_getRoutes();
 
+        // Set registry
+        $registry = Core_Registry::getInstance();
+        $registry->set('router', $this->_router);
+
         $match = $this->_router->match();
         if ($match) {
             $controllerClass = $match['target']['module'] . '_Controller_' . $match['target']['controller'] . 'Controller';

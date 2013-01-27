@@ -78,27 +78,16 @@ class Core_Template
             throw new Exception("Cannot include templates in a Template instance created from a string.");
         }
         $t = $this->engine->template($template);
-        print ($t->render());
+        echo $t->render();
     }
 
     public function inherit($template) {
         $this->inheritFrom = $this->engine->template($template);
     }
 
-    public function addCss($files)
+    public function __call($method, $args)
     {
-        $links = Core_Helper_View::generateCss($files);
-        foreach ($links as $link) {
-            echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$link}\" />" . PHP_EOL;
-        }
-    }
-
-    public function addScript($files)
-    {
-        $links = Core_Helper_View::generateJs($files);
-        foreach ($links as $link) {
-            echo "<script type=\"text/javascript\" src=\"{$link}\"></script>" . PHP_EOL;
-        }
+        call_user_func_array('Core_Helper_View::' . $method, $args);
     }
 
 }

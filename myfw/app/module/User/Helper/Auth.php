@@ -20,11 +20,11 @@ class User_Helper_Auth
         $userModel = new User_Model_User();
         $user = $userModel->fetch('*', 'WHERE `username`=:username', array(':username' => $username));
 
-        foreach ($userModel->fields as $field) {
-            $userModel->{$field} = $user->{$field};
-        }
-
         if ($user) {
+            foreach ($userModel->fields as $field) {
+                $userModel->{$field} = $user->{$field};
+            }
+
             return ($user->password == sha1($user->salt . $password)) ? $userModel : false;
         }
 

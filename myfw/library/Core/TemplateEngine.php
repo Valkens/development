@@ -108,9 +108,9 @@ class Core_TemplateEngine
                 $autoEscape ? ")); ?>\n\n" : "); ?>\n\n",
                 $autoEscape ? ")); ?>" : "); ?>",
                 "<?php ",
-                " ?>",
-                "<?php \\1 ?>",
-                "<?php if (array_key_exists('\\1', \$this->inheritBlocks)) { print(\$this->inheritBlocks['\\1']); } else if (\$this->inheritFrom === NULL) { ?>\\2<?php } else { ob_start(); ?>\\2<?php \$this->inheritBlocks['\\1'] = ob_get_contents(); ob_end_clean(); } ?>",
+                " ; ?>",
+                "<?php \\1 ; ?>",
+                "<?php if (array_key_exists('\\1', \$this->inheritBlocks)) { echo \$this->inheritBlocks['\\1']; } else if (\$this->inheritFrom === NULL) { ?>\\2<?php } else { ob_start(); ?>\\2<?php \$this->inheritBlocks['\\1'] = ob_get_contents(); ob_end_clean(); } ?>",
             ),
             $contents
         );

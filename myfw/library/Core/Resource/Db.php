@@ -43,32 +43,32 @@ class Core_Resource_Db
     }
 
     public function beginTransaction() {
-        if($this->transactionLevel === 0){
+        if($this->_transactionLevel === 0){
             $this->_pdo[$this->adapter]->beginTransaction();
         }
         else{
-            $this->_pdo[$this->adapter]->exec("SAVEPOINT LEVEL{$this->transactionLevel}");
+            $this->_pdo[$this->adapter]->exec("SAVEPOINT LEVEL{$this->_transactionLevel}");
         }
-        $this->transactionLevel++;
+        $this->_transactionLevel++;
     }
 
     public function commit() {
-        $this->transactionLevel--;
-        if($this->transactionLevel === 0){
+        $this->_transactionLevel--;
+        if($this->_transactionLevel === 0){
             $this->_pdo[$this->adapter]->commit();
         }
         else{
-            $this->_pdo[$this->adapter]->exec("RELEASE SAVEPOINT LEVEL{$this->transactionLevel}");
+            $this->_pdo[$this->adapter]->exec("RELEASE SAVEPOINT LEVEL{$this->_transactionLevel}");
         }
     }
 
     public function rollBack() {
-        $this->transactionLevel--;
-        if($this->transactionLevel === 0){
+        $this->_transactionLevel--;
+        if($this->_transactionLevel === 0){
             $this->_pdo[$this->adapter]->rollBack();
         }
         else{
-            $this->_pdo[$this->adapter]->exec("ROLLBACK TO SAVEPOINT LEVEL{$this->transactionLevel}");
+            $this->_pdo[$this->adapter]->exec("ROLLBACK TO SAVEPOINT LEVEL{$this->_transactionLevel}");
         }
     }
 
@@ -145,7 +145,7 @@ class Core_Resource_Db
         $stmt = $this->_pdo[$this->adapter]->prepare($sql);
         $stmt->execute($bindPrams);
 
-        return $this->lastInsertId();
+        return $stmt->rowCount();
     }
 
     public function fetch($model, $columns = '*', $custom = null, $params = null)

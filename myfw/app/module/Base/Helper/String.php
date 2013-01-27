@@ -17,7 +17,7 @@ class Base_Helper_String
         $text = preg_replace("/(Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ)/", 'U', $text);
         $text = preg_replace("/(Ỳ|Ý|Ỵ|Ỷ|Ỹ)/", 'Y', $text);
         $text = preg_replace("/(Đ)/", 'D', $text);
-        $text = str_replace(" ", "-", str_replace("&*#39;","",$text));
+        $text = str_replace(" ", "-", $text);
 
         return $text;
     }

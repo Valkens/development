@@ -50,7 +50,7 @@ class Core_Helper_View
                 file_put_contents($cachedFilePath, (self::$options['minify']) ? self::minifyCss($fileContent) : $fileContent);
             }
 
-            return array(BASE_URL . '/public/cache/' . $cachedFile);
+            $fileLinks = array(BASE_URL . '/public/cache/' . $cachedFile);
         } else {
             foreach ($filePaths as $key => $filePath) {
                 $ext = pathinfo($filePath, PATHINFO_EXTENSION);
@@ -72,8 +72,10 @@ class Core_Helper_View
                     $fileLinks[] = BASE_URL . '/' . trim(str_replace(BASE_PATH, '', $filePath), '/');
                 }
             }
+        }
 
-            return $fileLinks;
+        foreach ($fileLinks as $link) {
+            echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$link}\" />" . PHP_EOL;
         }
     }
 
@@ -110,13 +112,15 @@ class Core_Helper_View
                 file_put_contents($cachedFilePath, (self::$options['minify']) ? self::minifyJs($fileContent) : $fileContent);
             }
 
-            return array(BASE_URL . '/public/cache/' . $cachedFile);
+            $fileLinks = array(BASE_URL . '/public/cache/' . $cachedFile);
         } else {
             foreach ($filePaths as $filePath) {
                 $fileLinks[] = BASE_URL . '/' . trim(str_replace(BASE_PATH, '', $filePath), '/');
             }
+        }
 
-            return $fileLinks;
+        foreach ($fileLinks as $link) {
+            echo "<script type=\"text/javascript\" src=\"{$link}\"></script>" . PHP_EOL;
         }
     }
 
@@ -129,7 +133,7 @@ class Core_Helper_View
 
     public static function minifyJs($js)
     {
-        include_once BASE_PATH . '/library/Min/lib/JsMin.php';
+        include_once BASE_PATH . '/library/Min/lib/JSMin.php';
 
         return call_user_func(array('JsMin', 'minify'), $js);
     }
@@ -140,4 +144,13 @@ class Core_Helper_View
 
         return call_user_func(array('Minify_HTML', 'minify'), $html, $params);
     }
+
+    public static function url($routeName, $params = array())
+    {
+        $registry = Core_Registry::getInstance();
+        $router = $registry->get('router');
+
+        echo $router->generate($routeName, $params);
+    }
+
 }

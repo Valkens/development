@@ -6,18 +6,19 @@
     <div id="sideMenu">
         <ul>
             <li><a href="[[$this->url('route_admin_post')]]">List post</a></li>
+            <li><a href="[[$this->url('route_admin_post_add')]]">Add post</a></li>
         </ul>
     </div>
 
     <div id="page">
-        <h1 id="pageTitle">Add new post</h1>
+        <h1 id="pageTitle">Edit post</h1>
 
         <div class="widget fluid">
-            @if ($subcategories) :
             <div class="whead">
                 <h2>Post's information</h2>
                 <div class="clear"></div>
             </div>
+            @if ($post) :
             <div class="wbody">
                 <form id="frmPostAdd" method="post">
                     <div class="formRow">
@@ -25,7 +26,8 @@
                         <div class="grid4 noSearch">
                             <select name="subcategory" class="select">
                                 @foreach ($subcategories as $category) :
-                                <option value="{{$category->id}}">{{$category->name}}</option>
+                                    @$selected = ($post->id_subcategory == $category->id) ? ' selected="selected"' : ''
+                                    <option value="{{$category->id}}"{{$selected}}>{{$category->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -33,61 +35,64 @@
                     </div>
                     <div class="formRow">
                         <div class="grid2"><span class="required fleft">*</span><label>Title</label></div>
-                        <div class="grid8"><input id="title" type="text" name="title" maxlength="255" class="required" /></div>
+                        <div class="grid8"><input id="title" type="text" name="name" maxlength="255" class="required" value="{{$post->title}}" /></div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow">
                         <div class="grid2"><span class="required fleft">*</span><label>Slug</label></div>
-                        <div class="grid8"><input id="slug" type="text" name="slug" maxlength="255" class="required" /></div>
+                        <div class="grid8"><input id="slug" type="text" name="slug" maxlength="255" class="required" value="{{$post->slug}}" /></div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow">
                         <div class="grid2"><label>Thumbnail</label></div>
-                        <div class="grid8"><input id="thumbnail" type="file" name="thumbnail" /></div>
+                        <div class="grid4">
+                            <input type="file" name="thumbnail" />
+                            <img src="{{$post->thumbnail}}" width="100" height="100" style="clear:both;margin-top:5px" />
+                        </div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow">
                         <div class="grid2"><label>Featured</label></div>
                         <div class="grid2">
-                            <label>Yes&nbsp;</label><input type="radio" name="featured_status" value="1" />&nbsp;
-                            <label>No&nbsp;</label><input type="radio" name="featured_status" value="0" checked="checked" />
+                            <label>Yes&nbsp;</label><input type="radio" name="featured_status" value="1"[[ echo ($post->featured_status == 1) ? ' checked="checked"' : '' ]] />&nbsp;
+                            <label>No&nbsp;</label><input type="radio" name="featured_status" value="0"[[ echo ($post->featured_status == 0) ? ' checked="checked"' : '' ]] />
                         </div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow">
-                        <div class="grid2"><label>Meta description</label></div>
-                        <div class="grid7"><textarea cols="40" rows="5" name="meta_description"></textarea></div>
+                        <div class="grid2"><span class="required fleft">*</span><label>Description</label></div>
+                        <div class="grid7"><textarea cols="40" rows="5" name="description" class="required">{{$post->description}}</textarea></div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow">
-                        <div class="grid2"><span class="required fleft">*</span><label>Description</label></div>
-                        <div class="grid7"><textarea cols="40" rows="5" name="description" class="required"></textarea></div>
+                        <div class="grid2"><label>Meta description</label></div>
+                        <div class="grid7"><textarea cols="40" rows="5" name="meta_description">{{$post->meta_description}}</textarea></div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow">
                         <div class="grid2"><label>Tags:</label></div>
-                        <div class="grid9"><input type="text" id="tags" name="tags" class="tags" /></div>
+                        <div class="grid9"><input type="text" id="tags" name="tags" class="tags" value="ddd" /></div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow">
                         <div class="grid2"><label>Status</label></div>
                         <div class="grid3">
-                            <label>Show&nbsp;</label><input type="radio" name="status" value="1" checked="checked" />&nbsp;
-                            <label>Hidden&nbsp;</label><input type="radio" name="status" value="0" />
+                            <label>Show&nbsp;</label><input type="radio" name="status" value="1"[[ echo ($post->status == 1) ? ' checked="checked"' : '' ]] />&nbsp;
+                            <label>Hidden&nbsp;</label><input type="radio" name="status" value="0"[[ echo ($post->status == 0) ? ' checked="checked"' : '' ]] />
                         </div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow">
                         <div class="grid2"><label>Allow comment</label></div>
                         <div class="grid2">
-                            <label>Yes&nbsp;</label><input type="radio" name="comment_allowed" value="1" checked="checked" />&nbsp;
-                            <label>No&nbsp;</label><input type="radio" name="comment_allowed" value="0" />
+                            <label>Yes&nbsp;</label><input type="radio" name="comment_status" value="1"[[ echo ($post->comment_allowed == 1) ? ' checked="checked"' : '' ]] />&nbsp;
+                            <label>No&nbsp;</label><input type="radio" name="comment_status" value="0"[[ echo ($post->comment_allowed == 0) ? ' checked="checked"' : '' ]] />
                         </div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow">
                         <div class="grid2"><label>Content</label></div>
-                        <div class="grid10"><textarea id="editor1" class="ckeditor" cols="40" rows="5" name="content"></textarea></div>
+                        <div class="grid10"><textarea id="editor1" class="ckeditor" cols="40" rows="5" name="content">{{$post->content}}</textarea></div>
                         <div class="clear"></div>
                     </div>
                     <div class="formRow rowSubmit">
@@ -100,7 +105,7 @@
                 </form>
             </div>
             @else :
-            <div class="albox mWarning">Please create at least one Sub-category.</div>
+            dsadsad
             @endif
         </div>
     </div>
@@ -116,24 +121,16 @@
             $('#slug').val($.Utility.generateSlug($(this).val()));
         });
 
-        // Form validation
-        $('#frmPostAdd').validate();
-        /*$("#thumbnail").rules("add", {
-            required: true,
-            accept: "png|jpeg|gif",
-            filesize: 2097152,
-            messages: {
-                required: "Please choose an image file",
-                accept: "Only accept Png, Jpeg, Gif file",
-                filesize: "File size must be less than 2MB"
-            }
-        });*/
+        $('#frmPostAdd').validate({
+        });
 
         //Tags input
         $('#tags').tagsInput({
-            width: '100%',
-            'height': '',
-            'defaultText': 'Add a tag'
+            width:'100%',
+            'height':'',
+            'defaultText':'Add a tag',
+            autocomplete_url:'http://xoxco.com/projects/code/tagsinput/test/fake_json_endpoint.html',
+            autocomplete:{selectFirst:true,width:'100px',autoFill:true}
         });
     });
 </script>

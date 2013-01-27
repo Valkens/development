@@ -31,11 +31,12 @@ class Base_Controller_AdminController extends Core_Controller
 
         $this->_view->setTheme('admin');
 
-        // Set session
-        $this->_session = Core_Session::getInstance();
-
         if (!User_Helper_Auth::hasIdentity()) {
             $this->_renderFile('module/user/admin/login');
+        } else {
+            // Set session
+            $this->_session = Core_Session::getInstance();
+            $this->_data['username'] = $this->_session->get('username', 'auth');
         }
     }
 }

@@ -1,33 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
 <head>
-    <title>[: block page :]Index[: endblock :]</title>
+    <title>{{$pageTitle}}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="description" content="Welcome to my basic template.">
-    [[ $this->addCss(array('/public/css/reset.css',
-                            'css/plugins.less',
-                            '/public/js/jquery/jquery-ui/css/ui-lightness/jquery-ui.custom.less',
-                            'js/jquery/tagsinput/tagsinput.css',
-                            'css/common.less',
-                            'css/main.less'))
-    ]]
+    @$this->inc('@_theme_/block/css')
 </head>
 
 <body>
-@$this->inc('@_theme_/common/header')
+@$this->inc('@_theme_/block/header')
+
 [: block content :][: endblock :]
-<script type="text/javascript">
-    var BASE_URL = '{{$baseUrl}}';
-    var ADMIN_URL = '{{$adminUrl}}';
-</script>
-[[ $this->addScript(array('/public/js/jquery/jquery.js',
-                          '/public/js/jquery/jquery-ui/jquery-ui.min.js',
-                          '/public/js/jquery/form/validation.js',
-                          'js/jquery/jquery.uniform.js',
-                          'js/jquery/jquery.chosen.min.js',
-                          'js/jquery/tagsinput/tagsinput.min.js',
-                          'js/utility.js',
-                          'js/main.js'))
-]]
+
+@$this->inc('@_theme_/block/javascript')
 
 [: block script :][: endblock :]
 </body>

@@ -40,6 +40,7 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
         }
 
         if ($this->isPost()) {
+            // Save category
             $categoryModel = new Category_Model_Category();
             $categoryModel->id_parent = (int) $params['parent'];
             $categoryModel->name = trim($params['name']);
@@ -48,7 +49,14 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
             if (trim($params['meta_description'])) {
                 $categoryModel->meta_description = trim($params['meta_description']);
             }
-            $categoryModel->save();
+            $categoryModel->beginTransaction();
+            try {
+                $categoryModel->save();
+                $categoryModel->commit();
+            } catch (Exception $e) {
+                $categoryModel->rollBack();
+                throw new Exception($e->getMessage(), $e->getCode());
+            }
 
             // Write cache
             $this->_cache['db']->save($categoryModel->fetchAll('*', ' ORDER BY sort ASC'), 'db_categories');
@@ -65,7 +73,7 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
         $categoryId = (int) $params['id'];
 
         $categoryModel = new Category_Model_Category();
-        $this->_data['category'] = $categoryModel->fetch('*', 'WHERE id=:id ORDER BY sort ASC LIMIT 1', array(':id'=>$categoryId));
+        $this->_data['category'] = $categoryModel->fetch('*', 'WHERE id=:id LIMIT 1', array(':id'=>$categoryId));
 
         if ($this->_data['categories']) {
             $this->_data['categories'] = array_filter($this->_cache['db']->load('db_categories'),
@@ -73,13 +81,21 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
         }
 
         if ($this->isPost()) {
+            // Update category
             $categoryModel->id = $categoryId;
             $categoryModel->id_parent = (int) $params['parent'];
             $categoryModel->name = trim($params['name']);
             $categoryModel->slug = trim($params['slug']);
             $categoryModel->sort = (int) $params['sort'];
             $categoryModel->meta_description = trim($params['meta_description']);
-            $categoryModel->update();
+            $categoryModel->beginTransaction();
+            try {
+                $categoryModel->update();
+                $categoryModel->commit();
+            } catch (Exception $e) {
+                $categoryModel->rollBack();
+                throw new Exception($e->getMessage(), $e->getCode());
+            }
 
             // Write cache
             $this->_cache['db']->save($categoryModel->fetchAll('*', 'ORDER BY sort ASC'), 'db_categories');

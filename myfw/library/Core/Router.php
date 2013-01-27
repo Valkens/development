@@ -45,7 +45,7 @@ class Core_Router
 				}
 
 				if(isset($params[$param])) {
-					$url = str_replace($block, $params[$param], $url);die();
+					$url = str_replace($block, $params[$param], $url);
 				} elseif ($optional) {
 					$url = str_replace($block, '', $url);
 				}

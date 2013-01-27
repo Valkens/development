@@ -1,11 +1,9 @@
 [[ $this->inherit('@_theme_/layout') ]]
-[: block page :]{{$pageTitle}}[: endblock :]
-
 [: block content :]
 <div id="wrapper">
     <div id="sideMenu">
         <ul>
-            <li><a href="{{$adminUrl}}/category">List category</a></li>
+            <li><a href="[[$this->url('route_admin_category')]]">List category</a></li>
         </ul>
     </div>
 
@@ -55,7 +53,7 @@
                     <div class="formRow rowSubmit">
                         <div class="grid2">&nbsp;</div>
                         <div class="grid4">
-                            <input type="submit" class="buttonS bBlue btnAction" name="submit" value="Submit" />
+                            <input type="submit" class="buttonS bBlue btnAction" name="submit" value="Save" />
                         </div>
                         <div class="clear"></div>
                     </div>

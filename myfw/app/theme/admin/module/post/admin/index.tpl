@@ -5,9 +5,10 @@
 <div id="wrapper">
     <h1 id="pageTitle">
         List post
-        <a href="{{$adminUrl}}/post/add" class="buttonS bDefault btnAction fright">Add</a>
+        <a href="[[$this->url('route_admin_post_add')]]" class="buttonS bDefault btnAction fright">Add</a>
     </h1>
     <div class="widget">
+        @if ($posts) :
         <table width="100%" cellspacing="0" cellpadding="0" class="tDefault checkAll check dTable">
             <thead>
             <tr>
@@ -38,8 +39,8 @@
                 </td>
                 <td>{{$post->comment_count}}</td>
                 <td>
-                    <a href="{{$adminUrl}}/post/edit/{{$post->id}}">Edit</a> |
-                    <a href="{{$adminUrl}}/post/delete/{{$post->id}}">Delete</a>
+                    <a href="[[$this->url('route_admin_post_edit', array('id' => $post->id))]]">Edit</a> |
+                    <a class="delete_link" href="{{$adminUrl}}/post/delete/{{$post->id}}">Delete</a>
                 </td>
             </tr>
             @endforeach
@@ -54,6 +55,36 @@
                 </tr>
             </tfoot>
         </table>
+        @else :
+        <div class="albox mWarning">There are no posts.</div>
+        @endif
     </div>
 </div>
+[: endblock :]
+
+[: block script :]
+<script type="text/javascript">
+    $(function(){
+        $('.delete_link').live('click', function(e) {
+            e.preventDefault();
+            $.confirm({
+                'title': 'Confirm delete',
+                'message': "<strong>You want to delete this Post</strong>",
+                'buttons': {
+                    'Yes' : {
+                        'class' : 'buttonM bBlue btnAction',
+                        'action': function() {
+                            loading('Checking');
+                            $('#preloader').html('Deleting...');
+                            setTimeout('unloading()', 900);
+                        }
+                    },
+                    'No' : {
+                        'class'	: 'buttonM bRed btnAction'
+                    }
+                }
+            })
+        });
+    });
+</script>
 [: endblock :]
