@@ -26,7 +26,7 @@
     </header>
 
     [: block content :][: endblock :]
-    [[ $this->generateCss(array('/public/js/jquery/jquery.js',
+    [[ $this->generateCss(array('/public/js/jquery/jquery.min.js',
                               '/public/js/jquery/jquery.elastic.js',
                               'js/main.js'))
     ]]
