@@ -52,17 +52,22 @@ class Core_TemplateEngine
             throw new Exception("Template not found or not a file: $fpath");
         }
 
-        // Cache template
+        // Cache template file
         $cachePath = CACHE_PATH . '/template';
         if (!file_exists($cachePath)) mkdir($cachePath, 777);
-        $cacheFile = $cachePath . '/' . md5($fpath);
+        $cacheFile = $cachePath . '/' . md5($fpath) . '.php';
         $cacheFileDate = (file_exists($cacheFile)) ? filemtime($cacheFile) : 0;
+
         if ((filemtime($fpath) > $cacheFileDate)) {
             $content = $this->compile(file_get_contents($fpath), $autoEscape);
             file_put_contents($cacheFile, $content);
         } else {
             $content = file_get_contents($cacheFile);
         }
+
+        // Set view helper
+        Core_Helper_View::$options = $this->options;
+        Core_Helper_View::$theme = $this->theme;
 
         // Load the base or translated template.
         $template = new Core_Template(
@@ -72,22 +77,8 @@ class Core_TemplateEngine
             $this->varsUniversal
         );
 
+
         return $template;
-    }
-
-    public function templateFromString($contents, $autoEscape = Null) {
-        if ($autoEscape === Null) {
-            $autoEscape = $this->autoEscape;
-        }
-
-        // Load the base or translated template.
-        $template = new Core_Template(
-            NULL,
-            "FROM_STRING",
-            $this->compile($contents, $autoEscape),
-            array()
-        );
-        return($template);
     }
 
     private function compile($contents, $autoEscape = true)
@@ -99,7 +90,7 @@ class Core_TemplateEngine
                 "/}}\n/",
                 "/}}/",
                 "/\[\[/",
-                "/\]\]/",
+                "/\]\]/\n?",
                 '/^\s*@(.*)$/m',
                 '/\[:\s*block\s(.*)\s*:\](.*)\[:\s*endblock\s*:\]/Usm',
             ),
@@ -108,8 +99,8 @@ class Core_TemplateEngine
                 $autoEscape ? ")); ?>\n\n" : "); ?>\n\n",
                 $autoEscape ? ")); ?>" : "); ?>",
                 "<?php ",
-                " ; ?>",
-                "<?php \\1 ; ?>",
+                " ?>",
+                "<?php \\1 ;?>",
                 "<?php if (array_key_exists('\\1', \$this->inheritBlocks)) { echo \$this->inheritBlocks['\\1']; } else if (\$this->inheritFrom === NULL) { ?>\\2<?php } else { ob_start(); ?>\\2<?php \$this->inheritBlocks['\\1'] = ob_get_contents(); ob_end_clean(); } ?>",
             ),
             $contents

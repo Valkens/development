@@ -1,27 +1,15 @@
 <?php
 class Core_Resource_Manager
 {
-    private static $_resourceManager;
     private static $_resources = array();
-
-    public static function getInstance()
-    {
-        if (self::$_resourceManager === null) {
-            self::$_resourceManager = new Core_Resource_Manager();
-        }
-
-        return self::$_resourceManager;
-    }
 
     public static function setOptions($resource, $options = array())
     {
-        $instance = self::getInstance();
         self::$_resources[$resource]['options'] = $options;
     }
 
     public static function getOptions($resource)
     {
-        $instance = self::getInstance();
         return self::$_resources[$resource]['options'];
     }
 

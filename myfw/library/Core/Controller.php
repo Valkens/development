@@ -17,19 +17,6 @@ class Core_Controller
 
     public function init() {}
 
-    protected function _render()
-    {
-        if (!$this->_noRender) {
-            $dir = 'module/' . strtolower($this->_request['module']) . '/' . strtolower($this->_request['controller']);
-            if (!$this->_fileRender) {
-                echo $this->_view->render($dir, $this->_request['action'], $this->_data);
-            } else {
-                $lastSlashPos = strrpos($this->_fileRender, '/');
-                echo $this->_view->render(substr($this->_fileRender, 0,  $lastSlashPos), substr($this->_fileRender, $lastSlashPos), $this->_data);
-            }
-        }
-    }
-
     public function setRouter($router)
     {
         $this->_router = $router;
@@ -49,7 +36,17 @@ class Core_Controller
         }
 
         $this->$actionMethod();
-        $this->_render();
+
+        // Render
+        if (!$this->_noRender) {
+            if (!$this->_fileRender) {
+                $dir = 'module/' . strtolower($this->_request['module']) . '/' . strtolower($this->_request['controller']);
+                $this->_view->render($dir, $this->_request['action'], $this->_data);
+            } else {
+                $lastSlashPos = strrpos($this->_fileRender, '/');
+                $this->_view->render(substr($this->_fileRender, 0,  $lastSlashPos), substr($this->_fileRender, $lastSlashPos), $this->_data);
+            }
+        }
     }
 
     public function redirect($location, $code = 302)

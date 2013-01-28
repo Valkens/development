@@ -24,28 +24,26 @@ class Core_Loader
     {
         if (isset($this->_cacheIndex[$class])) {
             include_once $this->_cacheIndex[$class];
-        } else {
-            if (!class_exists($class)) { // Multiple class in one file
-                $classInfo = explode('_', $class);
-                $namespace = $classInfo[0];
+        } elseif (!class_exists($class)) { // Multiple class in one file
+            $classInfo = explode('_', $class);
 
-                if (in_array($namespace, $this->_options['libraries'])) {
-                    $dir = LIBRARY_PATH;
-                } else {
-                    $dir = APPLICATION_PATH . '/' . 'module';
-                }
-
-                $file =  $dir . '/' . str_replace('_', '/', $class) . '.php';
-
-                include_once $file;
-
-                // Write cache
-                $content = file_get_contents($this->_cacheFile);
-                $content = str_replace(');', '', $content);
-                $content .= "'{$class}'=>'{$file}',);";
-
-                file_put_contents($this->_cacheFile, $content);
+            // Check namespace
+            if (in_array($classInfo[0], $this->_options['libraries'])) {
+                $dir = LIBRARY_PATH;
+            } else {
+                $dir = APPLICATION_PATH . '/' . 'module';
             }
+
+            $file =  $dir . '/' . str_replace('_', '/', $class) . '.php';
+
+            include_once $file;
+
+            // Write cache
+            $content = file_get_contents($this->_cacheFile);
+            $content = str_replace(');', '', $content);
+            $content .= "'{$class}'=>'{$file}',);";
+
+            file_put_contents($this->_cacheFile, $content);
         }
     }
 

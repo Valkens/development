@@ -6,7 +6,7 @@ class Core_Model
     public $table;
     public $primaryKey;
     public $fields = array();
-    protected $_lastInsertId;
+    public $lastInsertId;
     protected static $_options;
 
     public function setDefaultAdapter($adapter)
@@ -46,7 +46,7 @@ class Core_Model
 
     public function save()
     {
-        $this->_lastInsertId = $this->db()->save($this);
+        $this->lastInsertId = $this->db()->save($this);
     }
 
     public function update()
@@ -62,11 +62,6 @@ class Core_Model
     public function fetchAll($columns = '*', $custom = null, $params = null)
     {
         return $this->db()->fetchAll($this, $columns, $custom, $params);
-    }
-
-    public function getLastInsertId()
-    {
-        return $this->_lastInsertId;
     }
 
 }

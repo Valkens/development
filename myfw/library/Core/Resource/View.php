@@ -34,10 +34,13 @@ class Core_Resource_View
         if ($this->_options['minify']) {
             $this->_templateEngine->registryFilter('output',
                                                     array('Core_Helper_View', 'minifyHtml'),
-                                                    array('xhtml', 'cssMinifier' => array('Core_Helper_View', 'minifyCss'), 'jsMinifier' => array('Core_Helper_View', 'minifyJs')));
+                                                    array('xhtml',
+                                                          'cssMinifier' => array('Core_Helper_View', 'minifyCss'),
+                                                          'jsMinifier' => array('Core_Helper_View', 'minifyJs')
+                                                    ));
         }
 
         $this->_templateEngine->setVar($data);
-        return $this->_templateEngine->template('@' . $namespace . '/' . $file)->render();
+        $this->_templateEngine->template('@' . $namespace . '/' . $file)->render();
     }
 }

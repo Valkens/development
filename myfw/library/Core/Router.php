@@ -28,7 +28,7 @@ class Core_Router
 	public function generate($routeName, $params = array()) {
 
 		// Check if named route exists
-		if(!isset($this->namedRoutes[$routeName])) {
+		if (!isset($this->namedRoutes[$routeName])) {
 			throw new Exception("Route '{$routeName}' does not exist.");
 		}
 
@@ -187,4 +187,5 @@ class Core_Router
 		}
 		return "`^$route$`";
 	}
+
 }

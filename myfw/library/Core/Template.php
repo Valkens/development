@@ -8,15 +8,12 @@ class Core_Template
     public $inheritFrom;
     public $inheritBlocks = array();
 
-    public function __construct($engine, $filename, $contents, $varsGlobal = array()) {
+    public function __construct($engine, $filename, $contents, $varsGlobal = array())
+    {
         $this->engine = $engine;
         $this->filename = $filename;
         $this->contents = $contents;
         $this->varsGlobal = $varsGlobal;
-
-        // Set view helper
-        Core_Helper_View::$options = $this->engine->options;
-        Core_Helper_View::$theme = $this->engine->theme;
     }
 
     public function setVar($varName, $varValue) {

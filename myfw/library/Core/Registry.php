@@ -2,12 +2,6 @@
 class Core_Registry extends ArrayObject
 {
     /**
-     * Class name of the singleton registry object.
-     * @var string
-     */
-    private static $_registryClassName = 'Core_Registry';
-
-    /**
      * Registry object provides storage for shared objects.
      * @var Core_Registry
      */
@@ -21,7 +15,7 @@ class Core_Registry extends ArrayObject
     public static function getInstance()
     {
         if (self::$_registry === null) {
-            self::$_registry = new self::$_registryClassName();
+            self::$_registry = new Core_Registry();
         }
 
         return self::$_registry;

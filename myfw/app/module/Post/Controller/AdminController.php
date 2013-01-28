@@ -107,12 +107,12 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
                     // Check post_tag is exists
                     if (!$postTagModel->fetch('*', 'WHERE id_post = :id_post AND id_tag = :id_tag',
                                              array(
-                                                 ':id_post' => $postModel->getLastInsertId(),
+                                                 ':id_post' => $postModel->lastInsertId,
                                                  ':id_tag' => $tag->id
                                              ))
                         ) {
                         // Save post_tag
-                        $postTagModel->id_post = $postModel->getLastInsertId();
+                        $postTagModel->id_post = $postModel->lastInsertId;
                         $postTagModel->id_tag  = $tag->id;
                         $postTagModel->beginTransaction();
                         try {
@@ -137,8 +137,8 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
                     }
 
                     // Save post_tag
-                    $postTagModel->id_post = $postModel->getLastInsertId();
-                    $postTagModel->id_tag  = $tagModel->getLastInsertId();
+                    $postTagModel->id_post = $postModel->lastInsertId;
+                    $postTagModel->id_tag  = $tagModel->lastInsertId;
                     $postTagModel->beginTransaction();
                     try {
                         $postTagModel->save();
