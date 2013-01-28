@@ -6,7 +6,6 @@ class Core_TemplateEngine
     public $options = array();
     public $registryFilters = array();
     public $autoEscape = true;
-    public $cache = array();
     public $theme;
 
     public function __construct($options = array())
@@ -53,16 +52,11 @@ class Core_TemplateEngine
         }
 
         // Cache template file
-        $cachePath = CACHE_PATH . '/template';
-        if (!file_exists($cachePath)) mkdir($cachePath, 777);
-        $cacheFile = $cachePath . '/' . md5($fpath) . '.php';
+        $cacheFile = CACHE_PATH . '/template' . '/' . md5($fpath) . '.php';
         $cacheFileDate = (file_exists($cacheFile)) ? filemtime($cacheFile) : 0;
 
         if ((filemtime($fpath) > $cacheFileDate)) {
-            $content = $this->compile(file_get_contents($fpath), $autoEscape);
-            file_put_contents($cacheFile, $content);
-        } else {
-            $content = file_get_contents($cacheFile);
+            file_put_contents($cacheFile, $this->compile(file_get_contents($fpath), $autoEscape));
         }
 
         // Set view helper
@@ -72,11 +66,9 @@ class Core_TemplateEngine
         // Load the base or translated template.
         $template = new Core_Template(
             $this,
-            $fpath,
-            $content,
+            $cacheFile,
             $this->varsUniversal
         );
-
 
         return $template;
     }
@@ -90,7 +82,7 @@ class Core_TemplateEngine
                 "/}}\n/",
                 "/}}/",
                 "/\[\[/",
-                "/\]\]/\n?",
+                "/\]\]/",
                 '/^\s*@(.*)$/m',
                 '/\[:\s*block\s(.*)\s*:\](.*)\[:\s*endblock\s*:\]/Usm',
             ),
@@ -100,7 +92,7 @@ class Core_TemplateEngine
                 $autoEscape ? ")); ?>" : "); ?>",
                 "<?php ",
                 " ?>",
-                "<?php \\1 ;?>",
+                "<?php \\1 ?>",
                 "<?php if (array_key_exists('\\1', \$this->inheritBlocks)) { echo \$this->inheritBlocks['\\1']; } else if (\$this->inheritFrom === NULL) { ?>\\2<?php } else { ob_start(); ?>\\2<?php \$this->inheritBlocks['\\1'] = ob_get_contents(); ob_end_clean(); } ?>",
             ),
             $contents

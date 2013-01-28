@@ -43,7 +43,7 @@ class Core_Application
 
     protected function _setExceptionHandler()
     {
-        set_exception_handler(array(new Base_Controller_ErrorController($this->_options), 'errorAction'));
+        set_exception_handler(array(new Base_Controller_ErrorController(null), 'errorAction'));
     }
 
     protected function _registryResources($resources)

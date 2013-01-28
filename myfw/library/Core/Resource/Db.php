@@ -99,25 +99,25 @@ class Core_Resource_Db
     {
         $properties = array_keys(get_object_vars($model));
 
-        $sql['insert'] = "INSERT INTO {$model->table}(";
-        $sql['fields'] = '';
-        $sql['values'] = 'VALUES(';
+        $insert = "INSERT INTO {$model->table}(";
+        $sql['fields'] = array();
+        $sql['values'] = array();
         $bindPrams = array();
 
         foreach ($properties as $property) {
             if (in_array($property, $model->fields)
                 && isset($model->{$property})
             ){
-                $sql['fields'] .= "{$property},";
-                $sql['values'] .= ":{$property},";
+                $sql['fields'][] = "{$property}";
+                $sql['values'][] = ":{$property}";
                 $bindPrams[":{$property}"] = $model->{$property};
             }
         }
 
-        $sql['fields'] = rtrim($sql['fields'], ',') . ') ';
-        $sql['values'] = rtrim($sql['values'], ',') . ')';
+        $field = implode(',', $sql['fields']) . ') ';
+        $value = 'VALUES(' . implode(',', $sql['values']) . ')';
 
-        $stmt = $this->_pdo[$this->adapter]->prepare(implode('', $sql));
+        $stmt = $this->_pdo[$this->adapter]->prepare($insert . $field . $value);
         $stmt->execute($bindPrams);
 
         return $this->lastInsertId();
@@ -126,23 +126,22 @@ class Core_Resource_Db
     public function update($model)
     {
         $properties = array_keys(get_object_vars($model));
-
-        $sql = "UPDATE {$model->table} SET ";
+        $sql = array();
         $bindPrams = array();
 
         foreach ($properties as $property) {
             if (in_array($property, $model->fields)
                 && isset($model->{$property})
             ){
-                $sql .= "{$property}=:{$property},";
+                $sql[] = "{$property}=:{$property}";
                 $bindPrams[":{$property}"] = $model->{$property};
             }
         }
 
-        $sql = rtrim($sql, ',') . " WHERE {$model->primaryKey}=:{$model->primaryKey}";
+        $query = "UPDATE {$model->table} SET " . implode(',', $sql) . " WHERE {$model->primaryKey}=:{$model->primaryKey}";
         $bindPrams[":{$model->primaryKey}"] = $model->{$model->primaryKey};
 
-        $stmt = $this->_pdo[$this->adapter]->prepare($sql);
+        $stmt = $this->_pdo[$this->adapter]->prepare($query);
         $stmt->execute($bindPrams);
 
         return $stmt->rowCount();
