@@ -530,7 +530,7 @@ class Minify {
                     try {
                         $content[] = call_user_func($lastMinifier, $imploded, $lastOptions);
                     } catch (Exception $e) {
-                        throw new Exception("Exception in minifier: " . $e->getMessage());
+                        throw $e;
                     }
                 } else {
                     $content[] = $imploded;

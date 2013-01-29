@@ -28,7 +28,7 @@ class Core_Template
             include $this->cacheFile;
         } catch (Exception $e) {
             ob_end_clean();
-            throw new Exception($e->getMessage(), $e->getCode());
+            throw $e;
         }
 
         $result = ob_get_contents();

@@ -32,7 +32,7 @@ class Core_Resource_Db
             $this->$adapter->connected = true;
             $this->_pdo[$adapter]->exec("SET NAMES 'UTF8'");
         } catch(PDOException $e){
-            throw new Exception('Failed to open the DB connection', 3);
+            throw $e;
         }
     }
 

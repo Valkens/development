@@ -55,7 +55,7 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
                 $categoryModel->commit();
             } catch (Exception $e) {
                 $categoryModel->rollBack();
-                throw new Exception($e->getMessage(), $e->getCode());
+                throw $e;
             }
 
             // Write cache
