@@ -118,7 +118,7 @@
 
         // Form validation
         $('#frmPostAdd').validate();
-        /*$("#thumbnail").rules("add", {
+        $("#thumbnail").rules("add", {
             required: true,
             accept: "png|jpeg|gif",
             filesize: 2097152,
@@ -127,7 +127,7 @@
                 accept: "Only accept Png, Jpeg, Gif file",
                 filesize: "File size must be less than 2MB"
             }
-        });*/
+        });
 
         //Tags input
         $('#tags').tagsInput({

@@ -64,4 +64,9 @@ class Core_Model
         return $this->db()->fetchAll($this, $columns, $custom, $params);
     }
 
+    public function delete($custom, $params = null)
+    {
+        return $this->db()->delete($this, $custom, $params);
+    }
+
 }

@@ -84,7 +84,7 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
             $postModel->status = $params['status'];
             $postModel->comment_allowed = $params['comment_allowed'];
             $postModel->content = $params['content'];
-            $postModel->created_time = time();
+            $postModel->creation_date = time();
             $postModel->beginTransaction();
             try {
                 $postModel->save();
@@ -150,7 +150,7 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
                 }
             }
 
-            $this->redirect(array('name' => 'route_admin_post'));
+            $this->redirect(array('route' => 'route_admin_post'));
         }
 
         $this->_data['pageTitle'] = 'Add New Post';
@@ -160,16 +160,127 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
     {
         $params = $this->_request['params'];
         $postId = (int) $params['id'];
-
         $postModel = new Post_Model_Post();
-        $this->_data['post'] = $postModel->fetch('*', 'WHERE id=:id LIMIT 1', array(':id'=>$postId));
+        
+        // Set post to view
+        $this->_data['post'] = $post = $postModel->fetch('*', 'WHERE id=:id LIMIT 1', array(':id'=>$postId));
 
-        if (!$this->_data['post']) {
-            throw new Exception('This post is not exists.', 404);
-        }
+        if ($this->_data['post']) {
+            $postTagModel = new Tag_Model_PostTag();
+            $tagModel = new Tag_Model_Tag();
+            $tagIds = array();
+            $tags = array();
 
-        if ($this->isPost()) {
+            // Get tags of the Post
+            if ($postTags = $postTagModel->fetchAll('id_tag', 'WHERE id_post = :id_post', array(':id_post' => $postId))) {
+                foreach ($postTags as $postTag) {
+                    $tagIds[] = $postTag->id_tag;
+                }
 
+                foreach ($tagModel->fetchAll('name,slug', 'WHERE id IN(' . implode(',', $tagIds) . ')') as $tag) {
+                    $tags[$tag->slug] = $tag->name;
+                }
+            }
+
+            if ($this->isPost()) {
+                if (!$params['tags']) {
+                    // Delete all tags of the post
+                    if ($tagIds) {
+                        $postTagModel->beginTransaction();
+                        try {
+                            $postTagModel->delete('WHERE id_post = :id_post AND id_tag IN (' . implode(',', $tagIds) . ')',
+                                                   array(':id_post' => $postId));
+                            $postTagModel->commit();    
+                        } catch (Exception $e) {
+                            $postTagModel->rollBack();
+                            throw $e;
+                        }
+                    }
+                } else {
+                    foreach (explode(',', $params['tags']) as $tagInput) {
+                        $slug = Base_Helper_String::generateSlug($tagInput);
+                        $tagInputs[$slug] = $tagInput; 
+                    }
+                    unset($slug);
+
+                    // If deleted tags
+                    if ($deleteTagSlugs = array_diff(array_keys($tags), array_keys($tagInputs))) {
+                        $deleteTagSlugs = array_map(array($postTagModel->db(), 'quote'), $deleteTagSlugs);
+                        
+                        foreach ($tagModel->fetchAll('id', 'WHERE slug IN(' . implode(',', $deleteTagSlugs) . ')') as $tag) {
+                            $deleteTagIds[] = $tag->id;
+                        }
+
+                        // Delete tags of the Post
+                        $postTagModel->beginTransaction();
+                        try {
+                            $postTagModel->delete('WHERE id_post = :id_post AND id_tag IN (' . implode(',', $deleteTagIds) . ')',
+                                                   array(':id_post' => $postId));
+                            $postTagModel->commit();    
+                        } catch (Exception $e) {
+                            $postTagModel->rollBack();
+                            throw $e;
+                        }
+                    }
+
+                    if ($insertTagSlugs = array_diff(array_keys($tagInputs), array_keys($tags))) {
+                        foreach ($insertTagSlugs as $slug) {
+                            // Check tag is exists
+                            $tag = $tagModel->fetch('id', 'WHERE slug = :slug', array(':slug' => $slug));
+                            if (isset($tag->id)) {
+                                // Check post_tag is exists
+                                if (!$postTagModel->fetch('*', 'WHERE id_post = :id_post AND id_tag = :id_tag',
+                                                         array(
+                                                             ':id_post' => $postId,
+                                                             ':id_tag' => $tag->id
+                                                         ))
+                                    ) {
+                                    // Save post_tag
+                                    $postTagModel->id_post = $postId;
+                                    $postTagModel->id_tag  = $tag->id;
+                                    $postTagModel->beginTransaction();
+                                    try {
+                                        $postTagModel->save();
+                                        $postTagModel->commit();
+                                    } catch(Exception $e) {
+                                        $postTagModel->rollBack();
+                                        throw new Exception($e->getMessage(), $e->getCode());
+                                    }
+                                }
+                            } else {
+                                // Save tag
+                                $tagModel->name = $tagInputs[$slug];
+                                $tagModel->slug = $slug;
+                                $tagModel->beginTransaction();
+                                try {
+                                    $tagModel->save();
+                                    $tagModel->commit();
+                                } catch(Exception $e) {
+                                    $tagModel->rollBack();
+                                    throw new Exception($e->getMessage(), $e->getCode());
+                                }
+
+                                // Save post_tag
+                                $postTagModel->id_post = $postId;
+                                $postTagModel->id_tag  = $tagModel->lastInsertId;
+                                $postTagModel->beginTransaction();
+                                try {
+                                    $postTagModel->save();
+                                    $postTagModel->commit();
+                                } catch(Exception $e) {
+                                    $postTagModel->rollBack();
+                                    throw new Exception($e->getMessage(), $e->getCode());
+                                }
+                            }
+                        }
+                    }
+                }
+
+                $this->redirect(array('route' => 'route_admin_post'));
+            } else {
+                // Set tags to view
+                $post->tags = ($tags) ? implode(',', array_values($tags)) : null;
+            }
         }
 
         $this->_data['pageTitle'] = 'Edit Post';

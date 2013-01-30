@@ -34,7 +34,7 @@ class User_Controller_AuthController extends Core_Controller
         $this->_noRender = true;
         $session = Core_Session::getInstance();
         $session->destroy();
-        $this->redirect(array('name' => 'route_admin'));
+        $this->redirect(array('route' => 'route_admin'));
     }
 
 }

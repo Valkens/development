@@ -52,7 +52,7 @@ class Core_Controller
     public function redirect($location, $code = 302)
     {
         if (is_array($location)) {
-            $url = $this->_router->generate($location['name'], isset($location['params']) ? $location['params'] : array());
+            $url = $this->_router->generate($location['route'], isset($location['params']) ? $location['params'] : array());
         } elseif (is_string($location)) {
             $url = $location;
         } else {

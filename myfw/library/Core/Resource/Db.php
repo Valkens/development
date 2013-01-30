@@ -185,6 +185,21 @@ class Core_Resource_Db
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
+    public function delete($model, $custom, $params = null)
+    {
+        $sql = "DELETE FROM {$model->table} $custom";
+
+        $stmt = $this->_pdo[$this->adapter]->prepare($sql);
+
+        if ($params) {
+            $stmt->execute($params);
+        } else {
+            $stmt->execute();
+        }
+
+        return $stmt->rowCount();
+    }
+
     public function query($sql, $params, $all = true)
     {
         $arr = explode(' ', $sql);

@@ -61,7 +61,7 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
             // Write cache
             $this->_cache['db']->save($categoryModel->fetchAll('*', ' ORDER BY sort ASC'), 'db_categories');
 
-            $this->redirect(array('name' => 'route_admin_category'));
+            $this->redirect(array('route' => 'route_admin_category'));
         }
 
         $this->_data['pageTitle'] = 'Add New Category';
@@ -100,7 +100,7 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
             // Write cache
             $this->_cache['db']->save($categoryModel->fetchAll('*', 'ORDER BY sort ASC'), 'db_categories');
 
-            $this->redirect(array('name' => 'route_admin_category'));
+            $this->redirect(array('route' => 'route_admin_category'));
         }
 
         $this->_data['pageTitle'] = 'Edit Category';
