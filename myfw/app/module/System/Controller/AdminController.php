@@ -76,4 +76,32 @@ class System_Controller_AdminController extends Base_Controller_AdminController
 		$this->_data['pageTitle'] = 'System logs';
 	}
 
+	public function settingAction()
+	{
+		$settingModel = new System_Model_Setting();
+		$options = array();
+
+		if (!$options = $this->_cache['db']->load('db_settings')) {
+			$settings = $settingModel->fetchAll();
+			foreach ($settings as $setting) {
+				$options[$setting->name] = trim($setting->value);
+			}
+			$this->_cache['db']->save($options, 'db_settings');
+		}
+		
+
+		if ($this->isPost()) {
+			$settingModel->updateAll(array_keys($options), $this->_request['params']);
+			$options = array_merge($options, $this->_request['params']);
+
+			// Write cache
+			$this->_cache['db']->save($options, 'db_settings');
+
+			$this->_data['success'] = 'Change settings successfully';
+		}
+
+		$this->_data['options'] = $options;
+		$this->_data['pageTitle'] = "System settings";
+	}
+
 }

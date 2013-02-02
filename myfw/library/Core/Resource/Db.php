@@ -43,7 +43,7 @@ class Core_Resource_Db
     }
 
     public function beginTransaction() {
-        if($this->_transactionLevel === 0){
+        if($this->_transactionLevel === 0) {
             $this->_pdo[$this->adapter]->beginTransaction();
         }
         else{
@@ -54,7 +54,7 @@ class Core_Resource_Db
 
     public function commit() {
         $this->_transactionLevel--;
-        if($this->_transactionLevel === 0){
+        if($this->_transactionLevel === 0) {
             $this->_pdo[$this->adapter]->commit();
         }
         else{
@@ -64,7 +64,7 @@ class Core_Resource_Db
 
     public function rollBack() {
         $this->_transactionLevel--;
-        if($this->_transactionLevel === 0){
+        if($this->_transactionLevel === 0) {
             $this->_pdo[$this->adapter]->rollBack();
         }
         else{
@@ -107,7 +107,7 @@ class Core_Resource_Db
         foreach ($properties as $property) {
             if (in_array($property, $model->fields)
                 && isset($model->{$property})
-            ){
+            ) {
                 $sql['fields'][] = "{$property}";
                 $sql['values'][] = ":{$property}";
                 $bindPrams[":{$property}"] = $model->{$property};
@@ -132,7 +132,7 @@ class Core_Resource_Db
         foreach ($properties as $property) {
             if (in_array($property, $model->fields)
                 && isset($model->{$property})
-            ){
+            ) {
                 $sql[] = "{$property}=:{$property}";
                 $bindPrams[":{$property}"] = $model->{$property};
             }
@@ -202,8 +202,7 @@ class Core_Resource_Db
 
     public function query($sql, $params, $all = true)
     {
-        $arr = explode(' ', $sql);
-        $type = strtoupper(array_pop($arr));
+        $type = substr($sql, 0, strpos($sql, '_'));
 
         $stmt = $this->_pdo[$this->adapter]->prepare($sql);
 

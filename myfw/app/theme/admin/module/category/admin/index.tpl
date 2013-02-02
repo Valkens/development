@@ -3,10 +3,10 @@
 <div id="wrapper">
     <h1 id="pageTitle">
         {{$pageTitle}}
-        <a href="[[$this->url('route_admin_category_add')]]" class="buttonS bDefault btnAction fright">Add</a>
+        <a href="[[$this->url('route_admin_category_add')]]" class="buttonS bBlue btnAction fright">Add</a>
     </h1>
     <div class="widget">
-        <table width="100%" cellspacing="0" cellpadding="0" class="tDefault checkAll check dTable">
+        <table width="100%" cellspacing="0" cellpadding="0" class="tDefault">
             <thead>
             <tr>
                 <td>ID</td>

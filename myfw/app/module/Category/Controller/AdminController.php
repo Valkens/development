@@ -22,7 +22,7 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
             $categories = array_filter($this->_data['categories'], create_function('$obj', 'return $obj->id_parent == 0;'));
             foreach ($categories as $category) {
                 $category->childs = array_filter($this->_data['categories'],
-                                                 create_function('$obj','return $obj->id_parent == '.$category->id.';'));
+                                                 create_function('$obj','return $obj->id_parent == '. $category->id . ';'));
             }
 
             $this->_data['pageTitle'] = 'List of Categories';

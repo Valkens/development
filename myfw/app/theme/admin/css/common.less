@@ -1,11 +1,4 @@
 /* Commons */
-body {
-    font-size: 11px;
-    min-height: 100%;
-    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-    line-height: 20px;
-    background: none repeat scroll 0 0 #F4F4F4
-}
 a{
     text-decoration: none;
     color: #3993BA;
@@ -21,7 +14,6 @@ a{
 .fright{
     float: right
 }
-.thisRow { background: #f3f3e8!important; }
 .required {color: red}
 .hidden{display: none}
 
@@ -51,6 +43,28 @@ a{
     line-height: 17px;
     padding: 5px 5px 5px 30px;
     text-align: left;
+}
+
+/* Icons */
+.icon16 {
+    width: 16px;
+    height: 16px;
+}
+.icon14 {
+    width: 14px;
+    height: 14px;
+}
+span.iedit {
+    background: url("@{themeUrl}/img/icons/edit.png") no-repeat;
+    display: block;
+    margin-right: 4px;
+    .icon14;
+}
+span.idelete {
+    background: url("@{themeUrl}/img/icons/delete.png") no-repeat;
+    display: block;
+    margin-right: 4px;
+    .icon14;
 }
 
 /* Alert message */
@@ -156,11 +170,10 @@ textarea {
     display: inline-block;
     background: #fdfdfd;
 }
-.formRow div:first-child > label{
+.formRow > div:first-child > label {
     color: #000;
     font-weight: bold
 }
-textarea { height: auto; }
 .formRow  [class*="grid"] > label { float: left; display: block; padding-top: 1px; }
 .formRow label > span { margin-top: -2px; padding: 0; }
 .formRow label > img { float: left; margin: 5px 10px 0 0; }
@@ -169,8 +182,9 @@ textarea { height: auto; }
     padding: 2px;
     width: 100px;
 }
-label.error{
-    color: #BF2C11
+.formRow label.error{
+    color: #BF2C11;
+    display: block
 }
 .rowFilter {
     background: #E7EFEF
@@ -189,7 +203,7 @@ button, input[type="submit"], input[type="image"], input[type="reset"] {
     font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
 }
 .btnAction{
-    font-size: 12px
+    font-size: 11px
 }
 input.error, textarea.error {
     border-color: #DDBEBE !important;
@@ -421,15 +435,26 @@ div.tagsinput div { display: block; float: left; }
     font-weight: bold;
     color: #FFF
 }
-.widget table {
-    background: none repeat scroll 0 0 #FAFAFA
-}
 .widget .wbody {
     border-left: 1px solid #CCC;
     padding-top: 5px
 }
 .widget .wbody .albox{
     margin-top: -5px
+}
+.widget .wbody fieldset{
+    margin: 10px;
+    border-top: 1px solid #F1F1F1;
+    border-left: 1px solid #F1F1F1;
+    border-right: 1px solid #F1F1F1
+}
+.widget .wbody fieldset legend{
+    padding: 5px;
+    font-weight: bold;
+    font-size: 12px;
+    color: #5998ff;
+    font-family: Arial;
+    text-transform: uppercase;
 }
 
 /* Head icons and icon set */
@@ -457,35 +482,47 @@ div.tagsinput div { display: block; float: left; }
 }
 .widget .paginator .current {background:#606060;color: #fff;border: none}
 
-/* Tables */
-table .selector, table .selector > span{ height: 26px; line-height: 26px; }
-table thead td span { background: url("@{themeUrl}/img/tables/sort.png") no-repeat 0; display: block; width: 7px; float: right; margin: 2px 2px 0 5px; height: 16px; }
-.checkAll tbody tr td:first-child { width: 40px; padding: 0; vertical-align: middle; margin: 0;}
-.checkAll tbody tr td:first-child .checker, .checkAll tbody tr td:first-child .radio { margin: 0 auto; float: none; }
-
 /* Default table */
 .tDefault {border-bottom: 1px solid #DFDFDF}
-.tDefault tbody td, .tDefault thead td { border-left: 1px solid #DFDFDF; text-align: center}
+.tDefault thead {
+     background-color: #F2F2F2;
+}
+.tDefault tbody td, .tDefault thead td {text-align: left}
+.tDefault tbody > tr:nth-child(2n) > td{
+    background-color: #F9F9F9;
+}
+.tDefault tbody td {
+    border-top: 1px solid #DDDDDD;
+    line-height: 20px;
+    padding: 8px;
+    text-align: left;
+    vertical-align: center;
+}
 .tDefault tbody td:first-child, .tDefault thead td:first-child { border-left: none; }
 .checkAll thead td:first-child > img { vertical-align: middle; padding-bottom: 2px; }
-.tDefault thead td { text-align: center; font-size: 11px; padding: 3px 5px 2px; color: #909090; background: #eee; }
-.tDefault thead td .checker {
-    margin-left:6px;
-    margin-right:0
+.tDefault thead td { 
+    font-size: 11px;
+    padding: 3px 5px 2px;
+    color: #333;
+    text-align: left;
+    font-weight: bold;
+    line-height: 20px;
+    padding: 8px;
 }
-
 .tDefault td { padding: 7px 11px; vertical-align: middle; }
-.tDefault tr { border-top: 1px solid #DFDFDF; }
 
 /* Status */
 .stSuccess {
-    color: #70A415
+    color: #70A415;
+    font-weight: bold;
 }
 .stWranning {
-    color: #F5AA1A
+    color: #F5AA1A;
+    font-weight: bold;
 }
 .stError {
-    color: #C62626
+    color: #C62626;
+    font-weight: bold;
 }
 
 /* Grids */

@@ -5,11 +5,11 @@
 <div id="wrapper">
     <h1 id="pageTitle">
         {{$pageTitle}}
-        <a href="[[$this->url('route_admin_post_add')]]" class="buttonS bDefault btnAction fright">Add</a>
+        <a href="[[$this->url('route_admin_post_add')]]" class="buttonS bBlue btnAction fright">Add</a>
     </h1>
     <div class="widget">
         @if ($posts) :
-        <table width="100%" cellspacing="0" cellpadding="0" class="tDefault checkAll check dTable">
+        <table width="100%" cellspacing="0" cellpadding="0" class="tDefault">
             <thead>
             <tr>
                 <td>ID</td>
@@ -39,8 +39,12 @@
                 </td>
                 <td>{{$post->comment_count}}</td>
                 <td>
-                    <a href="[[$this->url('route_admin_post_edit', array('id' => $post->id))]]">Edit</a> |
-                    <a class="delete_link" href="{{$adminUrl}}/post/delete/{{$post->id}}">Delete</a>
+                    <a class="fleft" href="[[$this->url('route_admin_post_edit', array('id' => $post->id))]]">
+                        <span class="iedit tip_ne" title="Edit"></span>
+                    </a> 
+                    <a class="fleft delete_link" href="{{$adminUrl}}/post/delete/{{$post->id}}">
+                        <span class="idelete tip_ne" title="Delete"></span>
+                    </a>
                 </td>
             </tr>
             @endforeach

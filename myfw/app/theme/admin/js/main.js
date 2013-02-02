@@ -5,6 +5,10 @@ $(function(){
     // Form elements styling
     $("select, .check, .check :checkbox, input:radio, input:file").uniform();
 
+    // Tipsy
+    $('.tip_n').tipsy({gravity: 'n',live: true});
+    $('.tip_ne').tipsy({gravity: 'ne',live: true});
+
     /*$('.loading').live('click',function() {
         var str=$(this).attr('title');
         var overlay=$(this).attr('rel');

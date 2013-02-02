@@ -35,7 +35,7 @@
                         </div>
                         <div class="formRow">
                             <div class="grid2"><span class="required fleft">*</span><label>Title</label></div>
-                            <div class="grid8"><input id="title" type="text" name="name" maxlength="255" class="required" value="{{$post->title}}" /></div>
+                            <div class="grid8"><input id="title" type="text" name="title" maxlength="255" class="required" value="{{$post->title}}" /></div>
                             <div class="clear"></div>
                         </div>
                         <div class="formRow">

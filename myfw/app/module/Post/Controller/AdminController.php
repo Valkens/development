@@ -74,16 +74,16 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
             $postModel = new Post_Model_Post();
             $postModel->id_category = $category->id_parent;
             $postModel->id_subcategory = $category->id;
-            $postModel->title = $params['title'];
-            $postModel->slug = $params['slug'];
+            $postModel->title = trim($params['title']);
+            $postModel->slug = trim($params['slug']);
             $postModel->featured_status = $params['featured_status'];
-            $postModel->description = $params['description'];
+            $postModel->description = trim($params['description']);
             if (trim($params['meta_description'])) {
-                $postModel->meta_description = $params['meta_description'];
+                $postModel->meta_description = trim($params['meta_description']);
             }
             $postModel->status = $params['status'];
             $postModel->comment_allowed = $params['comment_allowed'];
-            $postModel->content = $params['content'];
+            $postModel->content = trim($params['content']);
             $postModel->creation_date = time();
             $postModel->beginTransaction();
             try {
@@ -183,6 +183,35 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
             }
 
             if ($this->isPost()) {
+                // Update post
+                $categoryArr = array_filter($this->_data['categories'], create_function('$obj', 'return $obj->id == '.$params['subcategory'].';'));
+                $category = array_shift($categoryArr);
+
+                // Save post
+                $postModel = new Post_Model_Post();
+                $postModel->id = $postId;
+                $postModel->id_category = $category->id_parent;
+                $postModel->id_subcategory = $category->id;
+                $postModel->title = trim($params['title']);
+                $postModel->slug = trim($params['slug']);
+                $postModel->featured_status = $params['featured_status'];
+                $postModel->description = trim($params['description']);
+                if (trim($params['meta_description'])) {
+                    $postModel->meta_description = trim($params['meta_description']);
+                }
+                $postModel->status = $params['status'];
+                $postModel->comment_allowed = $params['comment_allowed'];
+                $postModel->content = trim($params['content']);
+                $postModel->creation_date = time();
+                $postModel->beginTransaction();
+                try {
+                    $postModel->update();
+                    $postModel->commit();
+                } catch (Exception $e) {
+                    $postModel->rollBack();
+                    throw new Exception($e->getMessage(), $e->getCode());
+                }
+                
                 if (!$params['tags']) {
                     // Delete all tags of the post
                     if ($tagIds) {
