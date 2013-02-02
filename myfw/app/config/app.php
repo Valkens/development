@@ -24,13 +24,13 @@ return array(
             'display_startup_errors' => 0,
             'display_errors' => 0,
             'error_reporting' => 0,
-            'error_log' => APPLICATION_PATH . '/log/error'
+            'error_log' => APPLICATION_PATH . '/log/error.txt'
         ),
         'development' => array(
             'display_startup_errors' => 1,
             'display_errors' => 1,
             'error_reporting' => E_ALL,
-            'error_log' => APPLICATION_PATH . '/log/error'
+            'error_log' => APPLICATION_PATH . '/log/error.txt'
         )
     ),
     'modules' => array(
@@ -38,7 +38,9 @@ return array(
         'Default',
         'Category',
         'Post',
-        'User'
+        'User',
+        'Tag',
+        'System'
     ),
     'libraries' => array(
         'Core',

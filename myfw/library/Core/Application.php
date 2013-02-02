@@ -7,7 +7,8 @@ class Core_Application
 
     public function __construct($environment, $options)
     {
-        include_once LIBRARY_PATH . '/' . 'Core/Loader.php';
+        include_once LIBRARY_PATH . '/Core/Loader.php';
+        include_once LIBRARY_PATH . '/Core/Helper/Class.php';
 
         // Registry auto loader
         spl_autoload_register(array(new Core_Loader($options), 'autoload'));
@@ -55,8 +56,8 @@ class Core_Application
 
     public function run()
     {
-        $subFolder = '/' . ltrim(str_replace($_SERVER['DOCUMENT_ROOT'], '', str_replace('\\','/', BASE_PATH)), '/');
-        $basePath = ($subFolder == '/') ? '' : $subFolder;
+        $subDir = '/' . ltrim(str_replace($_SERVER['DOCUMENT_ROOT'], '', str_replace('\\','/', BASE_PATH)), '/');
+        $basePath = ($subDir == '/') ? '' : $subDir;
 
         // Set Router
         $this->_router = new Core_Router();

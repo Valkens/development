@@ -40,8 +40,8 @@ class Core_Controller
         // Render
         if (!$this->_noRender) {
             if (!$this->_fileRender) {
-                $dir = 'module/' . strtolower($this->_request['module']) . '/' . strtolower($this->_request['controller']);
-                $this->_view->render($dir, $this->_request['action'], $this->_data);
+                $path = 'module/' . strtolower($this->_request['module']) . '/' . strtolower($this->_request['controller']);
+                $this->_view->render($path, $this->_request['action'], $this->_data);
             } else {
                 $lastSlashPos = strrpos($this->_fileRender, '/');
                 $this->_view->render(substr($this->_fileRender, 0,  $lastSlashPos), substr($this->_fileRender, $lastSlashPos), $this->_data);

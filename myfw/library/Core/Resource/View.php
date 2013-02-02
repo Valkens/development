@@ -22,13 +22,13 @@ class Core_Resource_View
         return $this->_templateEngine->theme;
     }
 
-    public function render($dir, $file, $data = array())
+    public function render($path, $file, $data = array())
     {
-        $path = APPLICATION_PATH . '/theme/' . $this->getTheme();
+        $dir = APPLICATION_PATH . '/theme/' . $this->getTheme();
 
-        $this->_templateEngine->addPath($path);
+        $this->_templateEngine->addPath($dir);
         $namespace = '_' . str_replace(array(APPLICATION_PATH, '/'), array('', '_'), $dir) . '_';
-        $this->_templateEngine->addPath($path . '/' . $dir, $namespace);
+        $this->_templateEngine->addPath($dir . '/' . $path, $namespace);
 
         // Registry filter
         if ($this->_options['minify']) {

@@ -25,7 +25,7 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
                                                  create_function('$obj','return $obj->id_parent == '.$category->id.';'));
             }
 
-            $this->_data['pageTitle'] = 'List Category';
+            $this->_data['pageTitle'] = 'List of Categories';
             $this->_data['categories'] = $categories;
         }
     }

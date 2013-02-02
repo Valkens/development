@@ -25,10 +25,8 @@ class Core_Loader
         if (isset($this->_cacheIndex[$class])) {
             include_once $this->_cacheIndex[$class];
         } elseif (!class_exists($class)) { // Multiple class in one file
-            $classInfo = Core_Helper_Class::getInfo($class);
-
             // Check namespace
-            if (in_array($classInfo['namespace'], $this->_options['libraries'])) {
+            if (in_array(substr($class, 0, strpos($class, '_')), $this->_options['libraries'])) {
                 $dir = LIBRARY_PATH;
             } else {
                 $dir = APPLICATION_PATH . '/' . 'module';

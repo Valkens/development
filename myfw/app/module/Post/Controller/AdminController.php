@@ -58,7 +58,7 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
             }
         }
 
-        $this->_data['pageTitle'] = 'List Post';
+        $this->_data['pageTitle'] = 'List of Posts';
         $this->_data['posts'] = $posts;
     }
 

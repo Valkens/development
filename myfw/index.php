@@ -2,9 +2,9 @@
 include_once 'constant.php';
 
 // Core_Application
-require_once BASE_PATH . '/library/Core/Application.php';
+require_once LIBRARY_PATH . '/Core/Application.php';
 
-set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARY_PATH);
+set_include_path(LIBRARY_PATH);
 
 // Create application, and run
 $application = new Core_Application(

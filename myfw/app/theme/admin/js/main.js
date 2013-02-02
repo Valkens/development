@@ -1,6 +1,6 @@
 $(function(){
     // Chosen plugin
-    $(".select").chosen();
+    $(".select").chosen({width: '95%'});
 
     // Form elements styling
     $("select, .check, .check :checkbox, input:radio, input:file").uniform();

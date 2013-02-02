@@ -3,7 +3,7 @@
 <div id="wrapper">
     <div id="sideMenu">
         <ul>
-            <li><a href="{{$adminUrl}}/category">List category</a></li>
+            <li><a href="{{$adminUrl}}/category">List of categories</a></li>
             <li><a href="{{$adminUrl}}/category/add">Add new category</a></li>
         </ul>
     </div>
@@ -22,7 +22,7 @@
                     <form id="frmCategoryEdit" method="post">
                         <div class="formRow">
                             <div class="grid2"><span class="required fleft">*</span><label>Parent</label></div>
-                            <div class="grid4 noSearch">
+                            <div class="grid2 noSearch">
                                 <select name="parent" class="select">
                                     <option value="0">None</option>
                                     @foreach ($categories as $obj) :

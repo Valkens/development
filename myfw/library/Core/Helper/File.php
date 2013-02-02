@@ -179,14 +179,14 @@ class Core_Helper_File
 
     /**
      * Delete all file
-     * @param string $dirPath Path of directory
+     * @param string $dir Path of directory
      * @param string $ext File extension
      */
-    public static function deleteAllFile($dirPath, $ext = '')
+    public static function deleteAllFile($dir, $ext = '')
     {
-        if (!self::isEmptyDir($dirPath)) {
-            $ext  = $ext ? $ext : '*';
-            $files = glob($dirPath . '/*.' . $ext);
+        if (!self::isEmptyDir($dir)) {
+            $ext  = $ext ? ".$ext" : '';
+            $files = glob($dir . '/*' . $ext);
 
             foreach ($files as $key => $file) {
                 @unlink($file);

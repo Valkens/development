@@ -5,7 +5,7 @@
 <div id="wrapper">
     <div id="sideMenu">
         <ul>
-            <li><a href="[[$this->url('route_admin_post')]]">List post</a></li>
+            <li><a href="[[$this->url('route_admin_post')]]">List of posts</a></li>
         </ul>
     </div>
 
@@ -22,7 +22,7 @@
                 <form id="frmPostAdd" method="post">
                     <div class="formRow">
                         <div class="grid2"><span class="required fleft">*</span><label>Category</label></div>
-                        <div class="grid4 noSearch">
+                        <div class="grid2 noSearch">
                             <select name="subcategory" class="select">
                                 @foreach ($subcategories as $category) :
                                 <option value="{{$category->id}}">{{$category->name}}</option>
@@ -133,7 +133,13 @@
         $('#tags').tagsInput({
             width: '100%',
             'height': '',
-            'defaultText': 'Add a tag'
+            'defaultText': 'Add a tag',
+            autocomplete_url: "[[$this->url('route_admin_tag_suggest')]]",
+            autocomplete: {
+                selectFirst: true, 
+                width:'100px',
+                autoFill: true
+            }
         });
     });
 </script>

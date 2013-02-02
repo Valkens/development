@@ -4,10 +4,18 @@
         <ul class="nav">
             <li><a href="{{$adminUrl}}">Dashboard</a></li>
             <li class="dropdown">
-                <a href="[[$this->url('route_admin_category')]]">Category</a>
+                <a href="[[$this->url('route_admin_category')]]">Categories</a>
             </li>
             <li class="dropdown">
-                <a href="[[$this->url('route_admin_post')]]">Post</a>
+                <a href="[[$this->url('route_admin_post')]]">Posts</a>
+            </li>
+            <li class="dropdown">
+                <a href="javascript:void(0)">System <b class="caret"></b></a>
+                <ul>
+                    <li><a href="[[$this->url('route_admin_system_cache')]]">Caches</li>
+                    <li><a href="[[$this->url('route_admin_system_log')]]">Logs</li>
+                    <li><a href="[[$this->url('route_admin_system_setting')]]">Settings</li>
+                </ul>
             </li>
         </ul>
 

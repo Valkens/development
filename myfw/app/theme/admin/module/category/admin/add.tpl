@@ -3,7 +3,7 @@
 <div id="wrapper">
     <div id="sideMenu">
         <ul>
-            <li><a href="[[$this->url('route_admin_category')]]">List category</a></li>
+            <li><a href="[[$this->url('route_admin_category')]]">List of categories</a></li>
         </ul>
     </div>
 
@@ -20,7 +20,7 @@
                 <form id="frmCategoryAdd" method="post">
                     <div class="formRow">
                         <div class="grid2"><span class="required fleft">*</span><label>Parent</label></div>
-                        <div class="grid4 noSearch">
+                        <div class="grid2 noSearch">
                             <select name="parent" class="select">
                                 <option value="0">None</option>
                                 @foreach ($categories as $category) :

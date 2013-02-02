@@ -2,7 +2,7 @@
 [: block content :]
 <div id="wrapper">
     <h1 id="pageTitle">
-        List category
+        {{$pageTitle}}
         <a href="[[$this->url('route_admin_category_add')]]" class="buttonS bDefault btnAction fright">Add</a>
     </h1>
     <div class="widget">

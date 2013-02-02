@@ -5,7 +5,7 @@
 <div id="wrapper">
     <div id="sideMenu">
         <ul>
-            <li><a href="[[$this->url('route_admin_post')]]">List post</a></li>
+            <li><a href="[[$this->url('route_admin_post')]]">List of posts</a></li>
             <li><a href="[[$this->url('route_admin_post_add')]]">Add post</a></li>
         </ul>
     </div>
@@ -20,10 +20,10 @@
             </div>
             @if ($post) :
                 <div class="wbody">
-                    <form id="frmPostAdd" method="post">
+                    <form id="frmPostEdit" method="post">
                         <div class="formRow">
                             <div class="grid2"><span class="required fleft">*</span><label>Category</label></div>
-                            <div class="grid4 noSearch">
+                            <div class="grid2 noSearch">
                                 <select name="subcategory" class="select">
                                     @foreach ($subcategories as $category) :
                                         @$selected = ($post->id_subcategory == $category->id) ? ' selected="selected"' : ''
