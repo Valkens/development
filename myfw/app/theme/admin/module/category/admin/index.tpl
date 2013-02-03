@@ -1,51 +1,58 @@
 [[ $this->inherit('@_theme_/layout') ]]
+
+[: block pageTitle :]List of categories[: endblock :]
+
 [: block content :]
 <div id="wrapper">
     <h1 id="pageTitle">
-        {{$pageTitle}}
+        List of categories
         <a href="[[$this->url('route_admin_category_add')]]" class="buttonS bBlue btnAction fright">Add</a>
     </h1>
     <div class="widget">
-        <table width="100%" cellspacing="0" cellpadding="0" class="tDefault">
-            <thead>
-            <tr>
-                <td>ID</td>
-                <td>Name</td>
-                <td>Slug</td>
-                <td>Description</td>
-                <td>Sort</td>
-                <td>Action</td>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach ($categories as $category) :
+        @if ($categories) :
+            <table width="100%" cellspacing="0" cellpadding="0" class="tDefault">
+                <thead>
                 <tr>
-                    <td>#{{$category->id}}</td>
-                    <td style="text-align:left;text-indent:5px">{{$category->name}}</td>
-                    <td>{{$category->slug}}</td>
-                    <td>{{$category->meta_description}}</td>
-                    <td>{{$category->sort}}</td>
-                    <td>
-                        <a href="[[$this->url('route_admin_category_edit', array('id' => $category->id))]]">Edit</a> |
-                        <a class="delete_link" href="{{$adminUrl}}/category/delete/{{$category->id}}">Delete</a>
-                    </td>
+                    <td>ID</td>
+                    <td>Name</td>
+                    <td>Slug</td>
+                    <td>Description</td>
+                    <td>Sort</td>
+                    <td>Action</td>
                 </tr>
-                @foreach ($category->childs as $child) :
+                </thead>
+                <tbody>
+                @foreach ($parentCategories as $category) :
                     <tr>
-                        <td>#{{$child->id}}</td>
-                        <td style="text-align:left;text-indent:5px">- - - {{$child->name}}</td>
-                        <td>{{$child->slug}}</td>
-                        <td>{{$child->meta_description}}</td>
-                        <td>{{$child->sort}}</td>
+                        <td>#{{$category->id}}</td>
+                        <td style="text-align:left;text-indent:5px">{{$category->name}}</td>
+                        <td>{{$category->slug}}</td>
+                        <td>{{$category->meta_description}}</td>
+                        <td>{{$category->sort}}</td>
                         <td>
-                            <a href="[[$this->url('route_admin_category_edit', array('id' => $child->id))]]">Edit</a> |
-                            <a class="delete_link" href="{{$adminUrl}}/category/delete/{{$child->id}}">Delete</a>
+                            <a href="[[$this->url('route_admin_category_edit', array('id' => $category->id))]]">Edit</a> |
+                            <a class="delete_link" href="{{$adminUrl}}/category/delete/{{$category->id}}">Delete</a>
                         </td>
                     </tr>
+                    @foreach ($category->childs as $child) :
+                        <tr>
+                            <td>#{{$child->id}}</td>
+                            <td style="text-align:left;text-indent:5px">- - - {{$child->name}}</td>
+                            <td>{{$child->slug}}</td>
+                            <td>{{$child->meta_description}}</td>
+                            <td>{{$child->sort}}</td>
+                            <td>
+                                <a href="[[$this->url('route_admin_category_edit', array('id' => $child->id))]]">Edit</a> |
+                                <a class="delete_link" href="{{$adminUrl}}/category/delete/{{$child->id}}">Delete</a>
+                            </td>
+                        </tr>
+                    @endforeach
                 @endforeach
-            @endforeach
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        @else :
+            <div class="albox mWarning">No categories.</div>
+        @endif
     </div>
 </div>
 [: endblock :]

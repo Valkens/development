@@ -1,7 +1,14 @@
 [[ $this->inherit('@_theme_/layout') ]]
-[: block page :]{{$pageTitle}}[: endblock :]
+
+[: block pageTitle :]Edit post[: endblock :]
 
 [: block content :]
+
+
+[[
+    print_r($post);
+    die();
+]]
 <div id="wrapper">
     <div id="sideMenu">
         <ul>
@@ -46,7 +53,7 @@
                         <div class="formRow">
                             <div class="grid2"><label>Thumbnail</label></div>
                             <div class="grid4">
-                                <input type="file" name="thumbnail" />
+                                <input id="thumbnail" type="file" name="thumbnail" />
                                 <img src="{{$post->thumbnail}}" width="100" height="100" style="clear:both;margin-top:5px" />
                             </div>
                             <div class="clear"></div>
@@ -85,8 +92,8 @@
                         <div class="formRow">
                             <div class="grid2"><label>Allow comment</label></div>
                             <div class="grid2">
-                                <label>Yes&nbsp;</label><input type="radio" name="comment_status" value="1"[[ echo ($post->comment_allowed == 1) ? ' checked="checked"' : '' ]] />&nbsp;
-                                <label>No&nbsp;</label><input type="radio" name="comment_status" value="0"[[ echo ($post->comment_allowed == 0) ? ' checked="checked"' : '' ]] />
+                                <label>Yes&nbsp;</label><input type="radio" name="comment_allowed" value="1"[[ echo ($post->comment_allowed == 1) ? ' checked="checked"' : '' ]] />&nbsp;
+                                <label>No&nbsp;</label><input type="radio" name="comment_allowed" value="0"[[ echo ($post->comment_allowed == 0) ? ' checked="checked"' : '' ]] />
                             </div>
                             <div class="clear"></div>
                         </div>
@@ -121,16 +128,26 @@
             $('#slug').val($.Utility.generateSlug($(this).val()));
         });
 
-        $('#frmPostAdd').validate({
+        // Form validation
+        $('#frmPostEdit').validate();
+        $("#thumbnail").rules("add", {
+            accept: "png|jpeg|jpg|gif",
+            messages: {
+                accept: "Only accept Png, Jpeg, Jpg, Gif file"
+            }
         });
 
         //Tags input
         $('#tags').tagsInput({
-            width:'100%',
-            'height':'',
-            'defaultText':'Add a tag',
-            autocomplete_url:'http://xoxco.com/projects/code/tagsinput/test/fake_json_endpoint.html',
-            autocomplete:{selectFirst:true,width:'100px',autoFill:true}
+            width: '100%',
+            'height': '',
+            'defaultText': 'Add a tag',
+            autocomplete_url: "[[$this->url('route_admin_tag_suggest')]]",
+            autocomplete: {
+                selectFirst: true, 
+                width:'100px',
+                autoFill: true
+            }
         });
     });
 </script>

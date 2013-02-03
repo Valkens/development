@@ -63,7 +63,6 @@ class System_Controller_AdminController extends Base_Controller_AdminController
 		}
 
 		$this->_data['caches'] = $caches; 
-		$this->_data['pageTitle'] = 'System caches';
 	}
 
 	public function viewLogAction()
@@ -73,7 +72,6 @@ class System_Controller_AdminController extends Base_Controller_AdminController
 		}
 
 		$this->_data['errorLogs'] = (file_exists(ini_get('error_log'))) ? file_get_contents(ini_get('error_log')) : '';
-		$this->_data['pageTitle'] = 'System logs';
 	}
 
 	public function settingAction()
@@ -101,7 +99,6 @@ class System_Controller_AdminController extends Base_Controller_AdminController
 		}
 
 		$this->_data['options'] = $options;
-		$this->_data['pageTitle'] = "System settings";
 	}
 
 }

@@ -1,5 +1,6 @@
-[[ $this->inherit('@_theme_/layout') ]]
-[: block page :]{{$pageTitle}}[: endblock :]
+[[ $this->inherit('@_theme_/layout') ]]\
+
+[: block pageTitle :]System settings[: endblock :]
 
 [: block content :]
 <div id="wrapper">
@@ -11,7 +12,7 @@
     </div>
 
     <div id="page">
-        <h1 id="pageTitle">{{$pageTitle}}</h1>
+        <h1 id="pageTitle">System settings</h1>
         <div class="widget fluid">
             <div class="whead">
                 <h2>Settings</h2>

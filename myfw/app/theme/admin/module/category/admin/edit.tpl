@@ -1,4 +1,7 @@
 [[ $this->inherit('@_theme_/layout') ]]
+
+[: block pageTitle :]Edit category[: endblock :]
+
 [: block content :]
 <div id="wrapper">
     <div id="sideMenu">
@@ -25,7 +28,7 @@
                             <div class="grid2 noSearch">
                                 <select name="parent" class="select">
                                     <option value="0">None</option>
-                                    @foreach ($categories as $obj) :
+                                    @foreach ($parentCategories as $obj) :
                                         @$selected = ($obj->id == $category->id_parent) ? ' selected="selected"' : ''
                                     <option value="{{$obj->id}}"{{$selected}}>{{$obj->name}}</option>
                                     @endforeach
@@ -56,7 +59,7 @@
                         <div class="formRow rowSubmit">
                             <div class="grid2">&nbsp;</div>
                             <div class="grid4">
-                                <input type="submit" class="buttonS bBlue btnAction" name="submit" value="Save" />
+                                <input type="submit" class="buttonS bBlue btnAction" value="Save" />
                             </div>
                             <div class="clear"></div>
                         </div>
@@ -72,18 +75,18 @@
 
 [: block script :]
 <script type="text/javascript">
-$(function(){
-    // Generate slug
-    $('#name').change(function(){
-        $('#slug').val($.Utility.generateSlug($(this).val()));
-    });
-    $('#frmCategoryEdit').validate({
-        rules: {
-            sort: {
-                digits: true
+    $(function(){
+        // Generate slug
+        $('#name').change(function(){
+            $('#slug').val($.Utility.generateSlug($(this).val()));
+        });
+        $('#frmCategoryEdit').validate({
+            rules: {
+                sort: {
+                    digits: true
+                }
             }
-        }
+        });
     });
-});
 </script>
 [: endblock :]

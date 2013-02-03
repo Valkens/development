@@ -61,13 +61,14 @@ class Core_Router
 		$match = false;
 
 		// set Request Url if it isn't passed as parameter
-		if($requestUrl === null) {
+		if ($requestUrl === null) {
 			$requestUrl = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
 		}
 
 		// Strip query string (?a=b) from Request Url
 		if (false !== strpos($requestUrl, '?')) {
-			$requestUrl = strstr($requestUrl, '?', true);
+			//$requestUrl = strstr($requestUrl, '?', true);
+			$requestUrl = substr($requestUrl, 0, strpos($requestUrl, '?'));
 		}
 
 		// set Request Method if it isn't passed as a parameter

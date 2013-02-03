@@ -27,7 +27,6 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
 
         if ($this->_data['subcategories']) {
             foreach ($this->_data['subcategories'] as $category) {
-                if ($category->id_parent == 0) continue;
                 $categories[$category->id] = $category->name;
             }
 
@@ -58,102 +57,45 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
             }
         }
 
-        $this->_data['pageTitle'] = 'List of Posts';
         $this->_data['posts'] = $posts;
     }
 
     public function addAction()
     {
         $params = $this->_request['params'];
+        $this->_data['input'] = array();
 
         if ($this->isPost()) {
-            $categoryArr = array_filter($this->_data['categories'], create_function('$obj', 'return $obj->id == '.$params['subcategory'].';'));
-            $category = array_shift($categoryArr);
+            // Save thumbnail
+            $uploadFile = new Core_Upload();
+            $configs['uploadPath'] = BASE_PATH . '/public/upload/images/';
+            $configs['allowedTypes'] = 'gif|jpg|jpeg|png';
+            $config['maxSize'] = '2';
+            $configs['overwrite'] = false;
+            $configs['removeSpaces'] = true;
+            $uploadFile->initialize($configs);
+            $uploadFile->doUpload('thumbnail');
 
-            // Save post
-            $postModel = new Post_Model_Post();
-            $postModel->id_category = $category->id_parent;
-            $postModel->id_subcategory = $category->id;
-            $postModel->title = trim($params['title']);
-            $postModel->slug = trim($params['slug']);
-            $postModel->featured_status = $params['featured_status'];
-            $postModel->description = trim($params['description']);
-            if (trim($params['meta_description'])) {
-                $postModel->meta_description = trim($params['meta_description']);
-            }
-            $postModel->status = $params['status'];
-            $postModel->comment_allowed = $params['comment_allowed'];
-            $postModel->content = trim($params['content']);
-            $postModel->creation_date = time();
-            $postModel->beginTransaction();
-            try {
+            if ($err = $uploadFile->getErrors()) {
+                $this->_data['errors'] = array('thumbnail' => array_shift($err));
+                $this->_data['input'] = $this->_request['params'];
+            } else {
+                $categoryArr = array_filter($this->_data['categories'], create_function('$obj', 'return $obj->id == '.$params['subcategory'].';'));
+                $params['category'] = array_shift($categoryArr);
+                
+                // Save post
+                $postModel = new Post_Model_Post();
+                $postModel->initialize($params);
                 $postModel->save();
-                $postModel->commit();
-            } catch (Exception $e) {
-                $postModel->rollBack();
-                throw new Exception($e->getMessage(), $e->getCode());
+
+                // Save input tags
+                $tagModel = new Tag_Model_Tag();
+                $postTagModel = new Tag_Model_PostTag();
+                $tagModel->insertTags($params['tags'], $postModel->lastInsertId, $postTagModel);
+
+                $this->redirect(array('route' => 'route_admin_post'));
             }
-
-            // Input tags
-            $tagModel = new Tag_Model_Tag();
-            $postTagModel = new Tag_Model_PostTag();
-            $tagInputs = explode(',', $params['tags']);
-
-            foreach ($tagInputs as $tagInput) {
-                $slug = Base_Helper_String::generateSlug($tagInput);
-                // Check tag is exists
-                $tag = $tagModel->fetch('id', 'WHERE slug = :slug', array(':slug' => $slug));
-                if (isset($tag->id)) {
-                    // Check post_tag is exists
-                    if (!$postTagModel->fetch('*', 'WHERE id_post = :id_post AND id_tag = :id_tag',
-                                             array(
-                                                 ':id_post' => $postModel->lastInsertId,
-                                                 ':id_tag' => $tag->id
-                                             ))
-                        ) {
-                        // Save post_tag
-                        $postTagModel->id_post = $postModel->lastInsertId;
-                        $postTagModel->id_tag  = $tag->id;
-                        $postTagModel->beginTransaction();
-                        try {
-                            $postTagModel->save();
-                            $postTagModel->commit();
-                        } catch(Exception $e) {
-                            $postTagModel->rollBack();
-                            throw new Exception($e->getMessage(), $e->getCode());
-                        }
-                    }
-                } else {
-                    // Save tag
-                    $tagModel->name = $tagInput;
-                    $tagModel->slug = Base_Helper_String::generateSlug($tagInput);
-                    $tagModel->beginTransaction();
-                    try {
-                        $tagModel->save();
-                        $tagModel->commit();
-                    } catch(Exception $e) {
-                        $tagModel->rollBack();
-                        throw new Exception($e->getMessage(), $e->getCode());
-                    }
-
-                    // Save post_tag
-                    $postTagModel->id_post = $postModel->lastInsertId;
-                    $postTagModel->id_tag  = $tagModel->lastInsertId;
-                    $postTagModel->beginTransaction();
-                    try {
-                        $postTagModel->save();
-                        $postTagModel->commit();
-                    } catch(Exception $e) {
-                        $postTagModel->rollBack();
-                        throw new Exception($e->getMessage(), $e->getCode());
-                    }
-                }
-            }
-
-            $this->redirect(array('route' => 'route_admin_post'));
         }
-
-        $this->_data['pageTitle'] = 'Add New Post';
     }
 
     public function editAction()
@@ -162,10 +104,16 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
         $postId = (int) $params['id'];
         $postModel = new Post_Model_Post();
         
-        // Set post to view
-        $this->_data['post'] = $post = $postModel->fetch('*', 'WHERE id=:id LIMIT 1', array(':id'=>$postId));
+        $this->_data['post'] = $postModel->fetch('*', 'WHERE id=:id LIMIT 1', array(':id' => $postId));
 
         if ($this->_data['post']) {
+            $data = array();
+            foreach ($postModel->fields as $field) {
+                $data[$field] = $this->_data['post']->{$field};
+            }
+            unset($this->_data['post']);
+            $this->_data['post'] = $data;
+            
             $postTagModel = new Tag_Model_PostTag();
             $tagModel = new Tag_Model_Tag();
             $tagIds = array();
@@ -180,139 +128,76 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
                 foreach ($tagModel->fetchAll('name,slug', 'WHERE id IN(' . implode(',', $tagIds) . ')') as $tag) {
                     $tags[$tag->slug] = $tag->name;
                 }
+
+                $this->_data['post']['tags'] = $tags;
             }
 
             if ($this->isPost()) {
-                // Update post
-                $categoryArr = array_filter($this->_data['categories'], create_function('$obj', 'return $obj->id == '.$params['subcategory'].';'));
-                $category = array_shift($categoryArr);
+                if ($_FILES['thumbnail']) {
+                    // Save thumbnail
+                    $uploadFile = new Core_Upload();
+                    $configs['uploadPath'] = BASE_PATH . '/public/upload/images/';
+                    $configs['allowedTypes'] = 'gif|jpg|jpeg|png';
+                    $config['maxSize'] = '2';
+                    $configs['overwrite'] = false;
+                    $configs['removeSpaces'] = true;
+                    $uploadFile->initialize($configs);
+                    $uploadFile->doUpload('thumbnail');
 
-                // Save post
+                    if ($err = $uploadFile->getErrors()) {
+                        $this->_data['errors'] = array('thumbnail' => array_shift($err));
+                        $this->_data['post'] = $this->_request['params'];
+                        return;
+                    }
+                }
+
+                // Update the post
+                $categoryArr = array_filter($this->_data['subcategories'], create_function('$obj', 'return $obj->id == ' . $params['subcategory'] . ';'));
+                $params['category'] = array_shift($categoryArr);
+
                 $postModel = new Post_Model_Post();
-                $postModel->id = $postId;
-                $postModel->id_category = $category->id_parent;
-                $postModel->id_subcategory = $category->id;
-                $postModel->title = trim($params['title']);
-                $postModel->slug = trim($params['slug']);
-                $postModel->featured_status = $params['featured_status'];
-                $postModel->description = trim($params['description']);
-                if (trim($params['meta_description'])) {
-                    $postModel->meta_description = trim($params['meta_description']);
-                }
-                $postModel->status = $params['status'];
-                $postModel->comment_allowed = $params['comment_allowed'];
-                $postModel->content = trim($params['content']);
-                $postModel->creation_date = time();
-                $postModel->beginTransaction();
-                try {
-                    $postModel->update();
-                    $postModel->commit();
-                } catch (Exception $e) {
-                    $postModel->rollBack();
-                    throw new Exception($e->getMessage(), $e->getCode());
-                }
-                
-                if (!$params['tags']) {
-                    // Delete all tags of the post
+                $postModel->initialize($params);
+                $postModel->update();
+
+
+                if (!$params['tags']) { // Delete all tags of the post
                     if ($tagIds) {
-                        $postTagModel->beginTransaction();
-                        try {
-                            $postTagModel->delete('WHERE id_post = :id_post AND id_tag IN (' . implode(',', $tagIds) . ')',
-                                                   array(':id_post' => $postId));
-                            $postTagModel->commit();    
-                        } catch (Exception $e) {
-                            $postTagModel->rollBack();
-                            throw $e;
-                        }
+                        $postTagModel->delete('WHERE id_post = :id_post AND id_tag IN (' . implode(',', $tagIds) . ')',
+                                               array(':id_post' => $postId));
                     }
                 } else {
                     foreach (explode(',', $params['tags']) as $tagInput) {
                         $slug = Base_Helper_String::generateSlug($tagInput);
                         $tagInputs[$slug] = $tagInput; 
                     }
-                    unset($slug);
 
                     // If deleted tags
-                    if ($deleteTagSlugs = array_diff(array_keys($tags), array_keys($tagInputs))) {
-                        $deleteTagSlugs = array_map(array($postTagModel->db(), 'quote'), $deleteTagSlugs);
+                    if ($deletedTagSlugs = array_diff(array_keys($tags), array_keys($tagInputs))) {
+                        $deletedTagSlugs = array_map(array($postTagModel->db(), 'quote'), $deletedTagSlugs);
                         
-                        foreach ($tagModel->fetchAll('id', 'WHERE slug IN(' . implode(',', $deleteTagSlugs) . ')') as $tag) {
-                            $deleteTagIds[] = $tag->id;
+                        foreach ($tagModel->fetchAll('id', 'WHERE slug IN(' . implode(',', $deletedTagSlugs) . ')') as $tag) {
+                            $deletedTagIds[] = $tag->id;
                         }
 
                         // Delete tags of the Post
-                        $postTagModel->beginTransaction();
-                        try {
-                            $postTagModel->delete('WHERE id_post = :id_post AND id_tag IN (' . implode(',', $deleteTagIds) . ')',
-                                                   array(':id_post' => $postId));
-                            $postTagModel->commit();    
-                        } catch (Exception $e) {
-                            $postTagModel->rollBack();
-                            throw $e;
-                        }
+                        $postTagModel->delete('WHERE id_post = :id_post AND id_tag IN (' . implode(',', $deletedTagIds) . ')',
+                                               array(':id_post' => $postId));
                     }
 
-                    if ($insertTagSlugs = array_diff(array_keys($tagInputs), array_keys($tags))) {
-                        foreach ($insertTagSlugs as $slug) {
-                            // Check tag is exists
-                            $tag = $tagModel->fetch('id', 'WHERE slug = :slug', array(':slug' => $slug));
-                            if (isset($tag->id)) {
-                                // Check post_tag is exists
-                                if (!$postTagModel->fetch('*', 'WHERE id_post = :id_post AND id_tag = :id_tag',
-                                                         array(
-                                                             ':id_post' => $postId,
-                                                             ':id_tag' => $tag->id
-                                                         ))
-                                    ) {
-                                    // Save post_tag
-                                    $postTagModel->id_post = $postId;
-                                    $postTagModel->id_tag  = $tag->id;
-                                    $postTagModel->beginTransaction();
-                                    try {
-                                        $postTagModel->save();
-                                        $postTagModel->commit();
-                                    } catch(Exception $e) {
-                                        $postTagModel->rollBack();
-                                        throw new Exception($e->getMessage(), $e->getCode());
-                                    }
-                                }
-                            } else {
-                                // Save tag
-                                $tagModel->name = $tagInputs[$slug];
-                                $tagModel->slug = $slug;
-                                $tagModel->beginTransaction();
-                                try {
-                                    $tagModel->save();
-                                    $tagModel->commit();
-                                } catch(Exception $e) {
-                                    $tagModel->rollBack();
-                                    throw new Exception($e->getMessage(), $e->getCode());
-                                }
-
-                                // Save post_tag
-                                $postTagModel->id_post = $postId;
-                                $postTagModel->id_tag  = $tagModel->lastInsertId;
-                                $postTagModel->beginTransaction();
-                                try {
-                                    $postTagModel->save();
-                                    $postTagModel->commit();
-                                } catch(Exception $e) {
-                                    $postTagModel->rollBack();
-                                    throw new Exception($e->getMessage(), $e->getCode());
-                                }
-                            }
+                    // If inserted tags
+                    if ($insertedTagSlugs = array_diff(array_keys($tagInputs), array_keys($tags))) {
+                        print_r($insertedTagSlugs);die();
+                        foreach ($insertedTagSlugs as $insertedTagSlug) {
+                            $insertedTagNames[] = $tagInputs[$insertedTagSlug];
                         }
+
+                        $tagModel->insertTags(array_values($insertedTagNames), $postId, $postTagModel);
                     }
                 }
 
                 $this->redirect(array('route' => 'route_admin_post'));
-            } else {
-                // Set tags to view
-                $post->tags = ($tags) ? implode(',', array_values($tags)) : null;
             }
         }
-
-        $this->_data['pageTitle'] = 'Edit Post';
     }
 
 }

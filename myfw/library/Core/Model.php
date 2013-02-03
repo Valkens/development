@@ -7,6 +7,7 @@ class Core_Model
     public $primaryKey;
     public $fields = array();
     public $lastInsertId;
+    public $rowCount = 0;
     protected static $_options;
 
     public function setDefaultAdapter($adapter)
@@ -46,12 +47,26 @@ class Core_Model
 
     public function save()
     {
-        $this->lastInsertId = $this->db()->save($this);
+        $this->beginTransaction();
+        try {
+            $this->lastInsertId = $this->db()->save($this);
+            $this->commit();
+        } catch (Exception $e) {
+            $this->rollBack();
+            throw $e;
+        }
     }
 
     public function update()
     {
-        return $this->db()->update($this);
+        $this->beginTransaction();
+        try {
+            $this->rowCount = $this->db()->update($this);
+            $this->commit();
+        } catch (Exception $e) {
+            $this->rollBack();
+            throw $e;
+        }
     }
 
     public function fetch($columns = '*', $custom = null, $params = null)
@@ -66,7 +81,14 @@ class Core_Model
 
     public function delete($custom, $params = null)
     {
-        return $this->db()->delete($this, $custom, $params);
+        $this->beginTransaction();
+        try {
+            $this->rowCount = $this->db()->delete($this, $custom, $params);
+            $this->commit();
+        } catch (Exception $e) {
+            $this->rollBack();
+            throw $e;
+        }
     }
 
 }

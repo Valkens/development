@@ -1,4 +1,7 @@
 [[ $this->inherit('@_theme_/layout') ]]
+
+[: block pageTitle :]Add new category[: endblock :]
+
 [: block content :]
 <div id="wrapper">
     <div id="sideMenu">
@@ -53,7 +56,7 @@
                     <div class="formRow rowSubmit">
                         <div class="grid2">&nbsp;</div>
                         <div class="grid4">
-                            <input type="submit" class="buttonS bBlue btnAction" name="submit" value="Save" />
+                            <input type="submit" class="buttonS bBlue btnAction" value="Save" />
                         </div>
                         <div class="clear"></div>
                     </div>
