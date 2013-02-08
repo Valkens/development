@@ -2,7 +2,6 @@
 class Core_Resource_View
 {
     protected $_options;
-    protected $_loader;
     protected $_templateEngine;
 
     public function __construct()
@@ -24,8 +23,9 @@ class Core_Resource_View
 
     public function render($path, $file, $data = array())
     {
-        $dir = APPLICATION_PATH . '/theme/' . $this->getTheme();
-        $namespace = '_' . str_replace(array(APPLICATION_PATH, '/'), array('', '_'), $dir) . '_';
+        $dir = 'theme/' . $this->getTheme();
+        $namespace = '_' . str_replace('/', '_', $dir) . '_';
+        $dir = APPLICATION_PATH . '/' . $dir;
 
         $this->_templateEngine->addPath($dir);
         $this->_templateEngine->addPath($dir . '/' . $path, $namespace);

@@ -12,7 +12,7 @@ class Core_Helper_View
 
         foreach ($files as $key => $file) {
             if (substr($file, 0, 1) != '/') {
-                $filePaths[] = BASE_PATH . '/app/theme/' . self::$theme . '/' . $file;
+                $filePaths[] = APPLICATION_PATH . '/theme/' . self::$theme . '/' . $file;
             } else {
                 $filePaths[] = BASE_PATH . $file;
             }
@@ -20,18 +20,18 @@ class Core_Helper_View
 
         if (self::$options['combineCss']) {
             $fileDate = 0;
-            $cachedFile = '';
+            $cacheFile = '';
 
             foreach ($filePaths as $filePath) {
                 $fileDate = max(filemtime($filePath), $fileDate);
-                $cachedFile .= $filePath;
+                $cacheFile .= $filePath;
             }
 
-            $cachedFile = md5($cachedFile) . '.css';
-            $cachedFilePath = BASE_PATH . '/public/cache/' . $cachedFile;
-            $cachedFileDate = file_exists($cachedFilePath) ? filemtime($cachedFilePath) : 0;
+            $cacheFile = md5($cacheFile) . '.css';
+            $cacheFilePath = BASE_PATH . '/public/cache/' . $cacheFile;
+            $cacheFileDate = file_exists($cacheFilePath) ? filemtime($cacheFilePath) : 0;
 
-            if ($cachedFileDate < $fileDate) {
+            if ($cacheFileDate < $fileDate) {
                 $fileContent = '';
                 $less->setVariables(array(
                     'themeUrl' => "'" . BASE_URL . '/app/theme/' . self::$theme . "'",
@@ -47,10 +47,10 @@ class Core_Helper_View
                     }
                 }
 
-                file_put_contents($cachedFilePath, (self::$options['minify']) ? self::minifyCss($fileContent) : $fileContent);
+                file_put_contents($cacheFilePath, (self::$options['minify']) ? self::minifyCss($fileContent) : $fileContent);
             }
 
-            $fileLinks = array(BASE_URL . '/public/cache/' . $cachedFile);
+            $fileLinks = array(BASE_URL . '/public/cache/' . $cacheFile);
         } else {
             foreach ($filePaths as $key => $filePath) {
                 $ext = pathinfo($filePath, PATHINFO_EXTENSION);
@@ -59,15 +59,15 @@ class Core_Helper_View
                     $less->setVariables(array(
                         'themeUrl' => "'" . BASE_URL . '/app/theme/' . self::$theme . "'"
                     ));
-                    $cachedFile = md5($filePath) . '.css';
-                    $cachedFilePath = BASE_PATH . '/public/cache/' . $cachedFile;
+                    $cacheFile = md5($filePath) . '.css';
+                    $cacheFilePath = BASE_PATH . '/public/cache/' . $cacheFile;
 
                     if (self::$options['minify']) {
                         $less->setFormatter('compressed');
                     }
-                    $less->checkedCompile($filePath, $cachedFilePath);
+                    $less->checkedCompile($filePath, $cacheFilePath);
 
-                    $fileLinks[] = BASE_URL . '/public/cache/' . $cachedFile;
+                    $fileLinks[] = BASE_URL . '/public/cache/' . $cacheFile;
                 } else {
                     $fileLinks[] = BASE_URL . '/' . trim(str_replace(BASE_PATH, '', $filePath), '/');
                 }
@@ -83,7 +83,7 @@ class Core_Helper_View
     {
         foreach ($files as $key => $file) {
             if (substr($file, 0, 1) != '/') {
-                $filePaths[] = BASE_PATH . '/app/theme/' . self::$theme . '/' . $file;
+                $filePaths[] = APPLICATION_PATH . '/theme/' . self::$theme . '/' . $file;
             } else {
                 $filePaths[] = BASE_PATH . $file;
             }
@@ -91,28 +91,28 @@ class Core_Helper_View
 
         if (self::$options['combineJs']) {
             $fileDate = 0;
-            $cachedFile = '';
+            $cacheFile = '';
 
             foreach ($filePaths as $filePath) {
                 $fileDate = max(filemtime($filePath), $fileDate);
-                $cachedFile .= $filePath;
+                $cacheFile .= $filePath;
             }
 
-            $cachedFile = md5($cachedFile) . '.js';
-            $cachedFilePath = BASE_PATH . '/public/cache/' . $cachedFile;
-            $cachedFileDate = file_exists($cachedFilePath) ? filemtime($cachedFilePath) : 0;
+            $cacheFile = md5($cacheFile) . '.js';
+            $cacheFilePath = BASE_PATH . '/public/cache/' . $cacheFile;
+            $cacheFileDate = file_exists($cacheFilePath) ? filemtime($cacheFilePath) : 0;
 
-            if ($cachedFileDate < $fileDate) {
+            if ($cacheFileDate < $fileDate) {
                 $fileContent = '';
 
                 foreach ($filePaths as $filePath) {
                     $fileContent .= file_get_contents($filePath) . ';';
                 }
 
-                file_put_contents($cachedFilePath, (self::$options['minify']) ? self::minifyJs($fileContent) : $fileContent);
+                file_put_contents($cacheFilePath, (self::$options['minify']) ? self::minifyJs($fileContent) : $fileContent);
             }
 
-            $fileLinks = array(BASE_URL . '/public/cache/' . $cachedFile);
+            $fileLinks = array(BASE_URL . '/public/cache/' . $cacheFile);
         } else {
             foreach ($filePaths as $filePath) {
                 $fileLinks[] = BASE_URL . '/' . trim(str_replace(BASE_PATH, '', $filePath), '/');
@@ -126,31 +126,28 @@ class Core_Helper_View
 
     public static function minifyCss($css)
     {
-        include_once BASE_PATH . '/library/Min/lib/Minify/CSS.php';
+        include_once LIBRARY_PATH . '/Min/lib/Minify/CSS.php';
 
         return call_user_func('Minify_CSS::minify', $css);
     }
 
     public static function minifyJs($js)
     {
-        include_once BASE_PATH . '/library/Min/lib/JSMin.php';
+        include_once LIBRARY_PATH . '/Min/lib/JSMin.php';
 
-        return call_user_func('JsMin:minify', $js);
+        return call_user_func('JSMin::minify', $js);
     }
 
     public static function minifyHtml($html, $params)
     {
-        include_once BASE_PATH . '/library/Min/lib/Minify/HTML.php';
+        include_once LIBRARY_PATH . '/Min/lib/Minify/HTML.php';
 
         return call_user_func('Minify_HTML::minify', $html, $params);
     }
 
     public static function url($routeName, $params = array())
     {
-        $registry = Core_Registry::getInstance();
-        $router = $registry->get('router');
-
-        echo $router->generate($routeName, $params);
+        echo Core_Application::getInstance()->getRouter()->generate($routeName, $params);
     }
 
 }

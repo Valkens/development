@@ -1,8 +1,7 @@
 <?php
 class Core_Loader
 {
-    protected $_options;
-    protected $_cacheFileName = 'loader.php';
+    protected $_options = array();
     protected $_cacheFile;
     protected $_cacheIndex = array();
 
@@ -11,7 +10,7 @@ class Core_Loader
         $this->_options = $options;
 
         // Cache
-        $this->_cacheFile = CACHE_PATH . '/system/' . $this->_cacheFileName;
+        $this->_cacheFile = CACHE_PATH . '/system/loader.php';
 
         if (file_exists($this->_cacheFile) && trim(file_get_contents($this->_cacheFile))) {
             $this->_cacheIndex = include_once $this->_cacheFile;

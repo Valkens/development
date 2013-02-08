@@ -34,7 +34,7 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
             $result = $postModel->fetch('COUNT(id) AS count_all');
 
             // Pagination
-            $page = (isset($params['page'])) ? $params['page'] : 1;
+            $page = $this->getParam('page', 1);
             $offset = ($page - 1) * self::PER_PAGE;
 
             $posts = $postModel->fetchAll('id,thumbnail,title,id_subcategory,description,featured_status,status,comment_count',

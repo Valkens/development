@@ -2,8 +2,8 @@
 class Core_Template
 {
     public $engine;
-    public $cacheFile;
-    public $varsGlobal;
+    public $cacheFile = null;
+    public $varsGlobal = array();
     public $inheritFrom;
     public $inheritBlocks = array();
 

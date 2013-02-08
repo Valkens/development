@@ -1,25 +1,25 @@
 <?php
 class Core_Router
 {
-	private $routes = array();
-	private $namedRoutes = array();
-	private $basePath = '';
+	private $_routes = array();
+	private $_namedRoutes = array();
+	private $_basePath = null;
 
 	public function setBasePath($basePath) {
-		$this->basePath = $basePath;
+		$this->_basePath = $basePath;
 	}
 
 	public function map($method, $route, $target, $name = null) {
 		
-		$route = $this->basePath . $route;
+		$route = $this->_basePath . $route;
 
-		$this->routes[] = array($method, $route, $target, $name);
+		$this->_routes[] = array($method, $route, $target, $name);
 		
 		if($name) {
-			if(isset($this->namedRoutes[$name])) { 
+			if(isset($this->_namedRoutes[$name])) { 
 				throw new Exception("Can not redeclare route '{$name}'");
 			} else {
-				$this->namedRoutes[$name] = $route;
+				$this->_namedRoutes[$name] = $route;
 			}
 			
 		}
@@ -28,12 +28,12 @@ class Core_Router
 	public function generate($routeName, $params = array()) {
 
 		// Check if named route exists
-		if (!isset($this->namedRoutes[$routeName])) {
+		if (!isset($this->_namedRoutes[$routeName])) {
 			throw new Exception("Route '{$routeName}' does not exist.");
 		}
 
 		// Replace named parameters
-		$route = $this->namedRoutes[$routeName];
+		$route = $this->_namedRoutes[$routeName];
 		$url = $route;
 
 		if (preg_match_all('`(/|\.|)\[([^:\]]*+)(?::([^:\]]*+))?\](\?|)`', $route, $matches, PREG_SET_ORDER)) {
@@ -79,7 +79,7 @@ class Core_Router
 		// http://www.mail-archive.com/internals@lists.php.net/msg33119.html
 		$_REQUEST = array_merge($_GET, $_POST);
 
-		foreach($this->routes as $handler) {
+		foreach($this->_routes as $handler) {
 			list($method, $_route, $target, $name) = $handler;
 
 			$methods = explode('|', $method);

@@ -10,17 +10,13 @@ class Core_Controller
 
     public function __construct($request)
     {
+        $this->_router = Core_Application::getInstance()->getRouter();
         $this->_request = $request;
         $this->_view = Core_Resource_Manager::getResource('view');
         $this->init();
     }
 
     public function init() {}
-
-    public function setRouter($router)
-    {
-        $this->_router = $router;
-    }
 
     public function getParam($key, $default = null)
     {
@@ -31,7 +27,7 @@ class Core_Controller
         return $default;
     }
 
-    protected function _renderFile($file)
+    public function renderFile($file)
     {
         $this->_fileRender =  $file;
     }

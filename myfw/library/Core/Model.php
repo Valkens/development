@@ -1,14 +1,15 @@
 <?php
 class Core_Model
 {
-    public static $db = array();
+    protected static $_options = array();
     public static $defaultAdapter = 'mysql';
-    public $table;
-    public $primaryKey;
+    public static $db = array();
+
+    public $table = null;
+    public $primaryKey = null;
     public $fields = array();
-    public $lastInsertId;
+    public $lastInsertId = null;
     public $rowCount = 0;
-    protected static $_options;
 
     public function setDefaultAdapter($adapter)
     {

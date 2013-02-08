@@ -1,27 +1,66 @@
 <?php
 class Core_Application
 {
-    protected $_environment;
-    protected $_options;
+    private static $_application;
+    protected $_environment = null;
+    protected $_options = array();
     protected $_router;
 
-    public function __construct($environment, $options)
+    public static function getInstance($environment = null, $options = null)
     {
-        include_once LIBRARY_PATH . '/Core/Loader.php';
+        if (self::$_application == null) {
+            self::$_application = new Core_Application();
 
-        // Registry auto loader
-        spl_autoload_register(array(new Core_Loader($options), 'autoload'));
+            include_once LIBRARY_PATH . '/Core/Loader.php';
 
-        $this->_environment = $environment;
-        $this->_setOptions($options);
-        $this->_setExceptionHandler();
+            // Registry auto loader
+            spl_autoload_register(array(new Core_Loader($options), 'autoload'));
+
+            self::$_application->_environment = $environment;
+            self::$_application->_setOptions($options);
+            self::$_application->_setExceptionHandler();
+        }
+
+        return self::$_application;
+    }
+
+    public function getRouter()
+    {
+        return $this->_router;
+    }
+
+    public function run()
+    {
+        $subDir = '/' . ltrim(str_replace($_SERVER['DOCUMENT_ROOT'], '', str_replace('\\','/', BASE_PATH)), '/');
+        $basePath = ($subDir == '/') ? '' : $subDir;
+
+        // Set Router
+        $this->_router = new Core_Router();
+        $this->_router->setBasePath($basePath);
+        $this->_getRoutes();
+
+        $match = $this->_router->match();
+        if ($match) {
+            $controllerClass = $match['target']['module'] . '_Controller_' . $match['target']['controller'] . 'Controller';
+        } else {
+            throw new Exception('Page not found', 404);
+        }
+
+        // Set controller
+        $controller = new $controllerClass(array(
+            'module' => $match['target']['module'],
+            'controller' => $match['target']['controller'],
+            'action' => $match['target']['action'],
+            'params' => isset($match['params']) ? array_merge($match['params'], $_REQUEST) : array()
+        ));
+        $controller->dispatch();
     }
 
     protected function _setOptions($options)
     {
         $this->_options = $options;
 
-        foreach ($options as $key => $val) {
+        foreach ($this->_options as $key => $val) {
             if ($key == 'phpSettings') {
                 $this->_setPhpSettings($val);
             } elseif ($key == 'resources') {
@@ -51,38 +90,6 @@ class Core_Application
         foreach ($resources as $resource => $options) {
             Core_Resource_Manager::setOptions($resource, $options);
         }
-    }
-
-    public function run()
-    {
-        $subDir = '/' . ltrim(str_replace($_SERVER['DOCUMENT_ROOT'], '', str_replace('\\','/', BASE_PATH)), '/');
-        $basePath = ($subDir == '/') ? '' : $subDir;
-
-        // Set Router
-        $this->_router = new Core_Router();
-        $this->_router->setBasePath($basePath);
-        $this->_getRoutes();
-
-        // Set registry
-        $registry = Core_Registry::getInstance();
-        $registry->set('router', $this->_router);
-
-        $match = $this->_router->match();
-        if ($match) {
-            $controllerClass = $match['target']['module'] . '_Controller_' . $match['target']['controller'] . 'Controller';
-        } else {
-            throw new Exception('Page not found', 404);
-        }
-
-        // Set controller
-        $controller = new $controllerClass(array(
-            'module' => $match['target']['module'],
-            'controller' => $match['target']['controller'],
-            'action' => $match['target']['action'],
-            'params' => isset($match['params']) ? array_merge($match['params'], $_REQUEST) : array()
-        ));
-        $controller->setRouter($this->_router);
-        $controller->dispatch();
     }
 
     protected function _getRoutes()
