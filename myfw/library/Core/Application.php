@@ -8,7 +8,6 @@ class Core_Application
     public function __construct($environment, $options)
     {
         include_once LIBRARY_PATH . '/Core/Loader.php';
-        include_once LIBRARY_PATH . '/Core/Helper/Class.php';
 
         // Registry auto loader
         spl_autoload_register(array(new Core_Loader($options), 'autoload'));

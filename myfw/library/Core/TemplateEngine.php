@@ -4,7 +4,6 @@ class Core_TemplateEngine
     protected $_paths;
     public $varsUniversal = array();
     public $options = array();
-    public $registryFilters = array();
     public $autoEscape = true;
     public $theme;
 
@@ -56,7 +55,17 @@ class Core_TemplateEngine
         $cacheFileDate = (file_exists($cacheFile)) ? filemtime($cacheFile) : 0;
 
         if ((filemtime($fpath) > $cacheFileDate)) {
-            file_put_contents($cacheFile, $this->compile(file_get_contents($fpath), $autoEscape));
+            $output = $this->compile(file_get_contents($fpath), $autoEscape);
+            $output = call_user_func('Core_Helper_View::minifyHtml',
+                                     $output,
+                                     array('xhtml',
+                                           'cssMinifier' => 'Core_Helper_View::minifyCss',
+                                           'jsMinifier' => 'Core_Helper_View::minifyJs'
+                                     ));
+
+            file_put_contents($cacheFile, $output);
+            // Remove white space
+            file_put_contents($cacheFile, php_strip_whitespace($cacheFile));
         }
 
         // Set view helper
@@ -99,11 +108,6 @@ class Core_TemplateEngine
         );
 
         return $contents;
-    }
-
-    public function registryFilter($type, $callback, $params)
-    {
-        $this->registryFilters[$type] = array($callback, $params);
     }
 
 }

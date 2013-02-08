@@ -22,6 +22,15 @@ class Core_Controller
         $this->_router = $router;
     }
 
+    public function getParam($key, $default = null)
+    {
+        if (isset($this->_request['params'][$key])) {
+            return $this->_request['params'][$key];
+        }
+
+        return $default;
+    }
+
     protected function _renderFile($file)
     {
         $this->_fileRender =  $file;
@@ -110,6 +119,11 @@ class Core_Controller
     public function isPost()
     {
         return ($_SERVER['REQUEST_METHOD'] === 'POST');
+    }
+
+    public function isGet()
+    {
+        return ($_SERVER['REQUEST_METHOD'] === 'GET');
     }
 
 }

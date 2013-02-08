@@ -25,21 +25,10 @@ class Core_Resource_View
     public function render($path, $file, $data = array())
     {
         $dir = APPLICATION_PATH . '/theme/' . $this->getTheme();
+        $namespace = '_' . str_replace(array(APPLICATION_PATH, '/'), array('', '_'), $dir) . '_';
 
         $this->_templateEngine->addPath($dir);
-        $namespace = '_' . str_replace(array(APPLICATION_PATH, '/'), array('', '_'), $dir) . '_';
         $this->_templateEngine->addPath($dir . '/' . $path, $namespace);
-
-        // Registry filter
-        if ($this->_options['minify']) {
-            $this->_templateEngine->registryFilter('output',
-                                                    array('Core_Helper_View', 'minifyHtml'),
-                                                    array('xhtml',
-                                                          'cssMinifier' => array('Core_Helper_View', 'minifyCss'),
-                                                          'jsMinifier' => array('Core_Helper_View', 'minifyJs')
-                                                    ));
-        }
-
         $this->_templateEngine->setVar($data);
         $this->_templateEngine->template('@' . $namespace . '/' . $file)->render();
     }

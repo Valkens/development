@@ -33,12 +33,6 @@ class Core_Template
 
         $result = ob_get_contents();
 
-        foreach ($this->engine->registryFilters as $key => $val) {
-            if ($key == 'output') {
-                $result = call_user_func($val[0], $result, $val[1]);
-            }
-        }
-
         ob_end_clean();
 
         if ($this->inheritFrom !== NULL) {

@@ -128,21 +128,21 @@ class Core_Helper_View
     {
         include_once BASE_PATH . '/library/Min/lib/Minify/CSS.php';
 
-        return call_user_func(array('Minify_CSS', 'minify'), $css);
+        return call_user_func('Minify_CSS::minify', $css);
     }
 
     public static function minifyJs($js)
     {
         include_once BASE_PATH . '/library/Min/lib/JSMin.php';
 
-        return call_user_func(array('JsMin', 'minify'), $js);
+        return call_user_func('JsMin:minify', $js);
     }
 
     public static function minifyHtml($html, $params)
     {
         include_once BASE_PATH . '/library/Min/lib/Minify/HTML.php';
 
-        return call_user_func(array('Minify_HTML', 'minify'), $html, $params);
+        return call_user_func('Minify_HTML::minify', $html, $params);
     }
 
     public static function url($routeName, $params = array())

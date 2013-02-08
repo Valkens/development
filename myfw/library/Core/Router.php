@@ -67,7 +67,6 @@ class Core_Router
 
 		// Strip query string (?a=b) from Request Url
 		if (false !== strpos($requestUrl, '?')) {
-			//$requestUrl = strstr($requestUrl, '?', true);
 			$requestUrl = substr($requestUrl, 0, strpos($requestUrl, '?'));
 		}
 
