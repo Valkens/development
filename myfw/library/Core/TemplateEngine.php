@@ -55,17 +55,7 @@ class Core_TemplateEngine
         $cacheFileDate = (file_exists($cacheFile)) ? filemtime($cacheFile) : 0;
 
         if ((filemtime($fpath) > $cacheFileDate)) {
-            $output = $this->compile(file_get_contents($fpath), $autoEscape);
-            $output = call_user_func('Core_Helper_View::minifyHtml',
-                                     $output,
-                                     array('xhtml',
-                                           'cssMinifier' => 'Core_Helper_View::minifyCss',
-                                           'jsMinifier' => 'Core_Helper_View::minifyJs'
-                                     ));
-
-            file_put_contents($cacheFile, $output);
-            // Remove white space
-            file_put_contents($cacheFile, php_strip_whitespace($cacheFile));
+            file_put_contents($cacheFile, $this->compile(file_get_contents($fpath), $autoEscape));
         }
 
         // Set view helper

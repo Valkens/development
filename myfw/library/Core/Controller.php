@@ -42,7 +42,7 @@ class Core_Controller
 
         $this->$actionMethod();
 
-        // Render
+        // Render view
         if (!$this->_noRender) {
             if (!$this->_fileRender) {
                 $path = 'module/' . strtolower($this->_request['module']) . '/' . strtolower($this->_request['controller']);

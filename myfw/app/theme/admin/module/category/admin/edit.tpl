@@ -6,8 +6,8 @@
 <div id="wrapper">
     <div id="sideMenu">
         <ul>
-            <li><a href="{{$adminUrl}}/category">List of categories</a></li>
-            <li><a href="{{$adminUrl}}/category/add">Add new category</a></li>
+            <li><a href="[[$this->url('route_admin_category')]]">List of categories</a></li>
+            <li><a href="[[$this->url('route_admin_category_add')]]">Add new category</a></li>
         </ul>
     </div>
 

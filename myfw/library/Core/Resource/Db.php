@@ -17,7 +17,7 @@ class Core_Resource_Db
 
         $this->_options = $dbOptions = $options[$adapter];
 
-        try{
+        try {
             if ($this->adapter == 'sqlite') {
                 $this->_pdo[$adapter] = new PDO("sqlite:{$dbOptions['dbname']}");
             } else {
@@ -43,7 +43,7 @@ class Core_Resource_Db
     }
 
     public function beginTransaction() {
-        if($this->_transactionLevel === 0) {
+        if ($this->_transactionLevel === 0) {
             $this->_pdo[$this->adapter]->beginTransaction();
         }
         else{
@@ -54,7 +54,7 @@ class Core_Resource_Db
 
     public function commit() {
         $this->_transactionLevel--;
-        if($this->_transactionLevel === 0) {
+        if ($this->_transactionLevel === 0) {
             $this->_pdo[$this->adapter]->commit();
         }
         else{

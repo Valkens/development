@@ -39,7 +39,7 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
             $categoryModel->save();
 
             // Write cache
-            $this->_cache['db']->save($categoryModel->fetchAll('*', ' ORDER BY sort ASC'), 'db_categories');
+            $this->_cache['db']->save($categoryModel->fetchAll('*', 'ORDER BY sort ASC'), 'db_categories');
 
             $this->redirect(array('route' => 'route_admin_category'));
         }

@@ -1,9 +1,9 @@
 <?php
 class Core_Model
 {
-    protected static $_options = array();
     public static $defaultAdapter = 'mysql';
-    public static $db = array();
+    protected static $_options = array();
+    protected static $_db = array();
 
     public $table = null;
     public $primaryKey = null;
@@ -11,24 +11,33 @@ class Core_Model
     public $lastInsertId = null;
     public $rowCount = 0;
 
+    public function __construct()
+    {
+        self::$_db = Core_Resource_Manager::getResource('db');
+        self::$_options = Core_Resource_Manager::getOptions('db');
+        $this->init();
+    }
+
+    public function init()
+    {
+        $this->table = self::$_options[self::$defaultAdapter]['dbprefix'] . $this->table;
+    }
+
     public function setDefaultAdapter($adapter)
     {
         self::$defaultAdapter = $adapter;
+        $this->init();
     }
 
     public function db()
     {
-        self::$db = Core_Resource_Manager::getResource('db');
-
         $adapter = self::$defaultAdapter;
 
-        if ((!isset(self::$db->$adapter) && !isset(self::$db->$adapter->connected))
-            || (!isset(self::$db->$adapter) && !self::$db->$adapter->connected)
-        ) {
-            self::$db->connect(Core_Resource_Manager::getOptions('db'), self::$defaultAdapter);
+        if (!isset(self::$_db->$adapter) && !isset(self::$_db->$adapter->connected)) {
+            self::$_db->connect(self::$_options, self::$defaultAdapter);
         }
 
-        return self::$db;
+        return self::$_db;
     }
 
     public function commit()

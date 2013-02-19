@@ -21,7 +21,6 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
 
     public function indexAction()
     {
-        $params = $this->_request['params'];
         $posts = array();
         $categories = array();
 
@@ -107,13 +106,6 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
         $this->_data['post'] = $postModel->fetch('*', 'WHERE id=:id LIMIT 1', array(':id' => $postId));
 
         if ($this->_data['post']) {
-            $data = array();
-            foreach ($postModel->fields as $field) {
-                $data[$field] = $this->_data['post']->{$field};
-            }
-            unset($this->_data['post']);
-            $this->_data['post'] = $data;
-            
             $postTagModel = new Tag_Model_PostTag();
             $tagModel = new Tag_Model_Tag();
             $tagIds = array();
@@ -129,7 +121,7 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
                     $tags[$tag->slug] = $tag->name;
                 }
 
-                $this->_data['post']['tags'] = $tags;
+                $this->_data['post']->tags = implode(',', $tags);
             }
 
             if ($this->isPost()) {
@@ -186,7 +178,6 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
 
                     // If inserted tags
                     if ($insertedTagSlugs = array_diff(array_keys($tagInputs), array_keys($tags))) {
-                        print_r($insertedTagSlugs);die();
                         foreach ($insertedTagSlugs as $insertedTagSlug) {
                             $insertedTagNames[] = $tagInputs[$insertedTagSlug];
                         }

@@ -138,13 +138,6 @@ class Core_Helper_View
         return call_user_func('JSMin::minify', $js);
     }
 
-    public static function minifyHtml($html, $params)
-    {
-        include_once LIBRARY_PATH . '/Min/lib/Minify/HTML.php';
-
-        return call_user_func('Minify_HTML::minify', $html, $params);
-    }
-
     public static function url($routeName, $params = array())
     {
         echo Core_Application::getInstance()->getRouter()->generate($routeName, $params);

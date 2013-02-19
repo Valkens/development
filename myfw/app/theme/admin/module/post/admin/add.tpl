@@ -138,7 +138,6 @@
                 accept: "Only accept Png, Jpeg, Jpg, Gif file"
             }
         });
-        
 
         //Tags input
         $('#tags').tagsInput({

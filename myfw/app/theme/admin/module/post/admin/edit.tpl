@@ -3,12 +3,6 @@
 [: block pageTitle :]Edit post[: endblock :]
 
 [: block content :]
-
-
-[[
-    print_r($post);
-    die();
-]]
 <div id="wrapper">
     <div id="sideMenu">
         <ul>
@@ -122,7 +116,7 @@
 [: block script :]
 <script type="text/javascript" src="{{$baseUrl}}/app/theme/admin/js/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
-    $(function(){
+    $(document).ready( function() {
         // Generate slug
         $('#title').change(function(){
             $('#slug').val($.Utility.generateSlug($(this).val()));
@@ -130,22 +124,22 @@
 
         // Form validation
         $('#frmPostEdit').validate();
-        $("#thumbnail").rules("add", {
-            accept: "png|jpeg|jpg|gif",
+        $('#thumbnail').rules('add', {
+            accept: 'png|jpeg|jpg|gif',
             messages: {
-                accept: "Only accept Png, Jpeg, Jpg, Gif file"
+                accept: 'Only accept Png, Jpeg, Jpg, Gif file'
             }
         });
 
         //Tags input
         $('#tags').tagsInput({
             width: '100%',
-            'height': '',
-            'defaultText': 'Add a tag',
-            autocomplete_url: "[[$this->url('route_admin_tag_suggest')]]",
+            height: '',
+            defaultText: 'Add a tag',
+            autocomplete_url: '[[$this->url('route_admin_tag_suggest')]]',
             autocomplete: {
-                selectFirst: true, 
-                width:'100px',
+                selectFirst: true,
+                width: '100px',
                 autoFill: true
             }
         });

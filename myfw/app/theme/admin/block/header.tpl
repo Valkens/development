@@ -12,9 +12,9 @@
             <li class="dropdown">
                 <a href="javascript:void(0)">System <b class="caret"></b></a>
                 <ul>
-                    <li><a href="[[$this->url('route_admin_system_cache')]]">Caches</li>
-                    <li><a href="[[$this->url('route_admin_system_log')]]">Logs</li>
-                    <li><a href="[[$this->url('route_admin_system_setting')]]">Settings</li>
+                    <li><a href="[[$this->url('route_admin_system_cache')]]">Caches</a></li>
+                    <li><a href="[[$this->url('route_admin_system_log')]]">Logs</a></li>
+                    <li><a href="[[$this->url('route_admin_system_setting')]]">Settings</a></li>
                 </ul>
             </li>
         </ul>
