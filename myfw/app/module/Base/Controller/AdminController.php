@@ -18,17 +18,17 @@ class Base_Controller_AdminController extends Core_Controller
         $this->_cache['db'] = Zend_Cache::factory('Core', 'File', $frontEnd, $backEnd);
 
         // Set data
-        $this->_data['adminUrl'] = BASE_URL . '/admin';
-        $this->_data['baseUrl']  = BASE_URL;
+        $this->view->adminUrl = BASE_URL . '/admin';
+        $this->view->baseUrl  = BASE_URL;
 
-        $this->_view->setTheme('admin');
+        $this->view->setTheme('admin');
 
         if (!User_Helper_Auth::hasIdentity()) {
             $this->renderFile('module/user/admin/login');
         } else {
             // Set session
             $this->_session = Core_Session::getInstance();
-            $this->_data['username'] = $this->_session->get('username', 'auth');
+            $this->view->username = $this->_session->get('username', 'auth');
         }
     }
 }

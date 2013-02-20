@@ -3,8 +3,6 @@ class Tag_Controller_AdminController extends Base_Controller_AdminController
 {
 	public function suggestAction()
 	{
-		$this->_noRender = true;
-
 		$params = $this->_request['params'];
 		$tagModel = new Tag_Model_Tag();
 
@@ -16,7 +14,8 @@ class Tag_Controller_AdminController extends Base_Controller_AdminController
 		foreach ($tags as $tag) {
 			$data[]['label'] = $tag->name;
 		}
-		
+
+        $this->_noRender = true;
 		echo json_encode($data);
 	}
 }

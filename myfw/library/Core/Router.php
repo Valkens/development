@@ -5,17 +5,19 @@ class Core_Router
 	private $_namedRoutes = array();
 	private $_basePath = null;
 
-	public function setBasePath($basePath) {
+	public function setBasePath($basePath)
+    {
 		$this->_basePath = $basePath;
 	}
 
-	public function map($method, $route, $target, $name = null) {
+	public function map($method, $route, $target, $name = null)
+    {
 		
 		$route = $this->_basePath . $route;
 
 		$this->_routes[] = array($method, $route, $target, $name);
 		
-		if($name) {
+		if ($name) {
 			if(isset($this->_namedRoutes[$name])) { 
 				throw new Exception("Can not redeclare route '{$name}'");
 			} else {
@@ -25,7 +27,8 @@ class Core_Router
 		}
 	}
 
-	public function generate($routeName, $params = array()) {
+	public function generate($routeName, $params = array())
+    {
 
 		// Check if named route exists
 		if (!isset($this->_namedRoutes[$routeName])) {
@@ -44,7 +47,7 @@ class Core_Router
 					$block = substr($block, 1);
 				}
 
-				if(isset($params[$param])) {
+				if (isset($params[$param])) {
 					$url = str_replace($block, $params[$param], $url);
 				} elseif ($optional) {
 					$url = str_replace($block, '', $url);
@@ -55,7 +58,8 @@ class Core_Router
 		return $url;
 	}
 
-	public function match($requestUrl = null, $requestMethod = null) {
+	public function match($requestUrl = null, $requestMethod = null)
+    {
 
 		$params = array();
 		$match = false;
@@ -150,9 +154,9 @@ class Core_Router
 		return false;
 	}
 
-	private function compileRoute($route) {
+	private function compileRoute($route)
+    {
 		if (preg_match_all('`(/|\.|)\[([^:\]]*+)(?::([^:\]]*+))?\](\?|)`', $route, $matches, PREG_SET_ORDER)) {
-
 			$match_types = array(
 				'i'  => '[0-9]++',
 				'a'  => '[0-9A-Za-z]++',

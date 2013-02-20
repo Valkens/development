@@ -55,7 +55,7 @@ class Core_Template
 
     public function __call($method, $args)
     {
-        call_user_func_array('Core_Helper_View::' . $method, $args);
+        return call_user_func_array('Core_Helper_View::' . $method, $args);
     }
 
 }

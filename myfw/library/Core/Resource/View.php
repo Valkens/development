@@ -1,7 +1,8 @@
 <?php
 class Core_Resource_View
 {
-    protected $_options;
+    protected $_options = array();
+    protected $_data = array();
     protected $_templateEngine;
 
     public function __construct()
@@ -21,7 +22,17 @@ class Core_Resource_View
         return $this->_templateEngine->theme;
     }
 
-    public function render($path, $file, $data = array())
+    public function __set($name, $value)
+    {
+        $this->_data[$name] = $value;
+    }
+
+    public function __get($name)
+    {
+        return isset($this->_data[$name]) ? $this->_data[$name] : null;
+    }
+
+    public function render($path, $file)
     {
         $dir = 'theme/' . $this->getTheme();
         $namespace = '_' . str_replace('/', '_', $dir) . '_';
@@ -29,7 +40,7 @@ class Core_Resource_View
 
         $this->_templateEngine->addPath($dir);
         $this->_templateEngine->addPath($dir . '/' . $path, $namespace);
-        $this->_templateEngine->setVar($data);
+        $this->_templateEngine->setVar($this->_data);
         $this->_templateEngine->template('@' . $namespace . '/' . $file)->render();
     }
 }

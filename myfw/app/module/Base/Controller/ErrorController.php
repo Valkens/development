@@ -3,7 +3,7 @@ class Base_Controller_ErrorController extends Core_Controller
 {
     public function errorAction(Exception $e)
     {
-        $this->_data['pageTitle'] = $e->getMessage();
+        $this->view->pageTitle = $e->getMessage();
 
         switch ($e->getCode())
         {
@@ -13,15 +13,15 @@ class Base_Controller_ErrorController extends Core_Controller
 
             default:
                 header('HTTP/1.0 500');
-                $this->_data['pageTitle'] = 'Application error';
+                $this->view->pageTitle = 'Application error';
                 break;
         }
 
         if (ini_get('display_errors')) {
-            $this->_data['exception'] = $e;
+            $this->view->exception = $e;
         }
 
-        echo $this->_view->render('module/base/error', 'error', $this->_data);
+        echo $this->view->render('module/base/error', 'error');
     }
 
 }

@@ -51,18 +51,18 @@ class System_Controller_AdminController extends Base_Controller_AdminController
 					break;
 
 				default:
-					$this->_data['error'] = 'Please choose another Cache Type.';
+					$this->view->error = 'Please choose another Cache Type.';
 					break;
 			}
 
-			if (!isset($this->_data['error'])) {
-				$this->_data['success'] = 'Clear cache successfully.';
+			if (!isset($this->view->error)) {
+				$this->view->success = 'Clear cache successfully.';
 			}
 
-			$this->_data['type'] = $params['type'];
+			$this->view->type = $params['type'];
 		}
 
-		$this->_data['caches'] = $caches; 
+		$this->view->caches = $caches;
 	}
 
 	public function viewLogAction()
@@ -71,7 +71,7 @@ class System_Controller_AdminController extends Base_Controller_AdminController
 			file_put_contents(ini_get('error_log'), '');
 		}
 
-		$this->_data['errorLogs'] = (file_exists(ini_get('error_log'))) ? file_get_contents(ini_get('error_log')) : '';
+		$this->view->errorLogs = (file_exists(ini_get('error_log'))) ? file_get_contents(ini_get('error_log')) : '';
 	}
 
 	public function settingAction()
@@ -95,10 +95,10 @@ class System_Controller_AdminController extends Base_Controller_AdminController
 			// Write cache
 			$this->_cache['db']->save($options, 'db_settings');
 
-			$this->_data['success'] = 'Change settings successfully';
+			$this->view->success = 'Change settings successfully';
 		}
 
-		$this->_data['options'] = $options;
+		$this->view->options = $options;
 	}
 
 }

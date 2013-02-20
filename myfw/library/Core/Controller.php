@@ -5,14 +5,14 @@ class Core_Controller
     protected $_request = array();
     protected $_noRender = false;
     protected $_data = array();
-    protected $_fileRender;
-    protected $_view;
+    protected $_fileRender = '';
+    public $view;
 
     public function __construct($request)
     {
         $this->_router = Core_Application::getInstance()->getRouter();
         $this->_request = $request;
-        $this->_view = Core_Resource_Manager::getResource('view');
+        $this->view = Core_Resource_Manager::getResource('view');
         $this->init();
     }
 
@@ -46,10 +46,10 @@ class Core_Controller
         if (!$this->_noRender) {
             if (!$this->_fileRender) {
                 $path = 'module/' . strtolower($this->_request['module']) . '/' . strtolower($this->_request['controller']);
-                $this->_view->render($path, $this->_request['action'], $this->_data);
+                $this->view->render($path, $this->_request['action']);
             } else {
                 $lastSlashPos = strrpos($this->_fileRender, '/');
-                $this->_view->render(substr($this->_fileRender, 0,  $lastSlashPos), substr($this->_fileRender, $lastSlashPos), $this->_data);
+                $this->view->render(substr($this->_fileRender, 0,  $lastSlashPos), substr($this->_fileRender, $lastSlashPos));
             }
         }
     }

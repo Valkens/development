@@ -14,16 +14,16 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
         }
 
         if ($categories) {
-            $this->_data['categories'] = $categories;
-            $this->_data['parentCategories'] = array_filter($categories, create_function('$obj', 'return $obj->id_parent == 0;'));
+            $this->view->categories = $categories;
+            $this->view->parentCategories = array_filter($categories, create_function('$obj', 'return $obj->id_parent == 0;'));
         }
     }
 
     public function indexAction()
     {
-        if ($this->_data['categories']) {
-            foreach ($this->_data['parentCategories'] as $category) {
-                $category->childs = array_filter($this->_data['categories'],
+        if ($this->view->categories) {
+            foreach ($this->view->parentCategories as $category) {
+                $category->childs = array_filter($this->view->categories,
                                                  create_function('$obj','return $obj->id_parent == '. $category->id . ';'));
             }
         }
@@ -39,7 +39,7 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
             $categoryModel->save();
 
             // Write cache
-            $this->_cache['db']->save($categoryModel->fetchAll('*', 'ORDER BY sort ASC'), 'db_categories');
+            $this->_writeCache($categoryModel);
 
             $this->redirect(array('route' => 'route_admin_category'));
         }
@@ -48,12 +48,11 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
     public function editAction()
     {
         $params = $this->_request['params'];
-        $this->_data['category'] = null;
 
-        if ($this->_data['categories']) {
-            $arr = array_filter($this->_data['categories'],
+        if ($this->view->categories) {
+            $arr = array_filter($this->view->categories,
                                 create_function('$obj', 'return $obj->id == ' . (int) $params['id'] . ';'));
-            $this->_data['category'] = array_shift($arr);
+            $this->view->category = array_shift($arr);
 
             if ($this->isPost()) {
                 $categoryModel = new Category_Model_Category();
@@ -61,11 +60,50 @@ class Category_Controller_AdminController extends Base_Controller_AdminControlle
                 $categoryModel->update();
 
                 // Write cache
-                $this->_cache['db']->save($categoryModel->fetchAll('*', 'ORDER BY sort ASC'), 'db_categories');
+                $this->_writeCache($categoryModel);
 
                 $this->redirect(array('route' => 'route_admin_category'));
             }
         }
+    }
+
+    public function deleteAction()
+    {
+        if ($this->isAjax() && $this->isPost()) {
+            $this->_noRender = true;
+            $params = $this->_request['params'];
+
+
+            $postModel = new Post_Model_Post();
+            $db = $postModel->db();
+
+            if ($postModel->fetch('id', 'WHERE id_category = :id_category OR id_subcategory = :id_subcategory',
+                                 array(':id_category' => $params['id'], ':id_subcategory' => $params['id']))
+            ) {
+                echo json_encode(array('success' => true, 'redirect' => false, 'msg' => 'This category is associated with some posts'));
+            } else {
+                $categoryModel = new Category_Model_Category();
+                $subCategories = array_filter($this->view->categories,
+                    create_function('$obj', 'return $obj->id_parent == ' . (int) $params['id'] . ';'));
+
+                // Update parent of subcategories
+                if ($subCategories) {
+                    foreach ($subCategories as $category) {
+                        $categoryModel->id = $category->id;
+                        $categoryModel->id_parent = 0;
+                        $categoryModel->update();
+                    }
+                }
+                $categoryModel->delete('WHERE id = :id', array(':id' => $params['id']));
+
+                echo json_encode(array('success' => true, 'redirect' => true, 'href' => $this->_router->generate('route_admin_category')));
+            }
+        }
+    }
+
+    protected function _writeCache($categoryModel)
+    {
+        $this->_cache['db']->save($categoryModel->fetchAll('*', 'ORDER BY sort ASC'), 'db_categories');
     }
 
 }

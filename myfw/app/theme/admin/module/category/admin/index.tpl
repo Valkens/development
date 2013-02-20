@@ -6,7 +6,7 @@
 <div id="wrapper">
     <h1 id="pageTitle">
         List of categories
-        <a href="[[$this->url('route_admin_category_add')]]" class="buttonS bBlue btnAction fright">Add</a>
+        <a href="{{$this->url('route_admin_category_add')}}" class="buttonS bBlue btnAction fright">Add</a>
     </h1>
     <div class="widget">
         @if ($categories) :
@@ -30,8 +30,8 @@
                         <td>{{$category->meta_description}}</td>
                         <td>{{$category->sort}}</td>
                         <td>
-                            <a href="[[$this->url('route_admin_category_edit', array('id' => $category->id))]]">Edit</a> |
-                            <a class="delete_link" href="{{$adminUrl}}/category/delete/{{$category->id}}">Delete</a>
+                            <a href="{{$this->url('route_admin_category_edit', array('id' => $category->id))}}">Edit</a> |
+                            <a class="delete_link" href="{{$this->url('route_admin_category_delete', array('id' => $category->id))}}">Delete</a>
                         </td>
                     </tr>
                     @foreach ($category->childs as $child) :
@@ -43,13 +43,14 @@
                             <td>{{$child->sort}}</td>
                             <td>
                                 <a href="[[$this->url('route_admin_category_edit', array('id' => $child->id))]]">Edit</a> |
-                                <a class="delete_link" href="{{$adminUrl}}/category/delete/{{$child->id}}">Delete</a>
+                                <a class="delete_link" href="{{$this->url('route_admin_category_delete', array('id' => $child->id))}}">Delete</a>
                             </td>
                         </tr>
                     @endforeach
                 @endforeach
                 </tbody>
             </table>
+            <div id="alertMessage"></div>
         @else :
             <div class="albox mWarning">No categories.</div>
         @endif
@@ -61,6 +62,7 @@
 <script type="text/javascript">
 $(function(){
     $('.delete_link').live('click', function(e) {
+        var el = $(this);
         e.preventDefault();
         $.confirm({
             'title': 'Confirm delete',
@@ -69,9 +71,19 @@ $(function(){
                 'Yes' : {
                     'class' : 'buttonM bBlue btnAction',
                     'action': function() {
-                        loading('Checking');
-                        $('#preloader').html('Deleting...');
-                        setTimeout('unloading()', 900);
+                        loading('Deleting...');
+                        $.post(el.attr('href'), function(res) {
+                            if (res.success) {
+                                if (res.redirect) {
+                                    window.location = res.href;
+                                } else {
+                                    unloading();
+                                    showAlertMessageWarning(res.msg, 2000);
+                                }
+                            } else {
+                                console.log(res);
+                            }
+                        }, 'json');
                     }
                 },
                 'No' : {

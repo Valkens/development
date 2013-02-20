@@ -28,7 +28,7 @@ $(function(){
 // Loading overlay
 function loading(name, overlay)
 {
-    $('body').append('<div id="overlay"></div><div id="preloader">'+name+'..</div>');
+    $('body').append('<div id="overlay"></div><div id="preloader">' + name + '..</div>');
     if (overlay == 1){
         $('#overlay').css('opacity', 0.4).fadeIn(400, function(){ $('#preloader').fadeIn(400); });
         return false;
@@ -39,12 +39,12 @@ function loading(name, overlay)
 // Unloading overlay
 function unloading()
 {
-    $('#preloader').fadeOut(400,function(){ $('#overlay').fadeOut().remove;}).remove();
+    $('#preloader').fadeOut(400,function(){ $('#overlay').fadeOut().remove();}).remove();
 }
 
-function showAlertMessageError(str,delay)
+function showAlertMessageError(str, delay)
 {
-    if(delay){
+    if (delay){
         $('#alertMessage').removeClass('success info warning').addClass('error').html(str).stop(true,true).show().animate({ opacity: 1,right: '10'}, 500,function(){
             $(this).delay(delay).animate({ opacity: 0,right: '-20'}, 500,function(){ $(this).hide(); });
         });
@@ -53,9 +53,9 @@ function showAlertMessageError(str,delay)
     $('#alertMessage').addClass('error').html(str).stop(true,true).show().animate({ opacity: 1,right: '10'}, 500);
 }
 
-function showAlertMessageSuccess(str,delay)
+function showAlertMessageSuccess(str, delay)
 {
-    if(delay){
+    if (delay){
         $('#alertMessage').removeClass('error info warning').addClass('success').html(str).stop(true,true).show().animate({ opacity: 1,right: '10'}, 500,function(){
             $(this).delay(delay).animate({ opacity: 0,right: '-20'}, 500,function(){ $(this).hide(); });
         });
@@ -64,9 +64,9 @@ function showAlertMessageSuccess(str,delay)
     $('#alertMessage').addClass('success').html(str).stop(true,true).show().animate({ opacity: 1,right: '10'}, 500);
 }
 
-function showAlertMessageWarning(str,delay)
+function showAlertMessageWarning(str, delay)
 {
-    if(delay){
+    if (delay){
         $('#alertMessage').removeClass('error success  info').addClass('warning').html(str).stop(true,true).show().animate({ opacity: 1,right: '10'}, 500,function(){
             $(this).delay(delay).animate({ opacity: 0,right: '-20'}, 500,function(){ $(this).hide(); });
         });
@@ -75,9 +75,9 @@ function showAlertMessageWarning(str,delay)
     $('#alertMessage').addClass('warning').html(str).stop(true,true).show().animate({ opacity: 1,right: '10'}, 500);
 }
 
-function showAlertMessageInfo(str,delay)
+function showAlertMessageInfo(str, delay)
 {
-    if(delay){
+    if (delay){
         $('#alertMessage').removeClass('error success  warning').html(str).stop(true,true).show().animate({ opacity: 1,right: '10'}, 500,function(){
             $(this).delay(delay).animate({ opacity: 0,right: '-20'}, 500,function(){ $(this).hide(); });
         });

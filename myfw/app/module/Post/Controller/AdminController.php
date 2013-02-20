@@ -15,8 +15,8 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
             }
         }
 
-        $this->_data['categories'] = $categories;
-        $this->_data['subcategories'] = array_filter($categories, create_function('$obj', 'return $obj->id_parent != 0;'));
+        $this->view->categories = $categories;
+        $this->view->subcategories = array_filter($categories, create_function('$obj', 'return $obj->id_parent != 0;'));
     }
 
     public function indexAction()
@@ -24,8 +24,8 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
         $posts = array();
         $categories = array();
 
-        if ($this->_data['subcategories']) {
-            foreach ($this->_data['subcategories'] as $category) {
+        if ($this->view->subcategories) {
+            foreach ($this->view->subcategories as $category) {
                 $categories[$category->id] = $category->name;
             }
 
@@ -52,21 +52,21 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
                 $paginator->baseUrl = $this->_router->generate('route_admin_post');
                 $paginator->paginate();
 
-                $this->_data['paginator'] = $paginator;
+                $this->view->paginator = $paginator;
             }
         }
 
-        $this->_data['posts'] = $posts;
+        $this->view->posts = $posts;
     }
 
     public function addAction()
     {
         $params = $this->_request['params'];
-        $this->_data['input'] = array();
+        $this->view->input = array();
 
         if ($this->isPost()) {
             // Save thumbnail
-            $uploadFile = new Core_Upload();
+            $uploadFile = new Core_Helper_Upload();
             $configs['uploadPath'] = BASE_PATH . '/public/upload/images/';
             $configs['allowedTypes'] = 'gif|jpg|jpeg|png';
             $config['maxSize'] = '2';
@@ -76,10 +76,10 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
             $uploadFile->doUpload('thumbnail');
 
             if ($err = $uploadFile->getErrors()) {
-                $this->_data['errors'] = array('thumbnail' => array_shift($err));
-                $this->_data['input'] = $this->_request['params'];
+                $this->view->errors = array('thumbnail' => array_shift($err));
+                $this->view->input = $this->_request['params'];
             } else {
-                $categoryArr = array_filter($this->_data['categories'], create_function('$obj', 'return $obj->id == '.$params['subcategory'].';'));
+                $categoryArr = array_filter($this->view->categories, create_function('$obj', 'return $obj->id == '.$params['subcategory'].';'));
                 $params['category'] = array_shift($categoryArr);
                 
                 // Save post
@@ -103,9 +103,9 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
         $postId = (int) $params['id'];
         $postModel = new Post_Model_Post();
         
-        $this->_data['post'] = $postModel->fetch('*', 'WHERE id=:id LIMIT 1', array(':id' => $postId));
+        $this->view->post = $postModel->fetch('*', 'WHERE id=:id LIMIT 1', array(':id' => $postId));
 
-        if ($this->_data['post']) {
+        if ($this->view->post) {
             $postTagModel = new Tag_Model_PostTag();
             $tagModel = new Tag_Model_Tag();
             $tagIds = array();
@@ -121,13 +121,13 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
                     $tags[$tag->slug] = $tag->name;
                 }
 
-                $this->_data['post']->tags = implode(',', $tags);
+                $this->view->post->tags = implode(',', $tags);
             }
 
             if ($this->isPost()) {
                 if ($_FILES['thumbnail']) {
                     // Save thumbnail
-                    $uploadFile = new Core_Upload();
+                    $uploadFile = new Core_Helper_Upload();
                     $configs['uploadPath'] = BASE_PATH . '/public/upload/images/';
                     $configs['allowedTypes'] = 'gif|jpg|jpeg|png';
                     $config['maxSize'] = '2';
@@ -137,14 +137,14 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
                     $uploadFile->doUpload('thumbnail');
 
                     if ($err = $uploadFile->getErrors()) {
-                        $this->_data['errors'] = array('thumbnail' => array_shift($err));
-                        $this->_data['post'] = $this->_request['params'];
+                        $this->view->errors = array('thumbnail' => array_shift($err));
+                        $this->view->post = $this->_request['params'];
                         return;
                     }
                 }
 
                 // Update the post
-                $categoryArr = array_filter($this->_data['subcategories'], create_function('$obj', 'return $obj->id == ' . $params['subcategory'] . ';'));
+                $categoryArr = array_filter($this->view->subcategories, create_function('$obj', 'return $obj->id == ' . $params['subcategory'] . ';'));
                 $params['category'] = array_shift($categoryArr);
 
                 $postModel = new Post_Model_Post();

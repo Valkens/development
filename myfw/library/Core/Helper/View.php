@@ -138,9 +138,10 @@ class Core_Helper_View
         return call_user_func('JSMin::minify', $js);
     }
 
+    /* View Helpers */
     public static function url($routeName, $params = array())
     {
-        echo Core_Application::getInstance()->getRouter()->generate($routeName, $params);
+        return Core_Application::getInstance()->getRouter()->generate($routeName, $params);
     }
 
 }

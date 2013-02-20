@@ -3,6 +3,6 @@ class Default_Controller_IndexController extends Base_Controller_DefaultControll
 {
     public function indexAction()
     {
-        $this->_data['pageTitle'] = 'Home page';
+        $this->view->pageTitle = 'Home page';
     }
 }

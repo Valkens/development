@@ -16,6 +16,12 @@ return array(
         'name' => 'route_admin_category_edit',
         'method' => 'GET|POST',
         'route'  => '/' . ADMIN_URL_SUFFIX . '/category/edit/[i:id]',
-        'target' => array('module' => 'Category', 'controller' => 'Admin', 'action' => 'edit'),
+        'target' => array('module' => 'Category', 'controller' => 'Admin', 'action' => 'edit')
     ),
+    array(
+        'name' => 'route_admin_category_delete',
+        'method' => 'POST',
+        'route'  => '/' . ADMIN_URL_SUFFIX . '/category/delete/[i:id]',
+        'target' => array('module' => 'Category', 'controller' => 'Admin', 'action' => 'delete')
+    )
 );
