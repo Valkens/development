@@ -29,7 +29,7 @@ $(function(){
         submitHandler: function() {
             loading('Checking', 1);
             $('#frmLogin .albox').hide();
-            $.post('[[$this->url('route_user_auth')]]', $('#frmLogin').serialize(), function(response) {
+            $.post('{{$this->url('route_user_auth')}}', $('#frmLogin').serialize(), function(response) {
             }, 'json')
             .success(function(response) {
                 setTimeout('unloading()', 1500);

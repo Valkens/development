@@ -4,7 +4,7 @@ class Core_Helper_View
     public static $theme;
     public static $options;
 
-    public static function generateCss($files)
+    public static function addCss($files)
     {
         include_once LIBRARY_PATH . '/Less/lessc.inc.php';
 
@@ -62,9 +62,6 @@ class Core_Helper_View
                     $cacheFile = md5($filePath) . '.css';
                     $cacheFilePath = BASE_PATH . '/public/cache/' . $cacheFile;
 
-                    if (self::$options['minify']) {
-                        $less->setFormatter('compressed');
-                    }
                     $less->checkedCompile($filePath, $cacheFilePath);
 
                     $fileLinks[] = BASE_URL . '/public/cache/' . $cacheFile;
@@ -79,7 +76,7 @@ class Core_Helper_View
         }
     }
 
-    public static function generateJs($files)
+    public static function addJs($files)
     {
         foreach ($files as $key => $file) {
             if (substr($file, 0, 1) != '/') {

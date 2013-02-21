@@ -17,15 +17,13 @@ class User_Helper_Auth
 
     public static function checkAuth($username, $password)
     {
-        $userModel = new User_Model_User();
-        $user = $userModel->fetch('*', 'WHERE `username`=:username', array(':username' => $username));
+        $userModel = Core_Model::factory('User_Model_User');
+
+        $user = $userModel->where_equal('username', $username)
+                          ->find_one();
 
         if ($user) {
-            foreach ($userModel->fields as $field) {
-                $userModel->{$field} = $user->{$field};
-            }
-
-            return ($user->password == sha1($user->salt . $password)) ? $userModel : false;
+            return ($user->password == sha1($user->salt . $password)) ? $user : false;
         }
 
         return false;

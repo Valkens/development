@@ -15,7 +15,7 @@ class User_Controller_AuthController extends Core_Controller
                 // Update user login
                 $user->last_login_ip = $this->getClientIp();
                 $user->last_login = time();
-                $user->update();
+                $user->save();
 
                 $session->regenerateId();
                 $session->set('username', $user->username, 'auth');

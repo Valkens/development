@@ -7,14 +7,15 @@ return array(
                 'username' => 'root',
                 'password' => 'root',
                 'dbname' => 'dev_blog',
-                'dbprefix' => 'dev_'
+                'prefix' => 'dev_'
             ),
             'sqlite' => array(
-                'dbname' => APPLICATION_PATH . '/db/db'
+                'dbfile' => APPLICATION_PATH . '/db/db',
+                'prefix' => 'dev_'
             )
         ),
         'view' => array(
-            'minify' => 1, // Only effect for combine, otherwise minify less css file
+            'minify' => 1, // Only effect for combine
             'combineCss' => 1,
             'combineJs' => 1,
             'theme' => 'default'

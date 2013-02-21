@@ -3,9 +3,10 @@ class Core_Controller
 {
     protected $_router;
     protected $_request = array();
+    protected $_response = '';
     protected $_noRender = false;
     protected $_data = array();
-    protected $_fileRender = '';
+    protected $_template = '';
     public $view;
 
     public function __construct($request)
@@ -27,13 +28,23 @@ class Core_Controller
         return $default;
     }
 
-    public function renderFile($file)
+    public function setTemplate($tpl)
     {
-        $this->_fileRender =  $file;
+        $this->_template = $tpl;
+    }
+
+    public function preDispatch()
+    {
+    }
+
+    public function postDispatch()
+    {
     }
 
     public function dispatch()
     {
+        $this->preDispatch();
+
         $actionMethod = $this->_request['action'] . 'Action';
 
         if (!method_exists($this, $actionMethod)) {
@@ -44,14 +55,24 @@ class Core_Controller
 
         // Render view
         if (!$this->_noRender) {
-            if (!$this->_fileRender) {
+            ob_start();
+
+            if (!$this->_template) {
                 $path = 'module/' . strtolower($this->_request['module']) . '/' . strtolower($this->_request['controller']);
-                $this->view->render($path, $this->_request['action']);
+                $this->view->render($path, $this->_request['action'], $this->_response);
             } else {
-                $lastSlashPos = strrpos($this->_fileRender, '/');
-                $this->view->render(substr($this->_fileRender, 0,  $lastSlashPos), substr($this->_fileRender, $lastSlashPos));
+                $lastSlashPos = strrpos($this->_template, '/');
+                $this->view->render(substr($this->_template, 0,  $lastSlashPos), substr($this->_template, $lastSlashPos), $this->_response);
             }
+
+            $this->_response = ob_get_contents();
+
+            ob_end_clean();
         }
+
+        $this->postDispatch();
+
+        echo $this->_response;
     }
 
     public function redirect($location, $code = 302)

@@ -24,7 +24,7 @@ class Base_Controller_AdminController extends Core_Controller
         $this->view->setTheme('admin');
 
         if (!User_Helper_Auth::hasIdentity()) {
-            $this->renderFile('module/user/admin/login');
+            $this->setTemplate('module/user/admin/login');
         } else {
             // Set session
             $this->_session = Core_Session::getInstance();

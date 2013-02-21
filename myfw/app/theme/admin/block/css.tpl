@@ -1,4 +1,4 @@
-[[ $this->generateCss(array('/public/css/reset.css',
+[[ $this->addCss(array('/public/css/reset.css',
                             'css/plugins.less',
                             '/public/js/jquery/jquery-ui/css/ui-delta/jquery-ui.custom.less',
                             '/public/js/jquery/tipsy/tipsy.css',

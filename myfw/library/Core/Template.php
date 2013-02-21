@@ -20,27 +20,13 @@ class Core_Template
 
     public function render($varsLocal = array()) {
         extract($this->varsGlobal);
-        extract($varsLocal);
 
-        ob_start();
-
-        try {
-            include $this->cacheFile;
-        } catch (Exception $e) {
-            ob_end_clean();
-            throw $e;
-        }
-
-        $result = ob_get_contents();
-
-        ob_end_clean();
+        include $this->cacheFile;
 
         if ($this->inheritFrom !== NULL) {
             $this->inheritFrom->inheritBlocks = $this->inheritBlocks;
             $this->inheritFrom->render();
         }
-
-        echo $result;
     }
 
     public function inc($template)

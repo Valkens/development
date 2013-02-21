@@ -46,7 +46,7 @@ class Core_Application
             throw new Exception('Page not found', 404);
         }
 
-        // Set controller
+        // Create controller
         $controller = new $controllerClass(array(
             'module' => $match['target']['module'],
             'controller' => $match['target']['controller'],

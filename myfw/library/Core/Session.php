@@ -65,4 +65,17 @@ class Core_Session
         session_regenerate_id($delOldSession);
     }
 
+    public function generateToken($name = 'token', $new = false)
+    {
+        $token = $this->get($name);
+        if (!$token || $new) {
+            $token = sha1(uniqid(NULL, TRUE));
+
+            // Store the new token
+            $this->set($name, $token);
+        }
+
+        return $token;
+    }
+
 }
