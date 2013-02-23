@@ -31,28 +31,6 @@ class Core_Model
      */
     public $orm;
 
-    public static function setDefaultAdapter($adapter)
-    {
-        $options = Core_Resource_Manager::getOptions('db');
-
-        switch ($adapter)
-        {
-            case 'sqlite':
-                $options = $options['sqlite'];
-                Core_Resource_Db::configure("sqlite:{$options['dbfile']}");
-                Core_Model::$auto_prefix_models = $options['prefix'];
-                break;
-
-            case 'mysql':
-                $options = $options['mysql'];
-                Core_Resource_Db::configure("mysql:host={$options['host']};dbname={$options['dbname']}");
-                Core_Resource_Db::configure('username', $options['username']);
-                Core_Resource_Db::configure('password', $options['password']);
-                Core_Model::$auto_prefix_models = $options['prefix'];
-                break;
-        }
-    }
-
     /**
      * Retrieve the value of a static property on a class. If the
      * class or the property does not exist, returns the default
@@ -130,9 +108,7 @@ class Core_Model
      * responsible for returning instances of the correct class when
      * its find_one or find_many methods are called.
      */
-    public static function factory($class_name, $connection_name = null, $adapter = 'mysql') {
-        self::setDefaultAdapter($adapter);
-
+    public static function factory($class_name, $connection_name = null) {
         //$class_name = self::$auto_prefix_models . $class_name;
         $table_name = self::_get_table_name($class_name);
 

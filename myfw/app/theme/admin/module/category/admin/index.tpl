@@ -1,8 +1,8 @@
 [[ $this->inherit('@_theme_/layout') ]]
 
-[: block pageTitle :]List of categories[: endblock :]
+{% block pageTitle %}List of categories{% endblock %}
 
-[: block content :]
+{% block content %}
 <div id="wrapper">
     <h1 id="pageTitle">
         List of categories
@@ -30,8 +30,12 @@
                         <td>{{$category->meta_description}}</td>
                         <td>{{$category->sort}}</td>
                         <td>
-                            <a href="{{$this->url('route_admin_category_edit', array('id' => $category->id))}}">Edit</a> |
-                            <a class="delete_link" href="{{$this->url('route_admin_category_delete', array('id' => $category->id))}}">Delete</a>
+                            <a class="fleft" href="{{$this->url('route_admin_category_edit', array('id' => $category->id))}}">
+                                <span class="iedit tip_ne" title="Edit"></span>
+                            </a>
+                            <a class="fleft delete_link" href="{{$this->url('route_admin_category_delete', array('id' => $category->id))}}">
+                                <span class="idelete tip_ne" title="Delete"></span>
+                            </a>
                         </td>
                     </tr>
                     @foreach ($category->childs as $child) :
@@ -42,8 +46,12 @@
                             <td>{{$child->meta_description}}</td>
                             <td>{{$child->sort}}</td>
                             <td>
-                                <a href="[[$this->url('route_admin_category_edit', array('id' => $child->id))]]">Edit</a> |
-                                <a class="delete_link" href="{{$this->url('route_admin_category_delete', array('id' => $child->id))}}">Delete</a>
+                                <a class="fleft" href="{{$this->url('route_admin_category_edit', array('id' => $child->id))}}">
+                                    <span class="iedit tip_ne" title="Edit"></span>
+                                </a>
+                                <a class="fleft delete_link" href="{{$this->url('route_admin_category_delete', array('id' => $child->id))}}">
+                                    <span class="idelete tip_ne" title="Delete"></span>
+                                </a>
                             </td>
                         </tr>
                     @endforeach
@@ -56,9 +64,9 @@
         @endif
     </div>
 </div>
-[: endblock :]
+{% endblock %}
 
-[: block script :]
+{% block script %}
 <script type="text/javascript">
 $(function(){
     $('.delete_link').live('click', function(e) {
@@ -94,4 +102,4 @@ $(function(){
     });
 });
 </script>
-[: endblock :]
+{% endblock %}

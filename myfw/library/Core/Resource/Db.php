@@ -121,9 +121,43 @@ class Core_Resource_Db implements ArrayAccess
     // this instance only. Overrides the config settings.
     protected $_instance_id_column = null;
 
+    protected static $_options = array();
+
     // ---------------------- //
     // --- STATIC METHODS --- //
     // ---------------------- //
+
+    public static function setOptions($options, $adapter = 'mysql')
+    {
+        self::$_options = $options;
+        self::setDefaultAdapter($adapter);
+    }
+
+    public static function getOptions()
+    {
+        return self::$_options;
+    }
+
+    public static function setDefaultAdapter($adapter)
+    {
+        switch ($adapter)
+        {
+            case 'sqlite':
+                $options = self::$_options['sqlite'];
+                Core_Resource_Db::configure("sqlite:{$options['dbfile']}", null, 'mysql');
+                Core_Model::$auto_prefix_models = $options['prefix'];
+                break;
+
+            case 'mysql':
+                $options = self::$_options['mysql'];
+                Core_Resource_Db::configure("mysql:host={$options['host']};dbname={$options['dbname']}");
+                Core_Resource_Db::configure('username', $options['username']);
+                Core_Resource_Db::configure('password', $options['password']);
+                Core_Resource_Db::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+                Core_Model::$auto_prefix_models = $options['prefix'];
+                break;
+        }
+    }
 
     /**
      * Pass configuration settings to the class in the form of
@@ -414,6 +448,10 @@ class Core_Resource_Db implements ArrayAccess
 
         $this->_connection_name = $connection_name;
         self::_setup_db_config($connection_name);
+    }
+
+    public function getTableName() {
+        return $this->_table_name;
     }
 
     /**
@@ -1449,6 +1487,7 @@ class Core_Resource_Db implements ArrayAccess
      */
     protected function _run() {
         $query = $this->_build_select();
+
         $caching_enabled = self::$_config[$this->_connection_name]['caching'];
 
         if ($caching_enabled) {

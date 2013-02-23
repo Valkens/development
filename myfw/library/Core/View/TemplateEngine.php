@@ -1,17 +1,9 @@
 <?php
-class Core_TemplateEngine
+class Core_View_TemplateEngine
 {
     protected $_paths;
     public $varsUniversal = array();
-    public $options = array();
     public $autoEscape = true;
-    public $theme;
-
-    public function __construct($options = array())
-    {
-        $this->options = $options;
-        $this->theme = $options['theme'];
-    }
 
     public function addPath($path, $namespace = '_theme_')
     {
@@ -43,7 +35,7 @@ class Core_TemplateEngine
             throw new Exception(sprintf('There are no registered paths for namespace "%s".', $namespace));
         }
 
-        $fpath = $this->_paths[$namespace] . '/' . trim($file, '/') . '.tpl';
+        $fpath = $this->_paths[$namespace] . '/' . $file . '.tpl';
 
         // Check if the template exists.
         if (!is_file($fpath)) {
@@ -58,18 +50,11 @@ class Core_TemplateEngine
             file_put_contents($cacheFile, $this->compile(file_get_contents($fpath), $autoEscape));
         }
 
-        // Set view helper
-        Core_Helper_View::$options = $this->options;
-        Core_Helper_View::$theme = $this->theme;
-
-        // Load the base or translated template.
-        $template = new Core_Template(
+        return new Core_View_Template(
             $this,
             $cacheFile,
             $this->varsUniversal
         );
-
-        return $template;
     }
 
     private function compile($contents, $autoEscape = true)
@@ -83,7 +68,7 @@ class Core_TemplateEngine
                 "/\[\[/",
                 "/\]\]/",
                 '/^\s*@(.*)$/m',
-                '/\[:\s*block\s(.*)\s*:\](.*)\[:\s*endblock\s*:\]/Usm',
+                '/{%\s*block\s(.*)\s*%}(.*){%\s*endblock\s*%}/Usm',
             ),
             array(
                 $autoEscape ? "<?php echo(htmlspecialchars(" : "<?php echo(",

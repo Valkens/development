@@ -1,12 +1,12 @@
 [[ $this->inherit('@_theme_/layout') ]]
 
-[: block pageTitle :]Add new category[: endblock :]
+{% block pageTitle %}Add new category{% endblock %}
 
-[: block content :]
+{% block content %}
 <div id="wrapper">
     <div id="sideMenu">
         <ul>
-            <li><a href="[[$this->url('route_admin_category')]]">List of categories</a></li>
+            <li><a href="{{$this->url('route_admin_category')}}">List of categories</a></li>
         </ul>
     </div>
 
@@ -66,9 +66,9 @@
         </div>
     </div>
 </div>
-[: endblock :]
+{% endblock %}
 
-[: block script :]
+{% block script %}
 <script type="text/javascript">
     $(function(){
         // Generate slug
@@ -84,4 +84,4 @@
         });
     });
 </script>
-[: endblock :]
+{% endblock %}

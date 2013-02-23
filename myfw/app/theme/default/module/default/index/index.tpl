@@ -1,7 +1,7 @@
 [[ $this->inherit('@_theme_/layout') ]]
-[: block page :]{{$pageTitle}}[: endblock :]
+{% block pageTitle %}{{$pageTitle}}{% endblock %}
 
-[: block content :]
+{% block content %}
 <div id="content-wrapper" class="wrapper clearfix">
     <!-- Start main content -->
     <div id="content" class="clearfix">
@@ -119,4 +119,4 @@
     <!-- End sidebar -->
 
 </div>
-[: endblock :]
+{% endblock %}

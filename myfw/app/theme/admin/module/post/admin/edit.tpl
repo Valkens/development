@@ -1,13 +1,13 @@
 [[ $this->inherit('@_theme_/layout') ]]
 
-[: block pageTitle :]Edit post[: endblock :]
+{% block pageTitle %}Edit post{% endblock %}
 
-[: block content :]
+{% block content %}
 <div id="wrapper">
     <div id="sideMenu">
         <ul>
-            <li><a href="[[$this->url('route_admin_post')]]">List of posts</a></li>
-            <li><a href="[[$this->url('route_admin_post_add')]]">Add post</a></li>
+            <li><a href="{{$this->url('route_admin_post')}}">List of posts</a></li>
+            <li><a href="{{$this->url('route_admin_post_add')}}">Add post</a></li>
         </ul>
     </div>
 
@@ -27,7 +27,7 @@
                             <div class="grid2 noSearch">
                                 <select name="subcategory" class="select">
                                     @foreach ($subcategories as $category) :
-                                        @$selected = ($post->id_subcategory == $category->id) ? ' selected="selected"' : ''
+                                        @$selected = ($post->subcategory_id == $category->id) ? ' selected="selected"' : ''
                                         <option value="{{$category->id}}"{{$selected}}>{{$category->name}}</option>
                                     @endforeach
                                 </select>
@@ -111,9 +111,9 @@
         </div>
     </div>
 </div>
-[: endblock :]
+{% endblock %}
 
-[: block script :]
+{% block script %}
 <script type="text/javascript" src="{{$baseUrl}}/app/theme/admin/js/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
     $(document).ready( function() {
@@ -145,4 +145,4 @@
         });
     });
 </script>
-[: endblock :]
+{% endblock %}

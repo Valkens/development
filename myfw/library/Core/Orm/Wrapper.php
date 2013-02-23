@@ -1,13 +1,4 @@
 <?php
-/**
- * Subclass of Idiorm's ORM class that supports
- * returning instances of a specified class rather
- * than raw instances of the ORM class.
- *
- * You shouldn't need to interact with this class
- * directly. It is used internally by the Model base
- * class.
- */
 class Core_Orm_Wrapper extends Core_Resource_Db
 {
 

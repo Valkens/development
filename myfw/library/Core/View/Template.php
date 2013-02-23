@@ -1,5 +1,5 @@
 <?php
-class Core_Template
+class Core_View_Template
 {
     public $engine;
     public $cacheFile = null;

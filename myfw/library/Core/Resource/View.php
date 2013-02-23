@@ -1,25 +1,35 @@
 <?php
 class Core_Resource_View
 {
-    protected $_options = array();
     protected $_data = array();
     protected $_templateEngine;
+    protected static $_options;
 
     public function __construct()
     {
-        $this->_options = Core_Resource_Manager::getOptions('view');
-        $this->_templateEngine = new Core_TemplateEngine($this->_options);
-        $this->setTheme($this->_options['theme']);
+        $this->_templateEngine = new Core_View_TemplateEngine();
+        Core_Helper_View::$options = self::$_options;
+        $this->setTheme(self::$_options['theme']);
+    }
+
+    public static function setOptions($options)
+    {
+        self::$_options = $options;
+    }
+
+    public static function getOptions()
+    {
+        return self::$_options;
     }
 
     public function setTheme($theme)
     {
-        $this->_templateEngine->theme = $theme;
+        Core_Helper_View::$theme = $theme;
     }
 
     public function getTheme()
     {
-        return $this->_templateEngine->theme;
+        return Core_Helper_View::$theme;
     }
 
     public function __set($name, $value)

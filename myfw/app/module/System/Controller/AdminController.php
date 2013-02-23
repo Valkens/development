@@ -1,7 +1,7 @@
 <?php
 class System_Controller_AdminController extends Base_Controller_AdminController
 {
-	public function clearCacheAction()
+	public function cacheAction()
 	{
 		// Cache types
 		$caches = array(
@@ -65,7 +65,7 @@ class System_Controller_AdminController extends Base_Controller_AdminController
 		$this->view->caches = $caches;
 	}
 
-	public function viewLogAction()
+	public function logAction()
 	{
 		if ($this->isPost()) {
 			file_put_contents(ini_get('error_log'), '');
@@ -76,21 +76,29 @@ class System_Controller_AdminController extends Base_Controller_AdminController
 
 	public function settingAction()
 	{
-		$settingModel = new System_Model_Setting();
+		$settingModel = Core_Model::factory('System_Model_Setting');
 		$options = array();
 
-		if (!$options = $this->_cache['db']->load('db_settings')) {
-			$settings = $settingModel->fetchAll();
-			foreach ($settings as $setting) {
-				$options[$setting->name] = trim($setting->value);
-			}
-			$this->_cache['db']->save($options, 'db_settings');
-		}
-		
+        $settings = $settingModel->find_many();
+
+        foreach ($settings as $setting) {
+            $options[$setting->name] = trim($setting->value);
+        }
 
 		if ($this->isPost()) {
-			$settingModel->updateAll(array_keys($options), $this->_request['params']);
-			$options = array_merge($options, $this->_request['params']);
+            $sql = array();
+            $params = array();
+            $options = array_merge($options, $this->_request['params']);
+
+            // Update settings
+            $sql[] = 'UPDATE ' . $settingModel->getTableName() . ' SET value = CASE';
+            foreach (array_keys($options) as $key) {
+                $sql[] = " WHEN name='{$key}' THEN :{$key}";
+                $params["$key"] = trim($this->_request['params'][$key]);
+            }
+            $sql[] = ' END';
+
+            $settingModel->raw_execute(implode('', $sql), $params);
 
 			// Write cache
 			$this->_cache['db']->save($options, 'db_settings');

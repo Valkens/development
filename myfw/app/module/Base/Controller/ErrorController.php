@@ -21,7 +21,7 @@ class Base_Controller_ErrorController extends Core_Controller
             $this->view->exception = $e;
         }
 
-        echo $this->view->render('module/base/error', 'error');
+        $this->view->render('module/base/error', 'error');
     }
 
 }

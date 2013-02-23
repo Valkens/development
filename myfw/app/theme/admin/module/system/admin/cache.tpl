@@ -1,13 +1,13 @@
 [[ $this->inherit('@_theme_/layout') ]]
 
-[: block pageTitle :]System caches[: endblock :]
+{% block pageTitle %}System caches{% endblock %}
 
-[: block content :]
+{% block content %}
 <div id="wrapper">
     <div id="sideMenu">
         <ul>
-            <li><a href="[[$this->url('route_admin_system_log')]]">Logs</a></li>
-            <li><a href="[[$this->url('route_admin_system_setting')]]">Settings</a></li>
+            <li><a href="{{$this->url('route_admin_system_log')}}">Logs</a></li>
+            <li><a href="{{$this->url('route_admin_system_setting')}}">Settings</a></li>
         </ul>
     </div>
 
@@ -50,4 +50,4 @@
         </div>
     </div>
 </div>
-[: endblock :]
+{% endblock %}

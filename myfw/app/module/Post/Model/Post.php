@@ -1,11 +1,7 @@
 <?php
 class Post_Model_Post extends Core_Model
 {
-    public $table = 'post';
-    public $primaryKey = 'id';
-    public $fields = array('id', 'id_user', 'id_category', 'id_subcategory', 'thumbnail', 'title', 'slug', 'meta_description',
-                            'description', 'content', 'status', 'comment_allowed', 'comment_count', 'featured_status',
-                            'creation_date', 'modified_date');
+    public static $_table = 'post';
 
     public function initialize($params)
     {
@@ -28,6 +24,30 @@ class Post_Model_Post extends Core_Model
 		$this->status = $params['status'];
 		$this->comment_allowed = $params['comment_allowed'];
 		$this->content = trim($params['content']);
+    }
+
+    public function tags()
+    {
+        return $this->has_many_through('Tag_Model_Tag', 'Tag_Model_PostTag', 'post_id', 'tag_id');
+    }
+
+    public function category()
+    {
+        return $this->belongs_to('Category_Model_Category', 'subcategory_id')->find_one();
+    }
+
+    public function getTags()
+    {
+        $tags = $this->tags()->find_many();
+        $tagArr = array();
+
+        if (count($tags)) {
+            foreach ($tags as $tag) {
+                $tagArr[] = $tag->name;
+            }
+        }
+
+        return implode(',', $tagArr);
     }
 
 }

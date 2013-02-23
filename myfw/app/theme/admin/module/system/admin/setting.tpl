@@ -1,13 +1,13 @@
-[[ $this->inherit('@_theme_/layout') ]]\
+[[ $this->inherit('@_theme_/layout') ]]
 
-[: block pageTitle :]System settings[: endblock :]
+{% block pageTitle %}System settings{% endblock %}
 
-[: block content :]
+{% block content %}
 <div id="wrapper">
     <div id="sideMenu">
         <ul>
-            <li><a href="[[$this->url('route_admin_system_cache')]]">Caches</a></li>
-            <li><a href="[[$this->url('route_admin_system_log')]]">Logs</a></li>
+            <li><a href="{{$this->url('route_admin_system_cache')}}">Caches</a></li>
+            <li><a href="{{$this->url('route_admin_system_log')}}">Logs</a></li>
         </ul>
     </div>
 
@@ -150,9 +150,9 @@
         </div>
     </div>
 </div>
-[: endblock :]
+{% endblock %}
 
-[: block script :]
+{% block script %}
 <script type="text/javascript">
     $(function(){
         $('#frmSystemSetting').validate({
@@ -189,4 +189,4 @@
         });
     });
 </script>
-[: endblock :]
+{% endblock %}

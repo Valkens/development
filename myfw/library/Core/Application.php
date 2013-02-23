@@ -88,7 +88,8 @@ class Core_Application
     protected function _registryResources($resources)
     {
         foreach ($resources as $resource => $options) {
-            Core_Resource_Manager::setOptions($resource, $options);
+            $class = 'Core_Resource_' . strtoupper($resource);
+            call_user_func($class . '::setOptions', $options);
         }
     }
 

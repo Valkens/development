@@ -2,51 +2,41 @@
 class Post_Controller_AdminController extends Base_Controller_AdminController
 {
     const PER_PAGE = 10;
+    protected $postModel;
 
     public function init()
     {
         parent::init();
 
-        // Write cache
-        if (!$categories = $this->_cache['db']->load('db_categories')) {
-            $categoryModel = new Category_Model_Category();
-            if ($categories = $categoryModel->fetchAll('*', 'ORDER BY sort ASC')) {
-                $this->_cache['db']->save($categories, 'db_categories');
-            }
-        }
+        $this->postModel = Core_Model::factory('Post_Model_Post');
 
-        $this->view->categories = $categories;
-        $this->view->subcategories = array_filter($categories, create_function('$obj', 'return $obj->id_parent != 0;'));
+        // Get all categories
+        $categoryModel = Core_Model::factory('Category_Model_Category');
+        $this->view->subcategories = array_filter($categoryModel->find_many(), create_function('$obj', 'return $obj->id_parent != 0;'));
     }
 
     public function indexAction()
     {
         $posts = array();
-        $categories = array();
+        $postCategories = array();
 
         if ($this->view->subcategories) {
             foreach ($this->view->subcategories as $category) {
-                $categories[$category->id] = $category->name;
+                $postCategories[$category->id] = $category->name;
             }
-
-            $postModel = new Post_Model_Post();
-            $result = $postModel->fetch('COUNT(id) AS count_all');
+            $this->view->postCategories = $postCategories;
 
             // Pagination
             $page = $this->getParam('page', 1);
             $offset = ($page - 1) * self::PER_PAGE;
+            $totalPosts = $this->postModel->count();
 
-            $posts = $postModel->fetchAll('id,thumbnail,title,id_subcategory,description,featured_status,status,comment_count',
-                                          "ORDER BY id DESC LIMIT {$offset}," . self::PER_PAGE);
+            $posts = $this->postModel->order_by_desc('id')->limit(self::PER_PAGE)->offset($offset)->find_many();
 
             if (count($posts)) {
-                foreach ($posts as $post) {
-                    $post->categoryName = $categories[$post->id_subcategory];
-                }
-
                 // Paginator
                 $paginator = new Base_Helper_Paginator();
-                $paginator->items_total = $result->count_all;
+                $paginator->items_total = $totalPosts;
                 $paginator->items_per_page = self::PER_PAGE;
                 $paginator->current_page = $page;
                 $paginator->baseUrl = $this->_router->generate('route_admin_post');
@@ -100,29 +90,11 @@ class Post_Controller_AdminController extends Base_Controller_AdminController
     public function editAction()
     {
         $params = $this->_request['params'];
-        $postId = (int) $params['id'];
-        $postModel = new Post_Model_Post();
-        
-        $this->view->post = $postModel->fetch('*', 'WHERE id=:id LIMIT 1', array(':id' => $postId));
 
-        if ($this->view->post) {
-            $postTagModel = new Tag_Model_PostTag();
-            $tagModel = new Tag_Model_Tag();
-            $tagIds = array();
-            $tags = array();
+        $this->view->post = $post = $this->postModel->find_one($params['id']);
 
-            // Get tags of the Post
-            if ($postTags = $postTagModel->fetchAll('id_tag', 'WHERE id_post = :id_post', array(':id_post' => $postId))) {
-                foreach ($postTags as $postTag) {
-                    $tagIds[] = $postTag->id_tag;
-                }
-
-                foreach ($tagModel->fetchAll('name,slug', 'WHERE id IN(' . implode(',', $tagIds) . ')') as $tag) {
-                    $tags[$tag->slug] = $tag->name;
-                }
-
-                $this->view->post->tags = implode(',', $tags);
-            }
+        if ($post) {
+            $post->tags = $post->getTags();
 
             if ($this->isPost()) {
                 if ($_FILES['thumbnail']) {

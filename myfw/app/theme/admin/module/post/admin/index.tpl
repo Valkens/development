@@ -1,12 +1,12 @@
 [[ $this->inherit('@_theme_/layout') ]]
 
-[: block pageTitle :]List of posts[: endblock :]
+{% block pageTitle %}List of posts{% endblock %}
 
-[: block content :]
+{% block content %}
 <div id="wrapper">
     <h1 id="pageTitle">
         List of posts
-        <a href="[[$this->url('route_admin_post_add')]]" class="buttonS bBlue btnAction fright">Add</a>
+        <a href="{{$this->url('route_admin_post_add')}}" class="buttonS bBlue btnAction fright">Add</a>
     </h1>
     <div class="widget">
         @if ($posts) :
@@ -30,7 +30,7 @@
                     <td>#{{$post->id}}</td>
                     <td><img src="{{$post->thumbnail}}" width="50" height="50" /></td>
                     <td>{{$post->title}}</td>
-                    <td>{{$post->categoryName}}</td>
+                    <td>{{$postCategories[$post->subcategory_id]}}</td>
                     <td>{{$post->description}}</td>
                     <td>
                         @echo ($post->featured_status) ? '<span class="stSuccess">[Yes]</span>' : '<span class="stError">[No]</span>';
@@ -40,10 +40,10 @@
                     </td>
                     <td>{{$post->comment_count}}</td>
                     <td>
-                        <a class="fleft" href="[[$this->url('route_admin_post_edit', array('id' => $post->id))]]">
+                        <a class="fleft" href="{{$this->url('route_admin_post_edit', array('id' => $post->id))}}">
                             <span class="iedit tip_ne" title="Edit"></span>
                         </a> 
-                        <a class="fleft delete_link" href="{{$adminUrl}}/post/delete/{{$post->id}}">
+                        <a class="fleft delete_link" href="{{$this->url('route_admin_post_delete', array('id' => $post->id))}}">
                             <span class="idelete tip_ne" title="Delete"></span>
                         </a>
                     </td>
@@ -54,7 +54,7 @@
                     <tr>
                         <td colspan="9">
                             <div class="paginator">
-                                @echo $paginator->display_pages();
+                                @echo $paginator->display_pages()
                             </div>
                         </td>
                     </tr>
@@ -65,9 +65,9 @@
         @endif
     </div>
 </div>
-[: endblock :]
+{% endblock %}
 
-[: block script :]
+{% block script %}
 <script type="text/javascript">
     $(function(){
         $('.delete_link').live('click', function(e) {
@@ -92,4 +92,4 @@
         });
     });
 </script>
-[: endblock :]
+{% endblock %}

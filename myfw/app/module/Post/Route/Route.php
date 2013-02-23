@@ -24,4 +24,10 @@ return array(
         'route'  => '/' . ADMIN_URL_SUFFIX . '/post/edit/[i:id]',
         'target' => array('module' => 'Post', 'controller' => 'Admin', 'action' => 'edit'),
     ),
+    array(
+        'name' => 'route_admin_post_delete',
+        'method' => 'GET|POST',
+        'route'  => '/' . ADMIN_URL_SUFFIX . '/post/delete/[i:id]',
+        'target' => array('module' => 'Post', 'controller' => 'Admin', 'action' => 'delete'),
+    ),
 );

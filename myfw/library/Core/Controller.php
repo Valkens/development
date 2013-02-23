@@ -13,7 +13,7 @@ class Core_Controller
     {
         $this->_router = Core_Application::getInstance()->getRouter();
         $this->_request = $request;
-        $this->view = Core_Resource_Manager::getResource('view');
+        $this->view = new Core_Resource_View();
         $this->init();
     }
 
@@ -59,10 +59,9 @@ class Core_Controller
 
             if (!$this->_template) {
                 $path = 'module/' . strtolower($this->_request['module']) . '/' . strtolower($this->_request['controller']);
-                $this->view->render($path, $this->_request['action'], $this->_response);
+                $this->view->render($path, $this->_request['action']);
             } else {
-                $lastSlashPos = strrpos($this->_template, '/');
-                $this->view->render(substr($this->_template, 0,  $lastSlashPos), substr($this->_template, $lastSlashPos), $this->_response);
+                $this->view->render(substr($this->_template, 0,  strrpos($this->_template, '/')), basename($this->_template));
             }
 
             $this->_response = ob_get_contents();

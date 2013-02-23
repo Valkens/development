@@ -1,12 +1,12 @@
 [[ $this->inherit('@_theme_/layout') ]]
 
-[: block pageTitle :]Add new post[: endblock :]
+{% block pageTitle %}Add new post{% endblock %}
 
-[: block content :]
+{% block content %}
 <div id="wrapper">
     <div id="sideMenu">
         <ul>
-            <li><a href="[[$this->url('route_admin_post')]]">List of posts</a></li>
+            <li><a href="{{$this->url('route_admin_post')}}">List of posts</a></li>
         </ul>
     </div>
 
@@ -117,9 +117,9 @@
         </div>
     </div>
 </div>
-[: endblock :]
+{% endblock %}
 
-[: block script :]
+{% block script %}
 <script type="text/javascript" src="{{$baseUrl}}/app/theme/admin/js/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
     $(function(){
@@ -153,4 +153,4 @@
         });
     });
 </script>
-[: endblock :]
+{% endblock %}
