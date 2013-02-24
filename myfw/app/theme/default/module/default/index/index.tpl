@@ -113,8 +113,9 @@
     <!-- End main content -->
 
     <!-- Start sidebar -->
-    <div id="slidebar">
-        ewqewqewq
+    <div id="sidebar">
+        [[$this->widget('subscribe')]]
+        [[$this->widget('facebook')]]
     </div>
     <!-- End sidebar -->
 

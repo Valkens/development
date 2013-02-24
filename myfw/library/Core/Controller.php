@@ -12,8 +12,8 @@ class Core_Controller
     public function __construct($request)
     {
         $this->_router = Core_Application::getInstance()->getRouter();
-        $this->_request = $request;
-        $this->view = new Core_Resource_View();
+        $this->view = Core_Resource_View::getInstance();
+        $this->_request = $this->view->request = $request;
         $this->init();
     }
 

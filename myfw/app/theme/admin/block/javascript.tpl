@@ -2,7 +2,7 @@
     var BASE_URL = '{{$baseUrl}}';
     var ADMIN_URL = '{{$adminUrl}}';
 </script>
-[[ $this->addJs(array('/public/js/jquery/jquery.min.js',
+[[ $this->js(array('/public/js/jquery/jquery.min.js',
                     '/public/js/jquery/jquery-ui/jquery-ui.min.js',
                     '/public/js/jquery/form/validation.js',
                     '/public/js/jquery/form/validation-additional-methods.js',

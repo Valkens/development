@@ -11,7 +11,9 @@ class Core_View_TemplateEngine
             throw new Exception("Not a directory: $path");
         }
 
-        $this->_paths[$namespace] = rtrim($path, '/');
+        if (!isset($this->_paths[$namespace])) {
+            $this->_paths[$namespace] = rtrim($path, '/');
+        }
     }
 
     public function setVar($varValue) {

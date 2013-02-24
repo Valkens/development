@@ -4,7 +4,7 @@
     <title>{% block pageTitle %}Index{% endblock %}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="description" content="Welcome to my basic template.">
-    [[ $this->addCss(array('/public/css/reset.css',
+    [[ $this->css(array('/public/css/reset.css',
                            '/public/css/style.css',
                            'css/common.css',
                            'css/post.css'))
@@ -26,7 +26,7 @@
     </header>
 
     {% block content %}{% endblock %}
-    [[ $this->addCss(array('/public/js/jquery/jquery.min.js',
+    [[ $this->js(array('/public/js/jquery/jquery.min.js',
                           '/public/js/jquery/jquery.elastic.js',
                           'js/main.js'))
     ]]

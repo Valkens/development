@@ -14,11 +14,13 @@ class Core_View_Template
         $this->varsGlobal = $varsGlobal;
     }
 
-    public function setVar($varName, $varValue) {
+    public function setVar($varName, $varValue)
+    {
         $this->varsGlobal[$varName] = $varValue;
     }
 
-    public function render($varsLocal = array()) {
+    public function render()
+    {
         extract($this->varsGlobal);
 
         include $this->cacheFile;
@@ -41,7 +43,24 @@ class Core_View_Template
 
     public function __call($method, $args)
     {
-        return call_user_func_array('Core_Helper_View::' . $method, $args);
+        $method = ucfirst($method);
+        $class = 'Core_View_Helper_' . $method;
+        return call_user_func_array("{$class}::{$method}", $args);
+    }
+
+    public function widget($name)
+    {
+        $options = Core_Resource_View::getOptions();
+
+        $path = APPLICATION_PATH . '/theme/' . $options['theme'] . '/widget/' . strtolower($name) . '/controller.php';
+        $class = 'Widget_' . strtoupper($name) . '_Controller';
+
+        include_once ($path);
+
+        $instance = new $class;
+        $instance->view = Core_Resource_View::getInstance();
+        $instance->init();
+        $instance->view->render('widget/' . strtolower($name), 'index');
     }
 
 }

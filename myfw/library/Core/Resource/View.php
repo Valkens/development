@@ -1,15 +1,25 @@
 <?php
 class Core_Resource_View
 {
+    private static $_view;
     protected $_data = array();
     protected $_templateEngine;
     protected static $_options;
+    public $body = '';
 
-    public function __construct()
+    private function __construct()
     {
         $this->_templateEngine = new Core_View_TemplateEngine();
-        Core_Helper_View::$options = self::$_options;
         $this->setTheme(self::$_options['theme']);
+    }
+
+    public static function getInstance()
+    {
+        if (!self::$_view) {
+            self::$_view = new Core_Resource_View();
+        }
+
+        return self::$_view;
     }
 
     public static function setOptions($options)
@@ -24,12 +34,12 @@ class Core_Resource_View
 
     public function setTheme($theme)
     {
-        Core_Helper_View::$theme = $theme;
+        self::$_options['theme'] = $theme;
     }
 
     public function getTheme()
     {
-        return Core_Helper_View::$theme;
+        return self::$_options['theme'];
     }
 
     public function __set($name, $value)
@@ -42,10 +52,20 @@ class Core_Resource_View
         return isset($this->_data[$name]) ? $this->_data[$name] : null;
     }
 
+    public function setData($data)
+    {
+        $this->_data = $data;
+    }
+
+    public function getData()
+    {
+        return $this->_data;
+    }
+
     public function render($path, $file)
     {
         $dir = 'theme/' . $this->getTheme();
-        $namespace = '_' . str_replace('/', '_', $dir) . '_';
+        $namespace = '_' . str_replace('/', '_', "{$dir}/{$path}") . '_';
         $dir = APPLICATION_PATH . '/' . $dir;
 
         $this->_templateEngine->addPath($dir);
