@@ -1,5 +1,6 @@
 <?php
-class Widget_Facebook_Controller extends Core_View_Widget
+function Widget_Facebook_Controller($view, $params)
 {
 
+    return $view;
 }

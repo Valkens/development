@@ -1,8 +1,5 @@
 <?php
-class Core_View_Helper_Url
+function Core_View_Helper_Url($routeName, $params = null)
 {
-    public static function url($routeName, $params = null)
-    {
-        return Core_Application::getInstance()->getRouter()->generate($routeName, $params);
-    }
+    return Core_Application::getInstance()->getRouter()->generate($routeName, $params);
 }

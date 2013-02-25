@@ -1,7 +1,6 @@
 <?php
 class Core_Resource_Db implements ArrayAccess
 {
-
     // ----------------------- //
     // --- CLASS CONSTANTS --- //
     // ----------------------- //

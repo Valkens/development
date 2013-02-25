@@ -44,23 +44,22 @@ class Core_View_Template
     public function __call($method, $args)
     {
         $method = ucfirst($method);
-        $class = 'Core_View_Helper_' . $method;
-        return call_user_func_array("{$class}::{$method}", $args);
+        include_once LIBRARY_PATH . "/Core/View/Helper/{$method}.php";
+
+        return call_user_func_array("Core_View_Helper_{$method}", $args);
     }
 
-    public function widget($name)
+    public function widget($name, $params = array())
     {
         $options = Core_Resource_View::getOptions();
 
         $path = APPLICATION_PATH . '/theme/' . $options['theme'] . '/widget/' . strtolower($name) . '/controller.php';
-        $class = 'Widget_' . strtoupper($name) . '_Controller';
+        $functionName = 'Widget_' . strtoupper($name) . '_Controller';
 
         include_once ($path);
 
-        $instance = new $class;
-        $instance->view = Core_Resource_View::getInstance();
-        $instance->init();
-        $instance->view->render('widget/' . strtolower($name), 'index');
+        $view = call_user_func($functionName, Core_Resource_View::getInstance(), $params);
+        $view->render('widget/' . strtolower($name), 'index');
     }
 
 }

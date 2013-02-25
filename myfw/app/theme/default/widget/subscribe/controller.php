@@ -1,9 +1,7 @@
 <?php
-class Widget_Subscribe_Controller extends Core_View_Widget
+function Widget_Subscribe_Controller($view)
 {
-    public function init()
-    {
-        $this->view->tip = 'Please enter your email';
-    }
+    $view->tip = 'Please enter your email';
 
+    return $view;
 }
